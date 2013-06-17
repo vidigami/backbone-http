@@ -65,10 +65,5 @@ module.exports = (model_type, cache) ->
       return options.error(new Error "Ajax failed with status #{status} for #{method}") unless res.ok
       options.success(res.body)
 
-
-  require('backbone-orm/lib/model_extensions')(model_type, sync_fn)
-
-  if cache
-    return require('./cache_sync')(model_type, sync_fn)
-  else
-    return sync_fn
+  require('backbone-orm/lib/model_extensions')(model_type, sync_fn) # mixin extensions
+  return if cache then require('backbone-orm/cache_sync')(model_type, sync_fn) else sync_fn
