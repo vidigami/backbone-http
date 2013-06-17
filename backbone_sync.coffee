@@ -38,7 +38,7 @@ module.exports = (model_type, cache) ->
     sync['initialize']()
 
     if method is 'cursor' or method is 'destroy'
-      return sync[method].apply(sync, arguments)
+      return sync[method].apply(sync, Array::slice.call(arguments, 1))
 
     url = options.url or _.result(model, 'url')
     req = request(url)
