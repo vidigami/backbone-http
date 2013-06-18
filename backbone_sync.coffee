@@ -31,6 +31,10 @@ module.exports = class AjaxBackboneSync
         return callback(new Error "Ajax failed with status #{status} for #{method}") unless res.ok
         callback(null, res.body)
 
+  schema: (key) -> @model_type._schema
+  relation: (key) -> @model_type._schema.relation(key)
+
+
 module.exports = (model_type, cache) ->
   sync = new AjaxBackboneSync(model_type)
 
