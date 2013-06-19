@@ -17,6 +17,8 @@ module.exports = class AjaxBackboneSync
     return if @is_initialized; @is_initialized = true
     @model_type._schema.initialize()
 
+  sync: -> return @
+
   ###################################
   # Backbone ORM - Class Extensions
   ###################################
@@ -40,6 +42,8 @@ module.exports = (model_type, cache) ->
 
   sync_fn = (method, model, options={}) ->
     sync['initialize']()
+
+    return module.exports.apply(null, Array::slice.call(arguments, 1)) if method is 'createSync' # create a new sync
 
     if method is 'cursor' or method is 'destroy'
       return sync[method].apply(sync, Array::slice.call(arguments, 1))
