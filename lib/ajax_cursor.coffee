@@ -1,3 +1,4 @@
+util = require 'util'
 _ = @_ or require 'underscore'
 
 Cursor = require 'backbone-orm/lib/cursor'
@@ -12,7 +13,7 @@ module.exports = class AjaxCursor extends Cursor
     @request
       .get(@url)
       .query(query)
-      .end (err, res) ->
+      .end (err, res) =>
         return callback(err) if err
         return callback(new Error "Ajax failed with status #{status} for #{method}") unless res.ok
         callback(null, res.body)

@@ -81,7 +81,7 @@ module.exports = (model_type, cache) ->
         when 'delete'
           req = request.del(url)
         when 'read'
-          req = request.get(url).type('json')
+          req = request.get(url).query({$one: !model.models}).type('json')
 
       req.end (err, res) ->
         return options.error(err) if err
