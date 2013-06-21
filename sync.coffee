@@ -19,19 +19,23 @@ module.exports = class AjaxSync
     @model_type._sync = @
     @model_type._schema = new Schema(@model_type)
 
+    @request = @superagent or require 'superagent'
+
+    ###################################
     # TEST: override request
+    ###################################
     if process?.env.NODE_ENV is 'test'
       express = require 'express'
       RestController = require 'backbone-rest'
+
       class TestModel extends Backbone.Model
-        url: "/#{url_parts.table}"
+        urlRoot: "/#{url_parts.table}"
         sync: require('backbone-orm/memory_sync')(TestModel)
 
       app = express(); app.use(express.bodyParser())
       controller = new RestController(app, {model_type: TestModel, route: @url}) # implicit knowledge of backbone-rest tests
+
       @request = require('supertest')(app)
-    else
-      @request = @superagent or require 'superagent'
 
   initialize: (model) ->
     return if @is_initialized; @is_initialized = true
