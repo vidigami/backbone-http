@@ -1,4 +1,3 @@
-request = @superagent or require 'superagent'
 _ = @_ or require 'underscore'
 
 Cursor = require 'backbone-orm/lib/cursor'
@@ -10,7 +9,8 @@ module.exports = class AjaxCursor extends Cursor
   ##############################################
   toJSON: (callback, count) ->
     query = _.extend(_.extend({}, @_find), @_cursor)
-    request(@url)
+    @request
+      .get(@url)
       .query(query)
       .end (err, res) ->
         return callback(err) if err
