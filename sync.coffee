@@ -1,12 +1,11 @@
 util = require 'util'
-_ = @_ or require 'underscore'
-Backbone = @Backbone or require 'backbone'
+_ = require 'underscore'
+Backbone = require 'backbone'
 inflection = require 'inflection'
 
 AjaxCursor = require './lib/ajax_cursor'
 Schema = require 'backbone-orm/lib/schema'
 Utils = require 'backbone-orm/lib/utils'
-inflection = require 'inflection'
 
 module.exports = class AjaxSync
 
