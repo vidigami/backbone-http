@@ -19,5 +19,5 @@ module.exports = class AjaxCursor extends Cursor
       .set('Accept', 'application/json')
       .end (err, res) =>
         return callback(err) if err
-        return callback(new Error "Ajax failed with status #{status} for #{method}") unless res.ok
+        return callback(new Error "Ajax failed with status #{res.status}") unless res.ok
         callback(null, if query.$count then res.body.result else res.body)

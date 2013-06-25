@@ -28,7 +28,7 @@ module.exports = class AjaxSync
       RestController = require 'backbone-rest'
 
       class TestModel extends Backbone.Model
-        urlRoot: "/#{url_parts.table}"
+        urlRoot: '/ajax_tests'
         sync: require('backbone-orm/memory_sync')(TestModel)
 
       app = express(); app.use(express.bodyParser())
@@ -51,7 +51,7 @@ module.exports = class AjaxSync
       .query(query)
       .end (err, res) ->
         return callback(err) if err
-        return options.error(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{util.inspect(res.body)}") unless res.ok
+        return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{util.inspect(res.body)}") unless res.ok
         callback(null, res.body)
 
   schema: (key) -> @model_type._schema
