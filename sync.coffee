@@ -18,7 +18,7 @@ module.exports = class AjaxSync
     @model_type._sync = @
     @model_type._schema = new Schema(@model_type)
 
-    @request = @superagent or require 'superagent'
+    @request = require 'superagent'
 
     ###################################
     # TEST: override request
