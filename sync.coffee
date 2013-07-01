@@ -11,10 +11,10 @@ module.exports = class AjaxSync
 
   constructor: (@model_type) ->
     throw new Error("Missing url for model") unless @url = _.result(@model_type.prototype, 'url')
-    url_parts = Utils.parseUrl(@url)
 
     # publish methods and sync on model
-    @model_type.model_name = url_parts.model_name
+    @model_type.model_name = Utils.parseUrl(@url).model_name unless @model_type.model_name # model_name can be manually set
+    throw new Error('Missing model_name for model') unless @model_type.model_name
     @model_type._sync = @
     @model_type._schema = new Schema(@model_type)
 
@@ -28,7 +28,7 @@ module.exports = class AjaxSync
       RestController = require 'backbone-rest'
 
       class TestModel extends Backbone.Model
-        urlRoot: '/ajax_tests'
+        @model_name: 'TestModel'
         sync: require('backbone-orm/memory_sync')(TestModel)
 
       app = express(); app.use(express.bodyParser())
