@@ -61,7 +61,7 @@ module.exports = class AjaxSync
 module.exports = (model_type, cache) ->
   sync = new AjaxSync(model_type)
 
-  sync.fn = (method, model, options={}) -> # save for access by model extensions
+  sync_fn = (method, model, options={}) -> # save for access by model extensions
     sync.initialize()
 
     return module.exports.apply(null, Array::slice.call(arguments, 1)) if method is 'createSync' # create a new sync
@@ -98,4 +98,4 @@ module.exports = (model_type, cache) ->
     sync[method].apply(sync, Array::slice.call(arguments, 1))
 
   require('backbone-orm/lib/model_extensions')(model_type) # mixin extensions
-  return if cache or _.isUndefined(cache) then require('backbone-orm/lib/cache_sync')(model_type, sync.fn) else sync.fn
+  return if cache or _.isUndefined(cache) then require('backbone-orm/lib/cache_sync')(model_type, sync_fn) else sync_fn
