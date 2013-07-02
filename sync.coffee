@@ -15,9 +15,7 @@ module.exports = class AjaxSync
     # publish methods and sync on model
     @model_type.model_name = Utils.parseUrl(@url).model_name unless @model_type.model_name # model_name can be manually set
     throw new Error('Missing model_name for model') unless @model_type.model_name
-    @model_type._sync = @
-    @model_type._schema = new Schema(@model_type)
-
+    @schema = new Schema(@model_type)
     @request = require 'superagent'
 
     ###################################
@@ -38,7 +36,7 @@ module.exports = class AjaxSync
 
   initialize: (model) ->
     return if @is_initialized; @is_initialized = true
-    @model_type._schema.initialize()
+    @schema.initialize()
 
   ###################################
   # Backbone ORM - Class Extensions
@@ -54,9 +52,6 @@ module.exports = class AjaxSync
         return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{util.inspect(res.body)}") unless res.ok
         callback(null, res.body)
 
-  schema: (key) -> @model_type._schema
-  relation: (key) -> @model_type._schema.relation(key)
-
 
 module.exports = (model_type, cache) ->
   sync = new AjaxSync(model_type)
@@ -66,6 +61,7 @@ module.exports = (model_type, cache) ->
 
     return module.exports.apply(null, Array::slice.call(arguments, 1)) if method is 'createSync' # create a new sync
     return sync if method is 'sync'
+    return sync.schema if method is 'schema'
 
     ###################################
     # Classic Backbone Sync
@@ -95,7 +91,7 @@ module.exports = (model_type, cache) ->
     ###################################
     # Backbone ORM Sync
     ###################################
-    sync[method].apply(sync, Array::slice.call(arguments, 1))
+    if sync[method] then sync[method].apply(sync, Array::slice.call(arguments, 1)) else return undefined
 
   require('backbone-orm/lib/model_extensions')(model_type) # mixin extensions
   return if cache or _.isUndefined(cache) then require('backbone-orm/lib/cache_sync')(model_type, sync_fn) else sync_fn
