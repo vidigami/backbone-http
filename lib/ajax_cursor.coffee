@@ -1,5 +1,5 @@
 util = require 'util'
-_ = @_ or require 'underscore'
+_ = require 'underscore'
 
 Cursor = require 'backbone-orm/lib/cursor'
 
