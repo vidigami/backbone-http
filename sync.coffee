@@ -1,7 +1,6 @@
 util = require 'util'
 _ = require 'underscore'
 Backbone = require 'backbone'
-inflection = require 'inflection'
 
 AjaxCursor = require './lib/ajax_cursor'
 Schema = require 'backbone-orm/lib/schema'
