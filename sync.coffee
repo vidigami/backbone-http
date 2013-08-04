@@ -40,16 +40,24 @@ module.exports = class AjaxSync
   ###################################
   # Backbone ORM - Class Extensions
   ###################################
+  # @private
+  resetSchema: (options, callback) -> @store = {}; callback()
+
   cursor: (query={}) -> return new AjaxCursor(query, {model_type: @model_type, url: @url, request: @request})
 
   destroy: (query, callback) ->
+    console.log "destroy query: #{util.inspect(query)}"
+
     @request
       .del(@url)
       .query(query)
       .end (err, res) ->
         return callback(err) if err
+
+        console.log "res: #{res.status} body: #{res.body}"
+
         return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{util.inspect(res.body)}") unless res.ok
-        callback(null, res.body)
+        callback()
 
 
 module.exports = (model_type, cache) ->
