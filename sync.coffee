@@ -24,9 +24,11 @@ module.exports = class AjaxSync
     if process?.env.NODE_ENV is 'test'
       express = require 'express'
       RestController = require 'backbone-rest'
+      schema = @model_type.schema
 
       class TestModel extends Backbone.Model
         @model_name: 'TestModel'
+        @schema: schema
         sync: require('backbone-orm/memory_sync')(TestModel)
 
       app = express(); app.use(express.bodyParser())
