@@ -5,6 +5,7 @@ Backbone = require 'backbone'
 AjaxCursor = require './lib/ajax_cursor'
 Schema = require 'backbone-orm/lib/schema'
 Utils = require 'backbone-orm/lib/utils'
+JSONUtils = require 'backbone-orm/lib/json_utils'
 
 module.exports = class AjaxSync
 
@@ -41,24 +42,24 @@ module.exports = class AjaxSync
   # Backbone ORM - Class Extensions
   ###################################
   # @private
-  resetSchema: (options, callback) -> @store = {}; callback()
+  resetSchema: (options, callback) ->
+    @request
+      .del(@url)
+      .end (err, res) ->
+        return callback(err) if err
+        return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{util.inspect(res.body)}") unless res.ok
+        callback()
 
   cursor: (query={}) -> return new AjaxCursor(query, {model_type: @model_type, url: @url, request: @request})
 
   destroy: (query, callback) ->
-    console.log "destroy query: #{util.inspect(query)}"
-
     @request
       .del(@url)
       .query(query)
       .end (err, res) ->
         return callback(err) if err
-
-        console.log "res: #{res.status} body: #{res.body}"
-
         return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{util.inspect(res.body)}") unless res.ok
         callback()
-
 
 module.exports = (model_type, cache) ->
   sync = new AjaxSync(model_type)
@@ -92,7 +93,7 @@ module.exports = (model_type, cache) ->
       req.end (err, res) ->
         return options.error(err) if err
         return options.error(new Error "Ajax failed with status #{res.status} for #{method} with: #{util.inspect(res.body)}") unless res.ok
-        options.success(res.body)
+        options.success(JSONUtils.parse(res.body))
       return
 
     ###################################
