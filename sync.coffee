@@ -90,4 +90,4 @@ module.exports = (model_type, cache) ->
     if sync[method] then sync[method].apply(sync, Array::slice.call(arguments, 1)) else return undefined
 
   require('backbone-orm/lib/model_extensions')(model_type) # mixin extensions
-  return if cache or _.isUndefined(cache) then require('backbone-orm/lib/cache_sync')(model_type, sync_fn) else sync_fn
+  return if cache then require('backbone-orm/lib/cache_sync')(model_type, sync_fn) else sync_fn
