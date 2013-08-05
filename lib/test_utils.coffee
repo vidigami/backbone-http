@@ -27,7 +27,7 @@ module.exports = class TestUtils
     compiled_schema = model_type.schema()
     schema[key] = field for key, field of compiled_schema.fields
     for key, relation of compiled_schema.relations
-      schema[key] = [relation.type, TestUtils.mockModel(relation.model_type)]
+      schema[key] = [relation.type, TestUtils.mockModel(relation.reverse_model_type)]
 
     MockModel::sync = require('backbone-orm/memory_sync')(MockModel)
-    return  MockModel
+    return MockModel
