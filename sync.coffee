@@ -1,6 +1,5 @@
 util = require 'util'
 _ = require 'underscore'
-Backbone = require 'backbone'
 
 AjaxCursor = require './lib/ajax_cursor'
 Schema = require 'backbone-orm/lib/schema'
@@ -18,27 +17,14 @@ module.exports = class AjaxSync
     @schema = new Schema(@model_type)
     @request = require 'superagent'
 
-    ###################################
-    # TEST: override request
-    ###################################
-    if process?.env.NODE_ENV is 'test'
-      express = require 'express'
-      RestController = require 'backbone-rest'
-      schema = @model_type.schema
-
-      class TestModel extends Backbone.Model
-        @model_name: 'TestModel'
-        @schema: schema
-        sync: require('backbone-orm/memory_sync')(TestModel)
-
-      app = express(); app.use(express.bodyParser())
-      controller = new RestController(app, {model_type: TestModel, route: @url}) # implicit knowledge of backbone-rest tests
-
-      @request = require('supertest')(app)
-
   initialize: (model) ->
     return if @is_initialized; @is_initialized = true
     @schema.initialize()
+
+    ###################################
+    # TEST: override request
+    ###################################
+    @request = require('./lib/test_utils').mockRequest(@model_type) if process?.env.NODE_ENV is 'test'
 
   ###################################
   # Backbone ORM - Class Extensions
