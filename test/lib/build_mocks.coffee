@@ -11,19 +11,20 @@ createMockModel = (mock_model_types, model_type) ->
   schema = _.clone(compiled_schema.raw)
   for key, relation of compiled_schema.relations
     do (key, relation) ->
-      schema[key] = ->
+      schema["mock_#{key}"] = ->
         field = compiled_schema.raw[key]
         field = field() if _.isFunction(field)
         field = _.clone(field)
         relation = model_type.relation(key)
         if relation.join_table
-          join_table_info = {join_table: createMockModel(mock_model_types, relation.join_table)} # override existing join table
-          mock_model_types[join_table_info.join_table.model_name] = join_table_info.join_table
+          mock_join_table = createMockModel(mock_model_types, relation.join_table)
+          mock_model_types[mock_join_table.model_name] = mock_join_table
+          join_table_info = {join_table: createMockModel(mock_model_types, relation.join_table)}
           if field.length is 2 then field.push(join_table_info) else _.extend(field[2], join_table_info)
         return field
 
   class MockModel extends Backbone.Model
-    @model_name: model_type.model_name
+    @model_name: "Mock#{model_type.model_name}"
     @schema: schema
     sync: require('backbone-orm/memory_sync')(MockModel)
 
