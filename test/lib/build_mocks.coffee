@@ -11,7 +11,7 @@ createMockModel = (mock_model_types, model_type) ->
   schema = _.clone(compiled_schema.raw)
   for key, relation of compiled_schema.relations
     do (key, relation) ->
-      schema["mock_#{key}"] = ->
+      schema[if relation.as then key else "mock_#{key}"] = ->
         field = compiled_schema.raw[key]
         field = field() if _.isFunction(field)
         field = _.clone(field)
