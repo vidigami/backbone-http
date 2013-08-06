@@ -21,11 +21,6 @@ module.exports = class AjaxSync
     return if @is_initialized; @is_initialized = true
     @schema.initialize()
 
-    ###################################
-    # TEST: override request
-    ###################################
-    @request = require('./lib/test_utils').mockRequest(@model_type) if process?.env.NODE_ENV is 'test'
-
   ###################################
   # Backbone ORM - Class Extensions
   ###################################
@@ -49,7 +44,7 @@ module.exports = class AjaxSync
         return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{util.inspect(res.body)}") unless res.ok
         callback()
 
-module.exports = (model_type, cache) ->
+module.exports = (model_type) ->
   sync = new AjaxSync(model_type)
 
   model_type::sync = sync_fn = (method, model, options={}) -> # save for access by model extensions
@@ -90,4 +85,4 @@ module.exports = (model_type, cache) ->
     if sync[method] then sync[method].apply(sync, Array::slice.call(arguments, 1)) else return undefined
 
   require('backbone-orm/lib/model_extensions')(model_type) # mixin extensions
-  return if cache then require('backbone-orm/lib/cache_sync')(model_type, sync_fn) else sync_fn
+  return require('backbone-orm/lib/cache').configureSync(model_type, sync_fn)
