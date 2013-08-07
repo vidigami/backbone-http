@@ -75,7 +75,7 @@ module.exports = (model_type) ->
 
       req.end (err, res) ->
         return options.error(err) if err
-        return options.error(new Error "Ajax failed with status #{res.status} for #{method} with: #{util.inspect(res.body)}") unless res.ok
+        return options.error(model, new Error "Ajax failed with status #{res.status} for #{method} with: #{util.inspect(res.body)}") unless res.ok
         options.success(JSONUtils.parse(res.body))
       return
 
