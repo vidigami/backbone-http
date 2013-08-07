@@ -24,10 +24,10 @@ createMockModel = (mock_model_types, model_type) ->
         return field
 
   class MockModel extends Backbone.Model
+    _orm_never_cache: true # so the correct models are found in the cache
     @model_name: model_type.model_name
     @schema: schema
     sync: require('backbone-orm/memory_sync')(MockModel)
-    _orm_never_cache: true # so the correct models are found in the cache
 
   return mock_model_types[model_type.model_name] = MockModel
 
