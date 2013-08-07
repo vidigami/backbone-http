@@ -11,7 +11,7 @@ createMockModel = (mock_model_types, model_type) ->
   schema = _.clone(compiled_schema.raw)
   for key, relation of compiled_schema.relations
     do (key, relation) ->
-      schema[if relation.as then key else "mock_#{key}"] = ->
+      schema[key] = ->
         field = compiled_schema.raw[key]
         field = field() if _.isFunction(field)
         field = _.clone(field)
@@ -24,9 +24,10 @@ createMockModel = (mock_model_types, model_type) ->
         return field
 
   class MockModel extends Backbone.Model
-    @model_name: "Mock#{model_type.model_name}"
+    @model_name: model_type.model_name
     @schema: schema
     sync: require('backbone-orm/memory_sync')(MockModel)
+    _orm_never_cache: true
 
   return mock_model_types[model_type.model_name] = MockModel
 
