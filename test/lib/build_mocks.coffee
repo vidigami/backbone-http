@@ -16,6 +16,8 @@ createMockModel = (mock_model_types, model_type) ->
         field = field() if _.isFunction(field)
         field = _.clone(field)
         relation = model_type.relation(key)
+        field[1] = createMockModel(mock_model_types, relation.reverse_model_type)
+
         if relation.join_table
           mock_join_table = createMockModel(mock_model_types, relation.join_table)
           mock_model_types[mock_join_table.model_name] = mock_join_table
@@ -23,11 +25,17 @@ createMockModel = (mock_model_types, model_type) ->
           if field.length is 2 then field.push(join_table_info) else _.extend(field[2], join_table_info)
         return field
 
-  mock_model_types[model_type.model_name] = class MockModel extends Backbone.Model
+  class MockModel extends Backbone.Model
     _orm_never_cache: true # so the correct models are found in the cache
     @model_name: model_type.model_name
     @schema: schema
     sync: require('backbone-orm/memory_sync')(MockModel)
+
+    constructor: ->
+      super
+      console.trace "Mock Flat: #{@cid}" if @constructor.model_name is 'Flat'
+
+  mock_model_types[model_type.model_name] = MockModel
 
   # configure the mock request
   app = express(); app.use(express.bodyParser())
