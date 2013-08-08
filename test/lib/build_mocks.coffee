@@ -31,10 +31,6 @@ createMockModel = (mock_model_types, model_type) ->
     @schema: schema
     sync: require('backbone-orm/memory_sync')(MockModel)
 
-    constructor: ->
-      super
-      console.trace "Mock Flat: #{@cid}" if @constructor.model_name is 'Flat'
-
   mock_model_types[model_type.model_name] = MockModel
 
   # configure the mock request
