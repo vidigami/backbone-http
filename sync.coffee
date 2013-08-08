@@ -9,11 +9,12 @@ JSONUtils = require 'backbone-orm/lib/json_utils'
 module.exports = class AjaxSync
 
   constructor: (@model_type) ->
-    throw new Error("Missing url for model") unless @url = _.result(@model_type.prototype, 'url')
-
-    # publish methods and sync on model
-    @model_type.model_name = Utils.parseUrl(@url).model_name unless @model_type.model_name # model_name can be manually set
+    # set up model name
+    unless @model_type.model_name # model_name can be manually set
+      throw new Error("Missing url for model") unless url = _.result(@model_type.prototype, 'url')
+      @model_type.model_name = Utils.parseUrl(url).model_name
     throw new Error('Missing model_name for model') unless @model_type.model_name
+
     @schema = new Schema(@model_type)
     @request = require 'superagent'
 
@@ -74,7 +75,7 @@ module.exports = (model_type) ->
           req = request.get(url).query({$one: !model.models}).type('json')
 
       req.end (err, res) ->
-        return options.error(err) if err
+        return options.error(model, err) if err
         return options.error(model, new Error "Ajax failed with status #{res.status} for #{method} with: #{util.inspect(res.body)}") unless res.ok
         options.success(JSONUtils.parse(res.body))
       return
