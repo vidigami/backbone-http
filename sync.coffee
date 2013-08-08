@@ -82,7 +82,7 @@ module.exports = (model_type) ->
     ###################################
     # Backbone ORM Sync
     ###################################
-    if sync[method] then sync[method].apply(sync, Array::slice.call(arguments, 1)) else return undefined
+    return if sync[method] then sync[method].apply(sync, Array::slice.call(arguments, 1)) else undefined
 
   require('backbone-orm/lib/model_extensions')(model_type) # mixin extensions
   return require('backbone-orm/lib/cache').configureSync(model_type, sync_fn)
