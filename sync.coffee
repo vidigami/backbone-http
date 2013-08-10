@@ -71,7 +71,7 @@ module.exports = (model_type) ->
           req = request.get(url).query({$one: !model.models}).type('json')
 
       req.end (err, res) ->
-        return options.error(err) if err
+        return options.error(model, err) if err
         return options.error(model, new Error "Ajax failed with status #{res.status} for #{method} with: #{util.inspect(res.body)}") unless res.ok
         options.success(JSONUtils.parse(res.body))
       return
