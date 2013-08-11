@@ -1,5 +1,6 @@
 util = require 'util'
 _ = require 'underscore'
+Backbone = require 'backbone'
 
 AjaxCursor = require './lib/ajax_cursor'
 Schema = require 'backbone-orm/lib/schema'
@@ -41,13 +42,13 @@ module.exports = class AjaxSync
         return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{util.inspect(res.body)}") unless res.ok
         callback()
 
-module.exports = (model_type) ->
+module.exports = (type) ->
   if (new type()) instanceof Backbone.Collection # collection
     model_type = Utils.configureCollectionModelType(type, module.exports)
     return type::sync = model_type::sync
 
-  sync = new AjaxSync(model_type)
-  model_type::sync = sync_fn = (method, model, options={}) -> # save for access by model extensions
+  sync = new AjaxSync(type)
+  type::sync = sync_fn = (method, model, options={}) -> # save for access by model extensions
     sync.initialize()
 
     return module.exports.apply(null, Array::slice.call(arguments, 1)) if method is 'createSync' # create a new sync
@@ -62,6 +63,8 @@ module.exports = (model_type) ->
 
       request = sync.request # use request from the sync
       switch method
+        when 'read'
+          req = request.get(url).query({$one: !model.models}).type('json')
         when 'create'
           req = request.post(url).send(options.attrs or model.toJSON(options)).type('json')
         when 'update'
@@ -70,8 +73,6 @@ module.exports = (model_type) ->
           req = request.patch(url).send(options.attrs or model.toJSON(options)).type('json')
         when 'delete'
           req = request.del(url)
-        when 'read'
-          req = request.get(url).query({$one: !model.models}).type('json')
 
       req.end (err, res) ->
         return options.error(model, err) if err
@@ -84,5 +85,5 @@ module.exports = (model_type) ->
     ###################################
     return if sync[method] then sync[method].apply(sync, Array::slice.call(arguments, 1)) else undefined
 
-  require('backbone-orm/lib/model_extensions')(model_type) # mixin extensions
-  return require('backbone-orm/lib/cache').configureSync(model_type, sync_fn)
+  require('backbone-orm/lib/model_extensions')(type) # mixin extensions
+  return require('backbone-orm/lib/cache').configureSync(type, sync_fn)
