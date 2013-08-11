@@ -42,8 +42,11 @@ module.exports = class AjaxSync
         callback()
 
 module.exports = (model_type) ->
-  sync = new AjaxSync(model_type)
+  if (new type()) instanceof Backbone.Collection # collection
+    model_type = Utils.configureCollectionModelType(type, module.exports)
+    return type::sync = model_type::sync
 
+  sync = new AjaxSync(model_type)
   model_type::sync = sync_fn = (method, model, options={}) -> # save for access by model extensions
     sync.initialize()
 
