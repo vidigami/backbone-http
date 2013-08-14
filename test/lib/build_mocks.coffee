@@ -25,9 +25,11 @@ createMockModel = (mock_model_types, model_type) ->
           if field.length is 2 then field.push(join_table_info) else _.extend(field[2], join_table_info)
         return field
 
+  url = _.result(model_type.prototype, 'url')
   class MockModel extends Backbone.Model
     _orm_never_cache: true # so the correct models are found in the cache
     @model_name: model_type.model_name
+    url: url
     @schema: schema
     sync: require('backbone-orm/memory_sync')(MockModel)
 
@@ -35,7 +37,6 @@ createMockModel = (mock_model_types, model_type) ->
 
   # configure the mock request
   app = express(); app.use(express.bodyParser())
-  url = _.result(model_type.prototype, 'url')
   controller = new RestController(app, {model_type: MockModel, route: url}) # implicit knowledge of backbone-rest tests
   sync = model_type::sync('sync')
   sync = sync.wrapped_sync_fn('sync') if sync.wrapped_sync_fn # cache
