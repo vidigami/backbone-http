@@ -10,6 +10,8 @@ module.exports = class AjaxCursor extends Cursor
   # Execution of the Query
   ##############################################
   toJSON: (callback) ->
+    return callback(null, if @hasCursorQuery('$one') then null else []) if @hasCursorQuery('$zero')
+
     # build query
     query = JSONUtils.toQuery(_.extend(_.extend({}, @_find), @_cursor))
     @request
