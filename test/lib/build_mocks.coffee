@@ -28,22 +28,13 @@ createMockModel = (mock_model_types, model_type) ->
   url = _.result(model_type.prototype, 'url')
   class MockModel extends Backbone.Model
     _orm_never_cache: true # so the correct models are found in the cache
+    @original_model_type: model_type
     @model_name: model_type.model_name
     url: url
     @schema: schema
     sync: require('backbone-orm/memory_sync')(MockModel)
 
-  mock_model_types[model_type.model_name] = MockModel
-
-  # configure the mock request
-  app = express(); app.use(express.bodyParser())
-  controller = new RestController(app, {model_type: MockModel, route: url}) # implicit knowledge of backbone-rest tests
-  sync = model_type::sync('sync')
-  sync = sync.wrapped_sync_fn('sync') if sync.wrapped_sync_fn # cache
-  sync.request = require('supertest')(app)
-
-  return MockModel
-
+  return mock_model_types[model_type.model_name] = MockModel
 
 module.exports = (model_types, callback) ->
   mock_model_types = {}
@@ -56,4 +47,13 @@ module.exports = (model_types, callback) ->
 
   # ensure all models are initialized
   mock_model_type.schema() for key, mock_model_type of mock_model_types
+
+  # configure the mock requests
+  for key, mock_model_type of mock_model_types
+    app = express(); app.use(express.bodyParser())
+    controller = new RestController(app, {model_type: mock_model_type, route: _.result(mock_model_type.prototype, 'url')}) # implicit knowledge of backbone-rest tests
+    sync = mock_model_type.original_model_type::sync('sync')
+    sync = sync.wrapped_sync_fn('sync') if sync.wrapped_sync_fn # cache
+    sync.request = require('supertest')(app)
+
   callback()
