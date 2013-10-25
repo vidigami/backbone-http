@@ -1,4 +1,3 @@
-util = require 'util'
 _ = require 'underscore'
 Backbone = require 'backbone'
 
@@ -6,6 +5,7 @@ AjaxCursor = require './lib/ajax_cursor'
 Schema = require 'backbone-orm/lib/schema'
 Utils = require 'backbone-orm/lib/utils'
 JSONUtils = require 'backbone-orm/lib/json_utils'
+ModelCache = require('backbone-orm/lib/cache/singletons').ModelCache
 
 module.exports = class AjaxSync
 
@@ -86,5 +86,5 @@ module.exports = (type) ->
     ###################################
     return if sync[method] then sync[method].apply(sync, Array::slice.call(arguments, 1)) else undefined
 
-  require('backbone-orm/lib/model_extensions')(type) # mixin extensions
-  return require('backbone-orm/lib/cache').configureSync(type, sync_fn)
+  require('backbone-orm/lib/extensions/model')(type) # mixin extensions
+  return ModelCache.configureSync(type, sync_fn)
