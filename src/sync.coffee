@@ -6,7 +6,7 @@ Utils = require 'backbone-orm/lib/utils'
 JSONUtils = require 'backbone-orm/lib/json_utils'
 ModelCache = require('backbone-orm/lib/cache/singletons').ModelCache
 
-HTTPCursor = require './lib/cursor'
+HTTPCursor = require './cursor'
 
 module.exports = class HTTPSync
 

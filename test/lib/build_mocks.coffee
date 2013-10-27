@@ -32,7 +32,7 @@ createMockModel = (mock_model_types, model_type) ->
     @model_name: model_type.model_name
     url: url
     @schema: schema
-    sync: require('backbone-orm/memory_sync')(MockModel)
+    sync: require('backbone-orm/lib/memory/sync')(MockModel)
 
   return mock_model_types[model_type.model_name] = MockModel
 
