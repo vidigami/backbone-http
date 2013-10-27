@@ -1,13 +1,14 @@
 _ = require 'underscore'
 Backbone = require 'backbone'
 
-AjaxCursor = require './lib/ajax_cursor'
 Schema = require 'backbone-orm/lib/schema'
 Utils = require 'backbone-orm/lib/utils'
 JSONUtils = require 'backbone-orm/lib/json_utils'
 ModelCache = require('backbone-orm/lib/cache/singletons').ModelCache
 
-module.exports = class AjaxSync
+HTTPCursor = require './lib/cursor'
+
+module.exports = class HTTPSync
 
   constructor: (@model_type) ->
     @model_type.model_name = Utils.findOrGenerateModelName(@model_type)
@@ -28,10 +29,10 @@ module.exports = class AjaxSync
       .del(@url)
       .end (err, res) ->
         return callback(err) if err
-        return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{util.inspect(res.body)}") unless res.ok
+        return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{_.keys(res.body)}") unless res.ok
         callback()
 
-  cursor: (query={}) -> return new AjaxCursor(query, {model_type: @model_type, url: @url, request: @request})
+  cursor: (query={}) -> return new HTTPCursor(query, {model_type: @model_type, url: @url, request: @request})
 
   destroy: (query, callback) ->
     @request
@@ -39,7 +40,7 @@ module.exports = class AjaxSync
       .query(query)
       .end (err, res) ->
         return callback(err) if err
-        return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{util.inspect(res.body)}") unless res.ok
+        return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{_.keys(res.body)}") unless res.ok
         callback()
 
 module.exports = (type) ->
@@ -47,7 +48,7 @@ module.exports = (type) ->
     model_type = Utils.configureCollectionModelType(type, module.exports)
     return type::sync = model_type::sync
 
-  sync = new AjaxSync(type)
+  sync = new HTTPSync(type)
   type::sync = sync_fn = (method, model, options={}) -> # save for access by model extensions
     sync.initialize()
 
@@ -77,7 +78,7 @@ module.exports = (type) ->
 
       req.end (err, res) ->
         return options.error(err) if err
-        return options.error(new Error "Ajax failed with status #{res.status} for #{method} with: #{util.inspect(res.body)}") unless res.ok
+        return options.error(new Error "Ajax failed with status #{res.status} for #{method} with: #{_.keys(res.body)}") unless res.ok
         options.success(JSONUtils.parse(res.body))
       return
 
