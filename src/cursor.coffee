@@ -7,8 +7,8 @@
 
 _ = require 'underscore'
 
-Cursor = require 'backbone-orm/lib/cursor'
-JSONUtils = require 'backbone-orm/lib/json_utils'
+Cursor = require('backbone-orm').Cursor
+JSONUtils = require('backbone-orm').JSONUtils
 
 module.exports = class HTTPCursor extends Cursor
 

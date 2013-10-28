@@ -5,11 +5,11 @@
   Dependencies: Backbone.js and Underscore.js.
 */
 (function() {
-(function(/*! Brunch !*/) {
-  'use strict';
+var globals = {};
 
-  var globals = typeof window !== 'undefined' ? window : global;
-  if (typeof globals.require === 'function') return;
+/* local-only brunch-like require (based on https://github.com/brunch/commonjs-require-definition) */
+(function() {
+  'use strict';
 
   var modules = {};
   var cache = {};
@@ -41,11 +41,13 @@
   };
 
   var localRequire = function(path) {
-    return function(name) {
+    var _require = function(name) {
       var dir = dirname(path);
       var absolute = expand(dir, name);
       return globals.require(absolute, path);
     };
+    _require.register = require.register;
+    return _require;
   };
 
   var initModule = function(name, definition) {
@@ -81,32 +83,99 @@
     }
   };
 
-  var list = function() {
-    var result = [];
-    for (var item in modules) {
-      if (has(modules, item)) {
-        result.push(item);
-      }
-    }
-    return result;
-  };
-
   globals.require = require;
   globals.require.define = define;
   globals.require.register = define;
-  globals.require.list = list;
-  globals.require.brunch = true;
+}).call(this);
+var require = globals.require;
+
+require.register("backbone-http/lib/client_utils", function(exports, require, module) {
+/*
+  backbone-orm.js 0.0.1
+  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-orm
+  License: MIT (http://www.opensource.org/licenses/mit-license.php)
+  Dependencies: Backbone.js and Underscore.js.
+*/
+
+var ClientUtils;
+
+module.exports = ClientUtils = (function() {
+  function ClientUtils() {}
+
+  ClientUtils.loadDependency = function(item) {
+    var dep, err, key, _i, _len, _ref;
+    if (typeof window === "undefined" || window === null) {
+      return;
+    }
+    try {
+      if (require(item.path)) {
+        return;
+      }
+    } catch (_error) {
+      err = _error;
+    }
+    try {
+      dep = typeof window.require === "function" ? window.require(item.path) : void 0;
+    } catch (_error) {
+      err = _error;
+    }
+    if (!dep) {
+      dep = window;
+      _ref = item.symbol.split('.');
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        key = _ref[_i];
+        if (!(dep = dep[key])) {
+          break;
+        }
+      }
+    }
+    if (!dep) {
+      if (item.optional) {
+        return;
+      }
+      throw new Error("Missing dependency: " + item.path);
+    }
+    require.register(item.path, (function(exports, require, module) {
+      return module.exports = dep;
+    }));
+    if (item.alias) {
+      return require.register(item.alias, (function(exports, require, module) {
+        return module.exports = dep;
+      }));
+    }
+  };
+
+  ClientUtils.loadDependencies = function(info) {
+    var item, _i, _len;
+    for (_i = 0, _len = info.length; _i < _len; _i++) {
+      item = info[_i];
+      this.loadDependency(item);
+    }
+  };
+
+  return ClientUtils;
+
 })();
-require.register("backbone-http/lib/cursor", function(exports, require, module) {
+
+});
+
+;require.register("backbone-http/lib/cursor", function(exports, require, module) {
+/*
+  backbone-http.js 0.0.1
+  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
+  License: MIT (http://www.opensource.org/licenses/mit-license.php)
+  Dependencies: Backbone.js and Underscore.js.
+*/
+
 var Cursor, HTTPCursor, JSONUtils, _, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 _ = require('underscore');
 
-Cursor = require('backbone-orm/lib/cursor');
+Cursor = require('backbone-orm').Cursor;
 
-JSONUtils = require('backbone-orm/lib/json_utils');
+JSONUtils = require('backbone-orm').JSONUtils;
 
 module.exports = HTTPCursor = (function(_super) {
   __extends(HTTPCursor, _super);
@@ -146,10 +215,31 @@ module.exports = HTTPCursor = (function(_super) {
 });
 
 ;require.register("backbone-http/lib/index", function(exports, require, module) {
-require('backbone-orm/lib/client_utils').loadDependencies([
+/*
+  backbone-http.js 0.0.1
+  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
+  License: MIT (http://www.opensource.org/licenses/mit-license.php)
+  Dependencies: Backbone.js and Underscore.js.
+*/
+
+require('./client_utils').loadDependencies([
   {
+    symbol: '_',
+    path: 'lodash',
+    alias: 'underscore',
+    optional: true
+  }, {
+    symbol: '_',
+    path: 'underscore'
+  }, {
+    symbol: 'Backbone',
+    path: 'backbone'
+  }, {
     symbol: 'superagent',
     path: 'superagent'
+  }, {
+    symbol: 'Backbone.ORM',
+    path: 'backbone-orm'
   }
 ]);
 
@@ -160,19 +250,28 @@ module.exports = {
 });
 
 ;require.register("backbone-http/lib/sync", function(exports, require, module) {
-var Backbone, HTTPCursor, HTTPSync, JSONUtils, ModelCache, Schema, Utils, _;
+/*
+  backbone-http.js 0.0.1
+  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
+  License: MIT (http://www.opensource.org/licenses/mit-license.php)
+  Dependencies: Backbone.js and Underscore.js.
+*/
+
+var Backbone, HTTPCursor, HTTPSync, JSONUtils, ModelCache, Schema, Utils, bborm, _;
 
 _ = require('underscore');
 
 Backbone = require('backbone');
 
-Schema = require('backbone-orm/lib/schema');
+bborm = require('backbone-orm');
 
-Utils = require('backbone-orm/lib/utils');
+Schema = bborm.Schema;
 
-JSONUtils = require('backbone-orm/lib/json_utils');
+Utils = bborm.Utils;
 
-ModelCache = require('backbone-orm/lib/cache/singletons').ModelCache;
+JSONUtils = bborm.JSONUtils;
+
+ModelCache = bborm.CacheSingletons.ModelCache;
 
 HTTPCursor = require('./cursor');
 
@@ -299,7 +398,7 @@ module.exports = function(type) {
       return void 0;
     }
   };
-  require('backbone-orm/lib/extensions/model')(type);
+  Utils.configureModelType(type);
   return ModelCache.configureSync(type, sync_fn);
 };
 
@@ -312,8 +411,8 @@ if (typeof exports == 'object') {
   define('backbone-http', ['backbone-orm', 'superagent'], function(){ return require('backbone-http/lib/index'); });
 } else {
   var Backbone = this.Backbone;
-  if (!Backbone && (typeof require == 'function')) {
-    try { Backbone = require('backbone'); } catch (_error) { Backbone = this.Backbone = {}; }
+  if (!Backbone && (typeof window.require == 'function')) {
+    try { Backbone = window.require('backbone'); } catch (_error) { Backbone = this.Backbone = {}; }
   }
   Backbone.HTTP = require('backbone-http/lib/index');
 }
