@@ -4,9 +4,11 @@ exports.config =
   sourceMaps: false
   paths:
     public: './_build'
-    watched: ['src']
+    watched: ['src', 'node_modules/backbone-orm/src']
   modules:
-    nameCleaner: (path) -> path.replace(/^src\//, 'backbone-http/lib/')
+    nameCleaner: (path) ->
+      console.log path
+      path.replace(/^src\//, 'backbone-http/lib/')
   files:
     javascripts:
       joinTo:
