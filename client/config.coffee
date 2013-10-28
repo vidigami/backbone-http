@@ -6,7 +6,7 @@ exports.config =
     public: './_build'
     watched: ['src']
   modules:
-    nameCleaner: (path) -> path.replace(/^src\//, 'bbhttp/')
+    nameCleaner: (path) -> path.replace(/^src\//, 'backbone-http/lib/')
   files:
     javascripts:
       joinTo:

@@ -97,7 +97,7 @@
   globals.require.list = list;
   globals.require.brunch = true;
 })();
-require.register("bbhttp/cursor", function(exports, require, module) {
+require.register("backbone-http/lib/cursor", function(exports, require, module) {
 var Cursor, HTTPCursor, JSONUtils, _, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -145,7 +145,7 @@ module.exports = HTTPCursor = (function(_super) {
 
 });
 
-;require.register("bbhttp/index", function(exports, require, module) {
+;require.register("backbone-http/lib/index", function(exports, require, module) {
 require('backbone-orm/lib/client_utils').loadDependencies([
   {
     symbol: 'superagent',
@@ -154,12 +154,12 @@ require('backbone-orm/lib/client_utils').loadDependencies([
 ]);
 
 module.exports = {
-  sync: require('./lib/sync')
+  sync: require('./sync')
 };
 
 });
 
-;require.register("bbhttp/sync", function(exports, require, module) {
+;require.register("backbone-http/lib/sync", function(exports, require, module) {
 var Backbone, HTTPCursor, HTTPSync, JSONUtils, ModelCache, Schema, Utils, _;
 
 _ = require('underscore');
@@ -307,10 +307,14 @@ module.exports = function(type) {
 
 ;
 if (typeof exports == 'object') {
-  module.exports = require('bbhttp/index');
+  module.exports = require('backbone-http/lib/index');
 } else if (typeof define == 'function' && define.amd) {
-  define('bbhttp', ['bborm', 'superagent'], function(){ return require('bbhttp/index'); });
+  define('backbone-http', ['bborm', 'superagent'], function(){ return require('backbone-http/lib/index'); });
 } else {
-  this['bbhttp'] = require('bbhttp/index');
+  var Backbone = this.Backbone;
+  if (!Backbone && (typeof require == 'function')) {
+    try { Backbone = require('backbone'); } catch (_error) { Backbone = this.Backbone = {}; }
+  }
+  Backbone.HTTP = require('backbone-http/lib/index');
 }
 }).call(this);

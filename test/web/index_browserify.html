@@ -14,10 +14,9 @@
       urlRoot: '/api/tests',
       model_name: 'Test'
     });
-    Test.prototype.sync = bbhttp.sync(Test);
+    Test.prototype.sync = Backbone.HTTP.sync(Test);
 
     var test = new Test();
     test.fetch({success: function(){}})
-
   </script>
 </head>

@@ -2,4 +2,4 @@
 require('backbone-orm/lib/client_utils').loadDependencies([{symbol: 'superagent', path: 'superagent'}])
 
 module.exports =
-  sync: require './lib/sync'
+  sync: require './sync'

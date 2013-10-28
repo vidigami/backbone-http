@@ -15,11 +15,15 @@ module.exports =
 
   end: """
     if (typeof exports == 'object') {
-      module.exports = require('bbhttp/index');
+      module.exports = require('backbone-http/lib/index');
     } else if (typeof define == 'function' && define.amd) {
-      define('bbhttp', ['bborm', 'superagent'], function(){ return require('bbhttp/index'); });
+      define('backbone-http', ['bborm', 'superagent'], function(){ return require('backbone-http/lib/index'); });
     } else {
-      this['bbhttp'] = require('bbhttp/index');
+      var Backbone = this.Backbone;
+      if (!Backbone && (typeof require == 'function')) {
+        try { Backbone = require('backbone'); } catch (_error) { Backbone = this.Backbone = {}; }
+      }
+      Backbone.HTTP = require('backbone-http/lib/index');
     }
     }).call(this);
     """
