@@ -309,7 +309,7 @@ module.exports = function(type) {
 if (typeof exports == 'object') {
   module.exports = require('backbone-http/lib/index');
 } else if (typeof define == 'function' && define.amd) {
-  define('backbone-http', ['bborm', 'superagent'], function(){ return require('backbone-http/lib/index'); });
+  define('backbone-http', ['backbone-orm', 'superagent'], function(){ return require('backbone-http/lib/index'); });
 } else {
   var Backbone = this.Backbone;
   if (!Backbone && (typeof require == 'function')) {
