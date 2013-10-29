@@ -10,7 +10,7 @@ require('./client_utils').loadDependencies([
   {symbol: '_', path: 'lodash', alias: 'underscore', optional: true}, {symbol: '_', path: 'underscore'}
   {symbol: 'Backbone', path: 'backbone'}
   {symbol: 'superagent', path: 'superagent'}
-  {symbol: 'Backbone.ORM', path: 'backbone-orm'}
+  {symbol: 'Backbone.ORM', symbol_path: 'backbone.ORM', path: 'backbone-orm'}
 ])
 
 module.exports =

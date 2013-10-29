@@ -7,8 +7,8 @@ module.exports = (grunt) ->
 
     shell:
       library:
-        options: {stdout: true}
-        command: 'brunch build -c client/config.coffee'
+        options: {stdout: true, stderr: true}
+        command: 'brunch build -c client/brunch_config.coffee'
 
     wrap:
       library:

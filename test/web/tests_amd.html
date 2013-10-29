@@ -11,13 +11,14 @@
           'backbone': "../../node_modules/backbone/backbone",
           'moment': "../../node_modules/moment/moment",
           'inflection': "../../node_modules/inflection/lib/inflection",
+          'stream': "../../node_modules/backbone-orm/stream",
           'backbone-orm': "../../node_modules/backbone-orm/backbone-orm",
           'superagent': "../../node_modules/superagent/superagent",
           'backbone-http': "../../backbone-http"
         }
     });
 
-    require(['underscore', 'backbone', 'backbone-orm', 'superagent', 'backbone-http'], function(_, Backbone, bborm, superagent, bbhttp) {
+    require(['underscore', 'backbone', 'stream', 'backbone-orm', 'superagent', 'backbone-http'], function(_, Backbone, stream, bborm, superagent, bbhttp) {
       var Backbone = window.Backbone;
       var Test = Backbone.Model.extend({
         urlRoot: '/api/tests',
@@ -25,8 +26,12 @@
       });
       Test.prototype.sync = bbhttp.sync(Test);
 
-      var test = new Test();
-      test.fetch({success: function(){}})
+      var test = new Test({name: 'Bob'});
+      test.save(function(err){
+        Test.stream()
+          .on('data', function(model){ console.log("Model: " + model.get('name')); })
+          .on('error', function(err){ console.log("An error is expected: " + err); });
+      });
     });
   </script>
 

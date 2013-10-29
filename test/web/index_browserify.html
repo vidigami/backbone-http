@@ -4,6 +4,7 @@
 <head>
   <title>Backbone-ORM</title>
   <script type="text/javascript" src="../../node_modules/backbone-orm/test/web/vendor-browserify.js"></script>
+  <script type="text/javascript" src="../../node_modules/backbone-orm/stream.js"></script>
   <script type="text/javascript" src="../../node_modules/backbone-orm/backbone-orm.js"></script>
   <script type="text/javascript" src="../../node_modules/superagent/superagent.js"></script>
   <script type="text/javascript" src="../../backbone-http.js"></script>
@@ -16,7 +17,11 @@
     });
     Test.prototype.sync = Backbone.HTTP.sync(Test);
 
-    var test = new Test();
-    test.fetch({success: function(){}})
+    var test = new Test({name: 'Bob'});
+    test.save(function(err){
+      Test.stream()
+        .on('data', function(model){ console.log("Model: " + model.get('name')); })
+        .on('error', function(err){ console.log("An error is expected: " + err); });
+    });
   </script>
 </head>
