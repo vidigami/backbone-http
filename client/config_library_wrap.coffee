@@ -12,7 +12,7 @@ module.exports =
     */
     """
 
-  start: fs.readFileSync(path.join(__dirname, 'require.js'), {encoding: 'utf8'})
+  start: fs.readFileSync(path.join(__dirname, '../node_modules/backbone-orm/client/require.js'), {encoding: 'utf8'})
 
   end: """
     if (typeof exports == 'object') {
