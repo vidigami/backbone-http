@@ -1,6 +1,6 @@
 module.exports = (options, callback) ->
   test_parameters =
-    sync: require('../../src/sync')
+    sync: require('../../lib/sync')
     before: require('../lib/build_mocks')
 
   require('backbone-rest/test/generators/all')(test_parameters, callback)
