@@ -1,19 +1,23 @@
-Introduction
+[![Build Status](https://secure.travis-ci.org/vidigami/backbone-http.png)](http://travis-ci.org/vidigami/backbone-http)
+
+![logo](https://github.com/vidigami/backbone-http/raw/master/media/logo.png)
+
+An HTTP interface for BackboneORM.
+
+Please [checkout the website](http://vidigami.github.io/backbone-orm/) for examples, documentation, and community!
+
+
+For Contributors
 ============
 
-A collection of Classes and Utilities for interfacing with MongoDB in Node.js using Backbone.js Models and Collections.
+To build the library for Node.js:
 
-Install
-=======
+  $ npm run build
 
-Install all npm modules:
+To build the library for the browser:
 
-  $ cd backbone-mongo
-  $ npm install
+  $ grunt
 
-Test
-====
-
-Run the unit tests one time:
+Please run tests before submitting a pull request.
 
   $ npm test
