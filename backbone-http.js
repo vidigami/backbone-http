@@ -1,5 +1,5 @@
 /*
-  backbone-http.js 0.0.1
+  backbone-http.js 0.5.0
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js and Underscore.js.
@@ -139,7 +139,7 @@ var require = globals.require;
 
 require.register("backbone-http/lib/cursor", function(exports, require, module) {
 /*
-  backbone-http.js 0.0.1
+  backbone-http.js 0.5.0
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js and Underscore.js.
@@ -194,7 +194,7 @@ module.exports = HTTPCursor = (function(_super) {
 
 ;require.register("backbone-http/lib/index", function(exports, require, module) {
 /*
-  backbone-http.js 0.0.1
+  backbone-http.js 0.5.0
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js and Underscore.js.
@@ -232,7 +232,7 @@ module.exports = {
 
 ;require.register("backbone-http/lib/sync", function(exports, require, module) {
 /*
-  backbone-http.js 0.0.1
+  backbone-http.js 0.5.0
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js and Underscore.js.
