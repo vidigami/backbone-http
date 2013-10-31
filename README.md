@@ -8,6 +8,10 @@ This allows for a iteration of remote collections from the browser using Backbon
 
 #### Examples (CoffeeScript)
 ```
+class Project extends Backbone.Model
+  urlRoot: '/projects'
+  sync: require('backbone-http').sync(Project)
+
 # Find all items with is_active = true
 Project.find {is_active: true}, (err, projects) ->
 
@@ -24,6 +28,11 @@ Project.stream({is_active: true, $each: {fetch: 200}})
 
 #### Examples (JavaScript)
 ```
+var Project = Backbone.Model.extend({
+  urlRoot: '/projects'
+});
+Project.prototype.sync = require('backbone-http').sync(Project);
+
 // Find all items with is_active = true
 Project.find({is_active: true}, function(err, projects) {});
 
