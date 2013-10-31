@@ -2,7 +2,7 @@
   backbone-http.js 0.5.0
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
-  Dependencies: Backbone.js and Underscore.js.
+  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 */
 (function() {
 var globals = {};
@@ -142,7 +142,7 @@ require.register("backbone-http/lib/cursor", function(exports, require, module) 
   backbone-http.js 0.5.0
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
-  Dependencies: Backbone.js and Underscore.js.
+  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 */
 
 var Cursor, HTTPCursor, JSONUtils, _, _ref,
@@ -196,10 +196,10 @@ module.exports = HTTPCursor = (function(_super) {
   backbone-http.js 0.5.0
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
-  Dependencies: Backbone.js and Underscore.js.
+  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 */
 
-if (typeof window !== "undefined" && window !== null) {
+if ((typeof window !== "undefined" && window !== null) && require.shim) {
   require.shim([
     {
       symbol: '_',
@@ -234,7 +234,7 @@ module.exports = {
   backbone-http.js 0.5.0
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
-  Dependencies: Backbone.js and Underscore.js.
+  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 */
 
 var Backbone, HTTPCursor, HTTPSync, JSONUtils, ModelCache, Schema, Utils, bborm, _;
