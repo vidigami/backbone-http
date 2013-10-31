@@ -18,11 +18,9 @@ module.exports = class HTTPCursor extends Cursor
   toJSON: (callback) ->
     return callback(null, if @hasCursorQuery('$one') then null else []) if @hasCursorQuery('$zero')
 
-    # build query
-    query = JSONUtils.toQuery(_.extend(_.extend({}, @_find), @_cursor))
     @request
       .get(@url)
-      .query(query)
+      .query(query = JSONUtils.toQuery(_.extend(_.clone(@_find), @_cursor)))
       .type('json')
       .end (err, res) =>
         return callback(err) if err
