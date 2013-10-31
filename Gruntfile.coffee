@@ -1,3 +1,4 @@
+startsWith = (string, substring) -> string.lastIndexOf(substring, 0) is 0
 LIBRARY_WRAPPERS = require './client/config_library_wrap'
 
 module.exports = (grunt) ->
@@ -31,9 +32,19 @@ module.exports = (grunt) ->
     clean:
       build: ['_build']
 
+    zip:
+      library:
+        router: (filepath) ->
+          return filepath.replace('node_modules/backbone-orm/', 'optional/') if startsWith(filepath, 'node_modules/backbone-orm/stream.js')
+          return filepath.replace('node_modules/backbone-orm/', '') if startsWith(filepath, 'node_modules/backbone-orm/')
+          filepath
+        dest: 'client/backbone-orm.zip'
+        src: ['node_modules/backbone-orm/backbone-orm*.js', 'node_modules/backbone-orm/stream.js', 'backbone-http*.js']
+
   grunt.loadNpmTasks 'grunt-shell'
   grunt.loadNpmTasks 'grunt-wrap'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
+  grunt.loadNpmTasks 'grunt-zip'
 
-  grunt.registerTask 'default', ['shell:library', 'wrap:library', 'uglify:library', 'wrap:license', 'clean:build']
+  grunt.registerTask 'default', ['shell:library', 'wrap:library', 'uglify:library', 'wrap:license', 'zip:library', 'clean:build']
