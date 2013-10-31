@@ -14,7 +14,7 @@
     "build": "coffee -o lib -c src",
     "watch": "coffee -o lib -w src",
     "clean": "rm -rf lib/*",
-    "prepublish": "npm run build",
+    "prepublish": "npm run build; grunt",
 
     "build_dep": "npm run-script backbone-orm build; npm run-script backbone-rest build",
     "watch_dep": "npm run-script backbone-orm watch; npm run-script backbone-rest watch"

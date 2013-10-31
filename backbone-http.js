@@ -169,8 +169,7 @@ module.exports = HTTPCursor = (function(_super) {
     if (this.hasCursorQuery('$zero')) {
       return callback(null, this.hasCursorQuery('$one') ? null : []);
     }
-    query = JSONUtils.toQuery(_.extend(_.extend({}, this._find), this._cursor));
-    return this.request.get(this.url).query(query).type('json').end(function(err, res) {
+    return this.request.get(this.url).query(query = JSONUtils.toQuery(_.extend(_.clone(this._find), this._cursor))).type('json').end(function(err, res) {
       var result;
       if (err) {
         return callback(err);
