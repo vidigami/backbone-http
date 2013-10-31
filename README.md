@@ -6,6 +6,7 @@ BackboneHTTP provides an HTTP interface that can be used in the browser or from 
 
 This allows for a iteration of remote collections from the browser using BackboneORM's unified query syntax and iteration methods.
 
+#### Examples (CoffeeScript)
 ```
 # Find all items with is_active = true
 Project.find {is_active: true}, (err, projects) ->
@@ -21,6 +22,7 @@ Project.stream({is_active: true, $each: {fetch: 200}})
   .on('finish', -> console.log 'Done')
 ```
 
+#### Examples (JavaScript)
 ```
 // Find all items with is_active = true
 Project.find({is_active: true}, function(err, projects) {});
@@ -36,6 +38,7 @@ Project.stream({is_active: true, $each: {fetch: 200}})
   .pipe(new ModelStringifier())
   .on('finish', function() {return console.log('Done');});
 ```
+
 
 Please [checkout the website](http://vidigami.github.io/backbone-orm/backbone-http.html) for installation instructions, examples, documentation, and community!
 
