@@ -7,6 +7,7 @@ BackboneHTTP provides an HTTP interface that can be used in the browser or from 
 This allows for a iteration of remote collections from the browser using BackboneORM's unified query syntax and iteration methods.
 
 #### Examples (CoffeeScript)
+
 ```
 class Project extends Backbone.Model
   urlRoot: '/projects'
@@ -27,6 +28,7 @@ Project.stream({is_active: true, $each: {fetch: 200}})
 ```
 
 #### Examples (JavaScript)
+
 ```
 var Project = Backbone.Model.extend({
   urlRoot: '/projects'
