@@ -34,11 +34,11 @@ module.exports = (grunt) ->
 
     zip:
       library:
+        dest: 'client/backbone-http.zip'
         router: (filepath) ->
           return filepath.replace('node_modules/backbone-orm/', 'optional/') if startsWith(filepath, 'node_modules/backbone-orm/stream')
           return filepath.replace('node_modules/backbone-orm/', '') if startsWith(filepath, 'node_modules/backbone-orm/')
           filepath
-        dest: 'client/backbone-orm.zip'
         src: ['node_modules/backbone-orm/backbone-orm*.js', 'node_modules/backbone-orm/stream*.js', 'backbone-http*.js']
 
   grunt.loadNpmTasks 'grunt-shell'
