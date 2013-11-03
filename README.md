@@ -8,7 +8,7 @@ This allows for a iteration of remote collections from the browser using Backbon
 
 #### Examples (CoffeeScript)
 
-```
+```coffeescript
 class Project extends Backbone.Model
   urlRoot: '/projects'
   sync: require('backbone-http').sync(Project)
@@ -29,7 +29,7 @@ Project.stream({is_active: true, $each: {fetch: 200}})
 
 #### Examples (JavaScript)
 
-```
+```javascript
 var Project = Backbone.Model.extend({
   urlRoot: '/projects'
 });
@@ -58,12 +58,18 @@ Please [checkout the website](http://vidigami.github.io/backbone-orm/backbone-ht
 
 To build the library for Node.js:
 
-  $ npm run build
+```
+$ npm run
+```
 
 To build the library for the browser:
 
-  $ grunt
+```
+$ grunt
+```
 
 Please run tests before submitting a pull request.
 
-  $ npm test
+```
+$ npm test
+```
