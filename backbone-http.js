@@ -145,7 +145,7 @@ require.register("backbone-http/lib/cursor", function(exports, require, module) 
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 */
 
-var Cursor, HTTPCursor, JSONUtils, _, _ref,
+var Cursor, HTTPCursor, JSONUtils, Utils, _, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -154,6 +154,8 @@ _ = require('underscore');
 Cursor = require('backbone-orm').Cursor;
 
 JSONUtils = require('backbone-orm').JSONUtils;
+
+Utils = require('backbone-orm').Utils;
 
 module.exports = HTTPCursor = (function(_super) {
   __extends(HTTPCursor, _super);
@@ -178,7 +180,7 @@ module.exports = HTTPCursor = (function(_super) {
         return callback(null, null);
       }
       if (!res.ok) {
-        return callback(new Error("Ajax failed with status " + res.status + " with: " + (JSON.stringify(res.body))));
+        return callback(new Error("Ajax failed with status " + res.status + " with: " + (Utils.inspect(res.body))));
       }
       result = JSONUtils.parse(res.body);
       return callback(null, _this.hasCursorQuery('$count') || _this.hasCursorQuery('$exists') ? result.result : result);
@@ -302,7 +304,7 @@ module.exports = HTTPSync = (function() {
         return callback(err);
       }
       if (!res.ok) {
-        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (JSON.stringify(res.body))));
+        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (Utils.inspect(res.body))));
       }
       return callback();
     });
@@ -325,7 +327,7 @@ module.exports = HTTPSync = (function() {
         return callback(err);
       }
       if (!res.ok) {
-        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (JSON.stringify(res.body))));
+        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (Utils.inspect(res.body))));
       }
       return callback();
     });
@@ -388,7 +390,7 @@ module.exports = function(type) {
           return options.error(err);
         }
         if (!res.ok) {
-          return options.error(new Error("Ajax failed with status " + res.status + " for " + method + " with: " + (JSON.stringify(res.body))));
+          return options.error(new Error("Ajax failed with status " + res.status + " for " + method + " with: " + (Utils.inspect(res.body))));
         }
         return options.success(JSONUtils.parse(res.body));
       });
