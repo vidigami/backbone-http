@@ -37,7 +37,7 @@ module.exports = class HTTPSync
       .del(@url)
       .end (err, res) ->
         return callback(err) if err
-        return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{JSON.stringify(res.body)}") unless res.ok
+        return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{Utils.inspect(res.body)}") unless res.ok
         callback()
 
   cursor: (query={}) -> return new HTTPCursor(query, {model_type: @model_type, url: @url, request: @request})
@@ -48,7 +48,7 @@ module.exports = class HTTPSync
       .query(query)
       .end (err, res) ->
         return callback(err) if err
-        return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{JSON.stringify(res.body)}") unless res.ok
+        return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{Utils.inspect(res.body)}") unless res.ok
         callback()
 
 module.exports = (type) ->
@@ -86,7 +86,7 @@ module.exports = (type) ->
 
       req.end (err, res) ->
         return options.error(err) if err
-        return options.error(new Error "Ajax failed with status #{res.status} for #{method} with: #{JSON.stringify(res.body)}") unless res.ok
+        return options.error(new Error "Ajax failed with status #{res.status} for #{method} with: #{Utils.inspect(res.body)}") unless res.ok
         options.success(JSONUtils.parse(res.body))
       return
 
