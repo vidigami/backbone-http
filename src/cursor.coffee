@@ -25,6 +25,6 @@ module.exports = class HTTPCursor extends Cursor
       .end (err, res) =>
         return callback(err) if err
         return callback(null, null) if query.$one and (res.status is 404) # not found
-        return callback(new Error "Ajax failed with status #{res.status} with: #{_.keys(res.body)}") unless res.ok
+        return callback(new Error "Ajax failed with status #{res.status} with: #{JSON.stringify(res.body)}") unless res.ok
         result = JSONUtils.parse(res.body)
         callback(null, if (@hasCursorQuery('$count') or @hasCursorQuery('$exists')) then result.result else result)

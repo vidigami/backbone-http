@@ -178,7 +178,7 @@ module.exports = HTTPCursor = (function(_super) {
         return callback(null, null);
       }
       if (!res.ok) {
-        return callback(new Error("Ajax failed with status " + res.status + " with: " + (_.keys(res.body))));
+        return callback(new Error("Ajax failed with status " + res.status + " with: " + (JSON.stringify(res.body))));
       }
       result = JSONUtils.parse(res.body);
       return callback(null, _this.hasCursorQuery('$count') || _this.hasCursorQuery('$exists') ? result.result : result);
@@ -302,7 +302,7 @@ module.exports = HTTPSync = (function() {
         return callback(err);
       }
       if (!res.ok) {
-        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (_.keys(res.body))));
+        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (JSON.stringify(res.body))));
       }
       return callback();
     });
@@ -325,7 +325,7 @@ module.exports = HTTPSync = (function() {
         return callback(err);
       }
       if (!res.ok) {
-        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (_.keys(res.body))));
+        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (JSON.stringify(res.body))));
       }
       return callback();
     });
@@ -388,7 +388,7 @@ module.exports = function(type) {
           return options.error(err);
         }
         if (!res.ok) {
-          return options.error(new Error("Ajax failed with status " + res.status + " for " + method + " with: " + (_.keys(res.body))));
+          return options.error(new Error("Ajax failed with status " + res.status + " for " + method + " with: " + (JSON.stringify(res.body))));
         }
         return options.success(JSONUtils.parse(res.body));
       });
