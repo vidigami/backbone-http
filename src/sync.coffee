@@ -16,7 +16,7 @@ ModelCache = bborm.CacheSingletons.ModelCache
 
 HTTPCursor = require './cursor'
 
-module.exports = class HTTPSync
+class HTTPSync
 
   constructor: (@model_type) ->
     @model_type.model_name = Utils.findOrGenerateModelName(@model_type)
