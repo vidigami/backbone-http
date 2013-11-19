@@ -13,7 +13,7 @@ if window? and require.shim
     {symbol: 'moment', path: 'moment'}
     {symbol: 'inflection', path: 'inflection'}
     {symbol: 'stream', path: 'stream', optional: true} # stream is large so it is optional on the client
-    {symbol: 'Backbone.ORM', symbol_path: 'backbone.ORM', path: 'backbone-orm'}
+    {symbol: 'BackboneORM', path: 'backbone-orm'}
     {symbol: 'superagent', path: 'superagent'}
   ])
 
