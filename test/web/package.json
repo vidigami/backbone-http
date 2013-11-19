@@ -4,7 +4,8 @@
     "build": "browserify -r backbone-http -r backbone > browserify-bundle.js"
   },
   "devDependencies": {
-    "browserify": "*"
+    "browserify": "*",
+    "brfs": "*"
   },
   "dependencies": {
     "underscore": "1.5.x",

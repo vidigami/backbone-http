@@ -218,8 +218,7 @@ if ((typeof window !== "undefined" && window !== null) && require.shim) {
       path: 'stream',
       optional: true
     }, {
-      symbol: 'Backbone.ORM',
-      symbol_path: 'backbone.ORM',
+      symbol: 'BackboneORM',
       path: 'backbone-orm'
     }, {
       symbol: 'superagent',
