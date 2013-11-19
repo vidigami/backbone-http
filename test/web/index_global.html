@@ -17,7 +17,7 @@
       urlRoot: '/api/tests',
       model_name: 'Test'
     });
-    Test.prototype.sync = Backbone.HTTP.sync(Test);
+    Test.prototype.sync = BackboneHTTP.sync(Test);
 
     var test = new Test({name: 'Bob'});
     test.save(function(err){
