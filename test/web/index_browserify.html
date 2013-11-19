@@ -3,19 +3,17 @@
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <head>
   <title>Backbone-ORM</title>
-  <script type="text/javascript" src="../../node_modules/backbone-orm/test/web/vendor-browserify.js"></script>
-  <script type="text/javascript" src="../../node_modules/backbone-orm/stream.js"></script>
-  <script type="text/javascript" src="../../node_modules/backbone-orm/backbone-orm.js"></script>
-  <script type="text/javascript" src="../../node_modules/superagent/superagent.js"></script>
-  <script type="text/javascript" src="../../backbone-http.js"></script>
+  <script type="text/javascript" src="browserify-bundle.js"></script>
 
   <script type="text/javascript">
     var Backbone = require('backbone');
+    var BackboneHTTP = require('backbone-http');
+
     var Test = Backbone.Model.extend({
       urlRoot: '/api/tests',
       model_name: 'Test'
     });
-    Test.prototype.sync = Backbone.HTTP.sync(Test);
+    Test.prototype.sync = BackboneHTTP.sync(Test);
 
     var test = new Test({name: 'Bob'});
     test.save(function(err){

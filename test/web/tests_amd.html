@@ -18,13 +18,13 @@
         }
     });
 
-    require(['underscore', 'backbone', 'stream', 'backbone-orm', 'superagent', 'backbone-http'], function(_, Backbone, stream, bborm, superagent, bbhttp) {
+    require(['underscore', 'backbone', 'stream', 'backbone-orm', 'superagent', 'backbone-http'], function(_, Backbone, stream, BackboneORM, superagent, BackboneHTTP) {
       var Backbone = window.Backbone;
       var Test = Backbone.Model.extend({
         urlRoot: '/api/tests',
         model_name: 'Test'
       });
-      Test.prototype.sync = bbhttp.sync(Test);
+      Test.prototype.sync = BackboneHTTP.sync(Test);
 
       var test = new Test({name: 'Bob'});
       test.save(function(err){

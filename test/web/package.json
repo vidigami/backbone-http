@@ -1,0 +1,15 @@
+{
+  "name": "browserify-test",
+  "scripts": {
+    "build": "browserify -r backbone-http -r backbone > browserify-bundle.js"
+  },
+  "dependencies": {
+    "underscore": "1.5.x",
+    "backbone": "1.1.x",
+    "moment": "2.0.x",
+    "inflection": "1.2.x",
+    "backbone-orm": "0.5.x",
+    "superagent": "0.15.x",
+    "backbone-http": "git+https://github.com/vidigami/backbone-http.git"
+  }
+}

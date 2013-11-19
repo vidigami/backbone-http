@@ -1,5 +1,5 @@
 /*
-  backbone-http.js 0.5.0
+  backbone-http.js 0.5.2
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -108,15 +108,6 @@ var globals = {};
         for (var i = 0, length = components.length; i < length; i++) { if (!(dep = dep[components[i]])) break; }
       }
 
-      // use path on global require (a symbol could be mixed into a module)
-      if (!dep && item.symbol_path && window.require) {
-        var components = item.symbol_path.split('.');
-        var path = components.shift();
-        try { dep = typeof window.require === "function" ? window.require(path) : void 0; } catch (e) {}
-
-        for (var i = 0, length = components.length; i < length; i++) { if (!(dep = dep != null ? dep[components[i]] : void 0)) break; }
-      }
-
       // not found
       if (!dep) {
         if (item.optional) return;
@@ -139,7 +130,7 @@ var require = globals.require;
 
 require.register("backbone-http/lib/cursor", function(exports, require, module) {
 /*
-  backbone-http.js 0.5.0
+  backbone-http.js 0.5.2
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -195,7 +186,7 @@ module.exports = HTTPCursor = (function(_super) {
 
 ;require.register("backbone-http/lib/index", function(exports, require, module) {
 /*
-  backbone-http.js 0.5.0
+  backbone-http.js 0.5.2
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -255,7 +246,7 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 
 ;require.register("backbone-http/lib/sync", function(exports, require, module) {
 /*
-  backbone-http.js 0.5.0
+  backbone-http.js 0.5.2
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -279,7 +270,7 @@ ModelCache = bborm.CacheSingletons.ModelCache;
 
 HTTPCursor = require('./cursor');
 
-module.exports = HTTPSync = (function() {
+HTTPSync = (function() {
   function HTTPSync(model_type) {
     this.model_type = model_type;
     this.model_type.model_name = Utils.findOrGenerateModelName(this.model_type);
@@ -412,12 +403,8 @@ module.exports = function(type) {
 if (typeof exports == 'object') {
   module.exports = require('backbone-http/lib/index');
 } else if (typeof define == 'function' && define.amd) {
-  define('backbone-http', ['backbone-orm', 'superagent'], function(){ return require('backbone-http/lib/index'); });
+  define(['require', 'backbone-orm', 'superagent'], function(){ return require('backbone-http/lib/index'); });
 } else {
-  var Backbone = this.Backbone;
-  if (!Backbone && (typeof window.require == 'function')) {
-    try { Backbone = window.require('backbone'); } catch (_error) { Backbone = this.Backbone = {}; }
-  }
-  Backbone.HTTP = require('backbone-http/lib/index');
+  this.BackboneHTTP = require('backbone-http/lib/index');
 }
 }).call(this);
