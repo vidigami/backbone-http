@@ -27,7 +27,7 @@ module.exports = (grunt) ->
         options: {wrapper: [LIBRARY_WRAPPERS.license, '']}
 
     uglify:
-      library: {expand: true, cwd: '_build/', src: ['*.js'], dest: '_build/', ext: '-min.js'}
+      library: {expand: true, cwd: '_build/', src: ['*.js'], dest: '_build/', ext: '.min.js'}
 
     clean:
       build: ['_build']
