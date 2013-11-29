@@ -52,7 +52,7 @@
   "dependencies": {
     "underscore": "1.5.x",
     "backbone": "1.1.x",
-    "moment": "2.0.x",
+    "moment": "2.4.x",
     "inflection": "1.2.x",
     "backbone-orm": "0.5.x",
     "superagent": "0.15.x"
