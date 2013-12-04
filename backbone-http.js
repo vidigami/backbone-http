@@ -157,12 +157,14 @@ module.exports = HTTPCursor = (function(_super) {
   }
 
   HTTPCursor.prototype.toJSON = function(callback) {
-    var query,
+    var query, req,
       _this = this;
     if (this.hasCursorQuery('$zero')) {
       return callback(null, this.hasCursorQuery('$one') ? null : []);
     }
-    return this.request.get(this.url).query(query = JSONUtils.toQuery(_.extend(_.clone(this._find), this._cursor))).type('json').end(function(err, res) {
+    req = this.request.get(this.url).query(query = JSONUtils.toQuery(_.extend(_.clone(this._find), this._cursor))).type('json');
+    this.sync.headers(req, null, 'GET');
+    return req.end(function(err, res) {
       var result;
       if (err) {
         return callback(err);
@@ -270,8 +272,12 @@ ModelCache = bborm.CacheSingletons.ModelCache;
 HTTPCursor = require('./cursor');
 
 HTTPSync = (function() {
-  function HTTPSync(model_type) {
+  function HTTPSync(model_type, options) {
     this.model_type = model_type;
+    if (options == null) {
+      options = {};
+    }
+    !options.headers || (this._headers = options.headers);
     this.model_type.model_name = Utils.findOrGenerateModelName(this.model_type);
     if (!(this.url = _.result(this.model_type.prototype, 'url'))) {
       throw new Error("Missing url for model: " + this.model_type);
@@ -289,7 +295,10 @@ HTTPSync = (function() {
   };
 
   HTTPSync.prototype.resetSchema = function(options, callback) {
-    return this.request.del(this.url).end(function(err, res) {
+    var req;
+    req = this.request.del(this.url);
+    this.headers(req, null, 'DELETE', options);
+    return req.end(function(err, res) {
       if (err) {
         return callback(err);
       }
@@ -307,12 +316,16 @@ HTTPSync = (function() {
     return new HTTPCursor(query, {
       model_type: this.model_type,
       url: this.url,
-      request: this.request
+      request: this.request,
+      sync: this
     });
   };
 
   HTTPSync.prototype.destroy = function(query, callback) {
-    return this.request.del(this.url).query(query).end(function(err, res) {
+    var req;
+    req = this.request.del(this.url).query(query);
+    this.headers(req, null, 'DELETE');
+    return req.end(function(err, res) {
       if (err) {
         return callback(err);
       }
@@ -323,17 +336,24 @@ HTTPSync = (function() {
     });
   };
 
+  HTTPSync.prototype.headers = function(req, model, http_verb, options) {
+    if (!this._headers) {
+      return;
+    }
+    return req.set(_.isFunction(this._headers) ? this._headers(model, http_verb, options || {}) : this._headers);
+  };
+
   return HTTPSync;
 
 })();
 
-module.exports = function(type) {
+module.exports = function(type, sync_options) {
   var model_type, sync, sync_fn;
   if (Utils.isCollection(new type())) {
-    model_type = Utils.configureCollectionModelType(type, module.exports);
+    model_type = Utils.configureCollectionModelType(type, module.exports, sync_options);
     return type.prototype.sync = model_type.prototype.sync;
   }
-  sync = new HTTPSync(type);
+  sync = new HTTPSync(type, sync_options);
   type.prototype.sync = sync_fn = function(method, model, options) {
     var req, request, url;
     if (options == null) {
@@ -362,18 +382,23 @@ module.exports = function(type) {
           req = request.get(url).query({
             $one: !model.models
           }).type('json');
+          sync.headers(req, model, 'GET', options);
           break;
         case 'create':
           req = request.post(url).send(options.attrs || model.toJSON(options)).type('json');
+          sync.headers(req, model, 'POST', options);
           break;
         case 'update':
           req = request.put(url).send(options.attrs || model.toJSON(options)).type('json');
+          sync.headers(req, model, 'PUT', options);
           break;
         case 'patch':
           req = request.patch(url).send(options.attrs || model.toJSON(options)).type('json');
+          sync.headers(req, model, 'PATCH', options);
           break;
         case 'delete':
           req = request.del(url);
+          sync.headers(req, model, 'DELETE', options);
       }
       req.end(function(err, res) {
         if (err) {
