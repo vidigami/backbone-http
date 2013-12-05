@@ -163,7 +163,7 @@ module.exports = HTTPCursor = (function(_super) {
       return callback(null, this.hasCursorQuery('$one') ? null : []);
     }
     req = this.request.get(this.url).query(query = JSONUtils.toQuery(_.extend(_.clone(this._find), this._cursor))).type('json');
-    this.sync.headers(req, null, 'GET');
+    this.sync.beforeSend(req, null);
     return req.end(function(err, res) {
       var result;
       if (err) {
@@ -297,7 +297,7 @@ HTTPSync = (function() {
   HTTPSync.prototype.resetSchema = function(options, callback) {
     var req;
     req = this.request.del(this.url);
-    this.beforeSend(req, null, 'DELETE', options);
+    this.beforeSend(req, null, options);
     return req.end(function(err, res) {
       if (err) {
         return callback(err);
@@ -324,7 +324,7 @@ HTTPSync = (function() {
   HTTPSync.prototype.destroy = function(query, callback) {
     var req;
     req = this.request.del(this.url).query(query);
-    this.beforeSend(req, null, 'DELETE');
+    this.beforeSend(req, null);
     return req.end(function(err, res) {
       if (err) {
         return callback(err);
@@ -336,11 +336,12 @@ HTTPSync = (function() {
     });
   };
 
-  HTTPSync.prototype.beforeSend = function(req, model, http_verb, options) {
-    if (!this._beforeSend) {
-      return;
+  HTTPSync.prototype.beforeSend = function(req, model, options) {
+    if (options == null) {
+      options = {};
     }
-    return req.set(_.isFunction(this._beforeSend) ? this._beforeSend(model, http_verb, options || {}) : this._beforeSend);
+    !options.beforeSend || options.beforeSend(req, model, options, this);
+    return !this._beforeSend || this._beforeSend(req, model, options, this);
   };
 
   return HTTPSync;
@@ -382,24 +383,20 @@ module.exports = function(type, sync_options) {
           req = request.get(url).query({
             $one: !model.models
           }).type('json');
-          sync.beforeSend(req, model, 'GET', options);
           break;
         case 'create':
           req = request.post(url).send(options.attrs || model.toJSON(options)).type('json');
-          sync.beforeSend(req, model, 'POST', options);
           break;
         case 'update':
           req = request.put(url).send(options.attrs || model.toJSON(options)).type('json');
-          sync.beforeSend(req, model, 'PUT', options);
           break;
         case 'patch':
           req = request.patch(url).send(options.attrs || model.toJSON(options)).type('json');
-          sync.beforeSend(req, model, 'PATCH', options);
           break;
         case 'delete':
           req = request.del(url);
-          sync.beforeSend(req, model, 'DELETE', options);
       }
+      sync.beforeSend(req, model, options);
       req.end(function(err, res) {
         if (err) {
           return options.error(err);

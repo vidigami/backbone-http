@@ -79,20 +79,16 @@ module.exports = (type, sync_options) ->
       switch method
         when 'read'
           req = request.get(url).query({$one: !model.models}).type('json')
-          sync.beforeSend(req, model, options)
         when 'create'
           req = request.post(url).send(options.attrs or model.toJSON(options)).type('json')
-          sync.beforeSend(req, model, options)
         when 'update'
           req = request.put(url).send(options.attrs or model.toJSON(options)).type('json')
-          sync.beforeSend(req, model, options)
         when 'patch'
           req = request.patch(url).send(options.attrs or model.toJSON(options)).type('json')
-          sync.beforeSend(req, model, options)
         when 'delete'
           req = request.del(url)
-          sync.beforeSend(req, model, options)
 
+      sync.beforeSend(req, model, options)
       req.end (err, res) ->
         return options.error(err) if err
         return options.error(new Error "Ajax failed with status #{res.status} for #{method} with: #{Utils.inspect(res.body)}") unless res.ok
