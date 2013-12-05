@@ -22,7 +22,7 @@ module.exports = class HTTPCursor extends Cursor
     req = @request.get(@url)
       .query(query = JSONUtils.toQuery(_.extend(_.clone(@_find), @_cursor)))
       .type('json')
-    @sync.headers(req, null, 'GET')
+    @sync.beforeSend(req, null)
     req.end (err, res) =>
       return callback(err) if err
       return callback(null, null) if query.$one and (res.status is 404) # not found
