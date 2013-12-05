@@ -19,7 +19,7 @@ HTTPCursor = require './cursor'
 class HTTPSync
 
   constructor: (@model_type, options={}) ->
-    not options.headers or @_headers = options.headers
+    not options.beforeSend or @_beforeSend = options.beforeSend
     @model_type.model_name = Utils.findOrGenerateModelName(@model_type)
     throw new Error("Missing url for model: #{@model_type}") unless @url = _.result(@model_type.prototype, 'url')
     @schema = new Schema(@model_type)
@@ -35,7 +35,7 @@ class HTTPSync
   # @private
   resetSchema: (options, callback) ->
     req = @request.del(@url)
-    @headers(req, null, 'DELETE', options)
+    @beforeSend(req, null, options)
     req.end (err, res) ->
       return callback(err) if err
       return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{Utils.inspect(res.body)}") unless res.ok
@@ -45,15 +45,15 @@ class HTTPSync
 
   destroy: (query, callback) ->
     req = @request.del(@url).query(query)
-    @headers(req, null, 'DELETE')
+    @beforeSend(req, null)
     req.end (err, res) ->
       return callback(err) if err
       return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{Utils.inspect(res.body)}") unless res.ok
       callback()
 
-  headers: (req, model, http_verb, options) ->
-    return unless @_headers
-    req.set(if _.isFunction(@_headers) then @_headers(model, http_verb, options or {}) else @_headers)
+  beforeSend: (req, model, options={}) ->
+    not options.beforeSend or options.beforeSend(req, model, options, @)
+    not @_beforeSend or @_beforeSend(req, model, options, @)
 
 module.exports = (type, sync_options) ->
   if Utils.isCollection(new type()) # collection
@@ -79,19 +79,19 @@ module.exports = (type, sync_options) ->
       switch method
         when 'read'
           req = request.get(url).query({$one: !model.models}).type('json')
-          sync.headers(req, model, 'GET', options)
+          sync.beforeSend(req, model, options)
         when 'create'
           req = request.post(url).send(options.attrs or model.toJSON(options)).type('json')
-          sync.headers(req, model, 'POST', options)
+          sync.beforeSend(req, model, options)
         when 'update'
           req = request.put(url).send(options.attrs or model.toJSON(options)).type('json')
-          sync.headers(req, model, 'PUT', options)
+          sync.beforeSend(req, model, options)
         when 'patch'
           req = request.patch(url).send(options.attrs or model.toJSON(options)).type('json')
-          sync.headers(req, model, 'PATCH', options)
+          sync.beforeSend(req, model, options)
         when 'delete'
           req = request.del(url)
-          sync.headers(req, model, 'DELETE', options)
+          sync.beforeSend(req, model, options)
 
       req.end (err, res) ->
         return options.error(err) if err
