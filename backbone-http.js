@@ -1,5 +1,5 @@
 /*
-  backbone-http.js 0.5.2
+  backbone-http.js 0.5.3
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -130,7 +130,7 @@ var require = globals.require;
 
 require.register("backbone-http/lib/cursor", function(exports, require, module) {
 /*
-  backbone-http.js 0.5.2
+  backbone-http.js 0.5.3
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -188,7 +188,7 @@ module.exports = HTTPCursor = (function(_super) {
 
 ;require.register("backbone-http/lib/index", function(exports, require, module) {
 /*
-  backbone-http.js 0.5.2
+  backbone-http.js 0.5.3
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -247,7 +247,7 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 
 ;require.register("backbone-http/lib/sync", function(exports, require, module) {
 /*
-  backbone-http.js 0.5.2
+  backbone-http.js 0.5.3
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
