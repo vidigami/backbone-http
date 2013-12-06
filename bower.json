@@ -1,0 +1,28 @@
+{
+  "name": "backbone-http",
+  "main": "backbone-http.js",
+  "version": "0.5.3",
+  "homepage": "http://vidigami.github.io/backbone-orm/backbone-http.html",
+  "authors": [
+    "Kevin Malakoff (https://github.com/kmalakoff)",
+    "Gwilym Humphreys (https://github.com/gwilymhumphreys)"
+  ],
+  "description": "An HTTP interface for BackboneORM",
+  "keywords": ["backbone", "orm", "backbone-orm", "http", "superagent", "ajax"],
+  "dependencies": {
+    "underscore": ">=1.2.0",
+    "backbone": ">=1.0.0",
+    "moment": ">=1.0.0",
+    "inflection": ">=1.0.0",
+    "backbone-orm": ">=0.5.0",
+    "superagent": ">=0.10.0"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
