@@ -2,7 +2,7 @@ _ = require 'underscore'
 Queue = require 'backbone-orm/lib/queue'
 
 option_sets = require('backbone-orm/test/option_sets')
-option_sets = option_sets.slice(0, 1)
+# option_sets = option_sets.slice(0, 1)
 
 test_parameters =
   sync: require '../lib/sync'
