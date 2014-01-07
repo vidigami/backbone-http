@@ -16,11 +16,11 @@ module.exports =
 
   end: """
     if (typeof exports == 'object') {
-      module.exports = require('backbone-http/lib/index');
+      module.exports = require('index');
     } else if (typeof define == 'function' && define.amd) {
-      define(['require', 'backbone-orm', 'superagent'], function(){ return require('backbone-http/lib/index'); });
+      define(['require', 'backbone-orm', 'superagent'], function(){ return require('index'); });
     } else {
-      this.BackboneHTTP = require('backbone-http/lib/index');
+      this.BackboneHTTP = require('index');
     }
     }).call(this);
     """
