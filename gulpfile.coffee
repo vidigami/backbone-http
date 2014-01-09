@@ -4,7 +4,6 @@ es = require 'event-stream'
 gulp = require 'gulp'
 gutil = require 'gulp-util'
 coffee = require 'gulp-coffee'
-compile = require 'gulp-compile-js'
 modules = require 'gulp-module-system'
 rename = require 'gulp-rename'
 uglify = require 'gulp-uglify'
@@ -21,7 +20,6 @@ gulp.task 'watch', ['build'], ->
 
 gulp.task 'build_client', ->
   gulp.src('src/**/*.coffee').pipe(coffee({bare: true}).on('error', gutil.log))
-    .pipe(compile({coffee: {bare: true}}))
     .pipe(modules({type: 'local-shim', file_name: 'backbone-http.js', root: './src', umd: {symbol: 'BackboneHTTP', dependencies: ['backbone-orm', 'superagent'], bottom: true}}))
     .pipe(gulp.dest('./'))
 
