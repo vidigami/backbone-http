@@ -36,7 +36,8 @@
     "gulp-uglify": "*",
     "gulp-rename": "*",
     "gulp-zip": "*",
-    "gulp-wrap-define": "*",
+    "gulp-compile-js": "*",
+    "gulp-module-system": "*",
     "event-stream": "*"
   },
   "dependencies": {
