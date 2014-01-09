@@ -1,11 +1,5 @@
-/*
-  backbone-http.js 0.5.3
-  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
-  License: MIT (http://www.opensource.org/licenses/mit-license.php)
-  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
-*/
 (function() {
-var globals = {};
+  var globals = {};
 
 /* local-only brunch-like require (based on https://github.com/brunch/commonjs-require-definition) */
 (function() {
@@ -127,7 +121,6 @@ var globals = {};
   globals.require.shim = shim;
 }).call(this);
 var require = globals.require;
-
 require.register('cursor', function(exports, require, module) {
 /*
   backbone-http.js 0.5.3
@@ -417,11 +410,14 @@ module.exports = function(type, sync_options) {
 };
 
 });
-if (typeof exports == 'object') {
-  module.exports = require('index');
-} else if (typeof define == 'function' && define.amd) {
-  define(['require', 'backbone-orm', 'superagent'], function(){ return require('index'); });
-} else {
-  this.BackboneHTTP = require('index');
-}
+
+  if (typeof define == 'function' && define.amd) {
+    define(["require","backbone-orm","superagent"], function(){ return require('index'); });
+  }
+  else if (typeof exports == 'object') {
+    module.exports = require('index');
+  } else {
+    this['BackboneHTTP'] = require('index');
+  }
+
 }).call(this);
