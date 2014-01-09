@@ -21,9 +21,8 @@ gulp.task 'watch', ['build'], ->
 
 gulp.task 'build_client', ->
   gulp.src('src/**/*.coffee').pipe(coffee({bare: true}).on('error', gutil.log))
-    .pipe(es.map (file, callback) -> file.path = file.path.replace("#{path.resolve(dir)}/", '') for dir in ['./src']; callback(null, file))
     .pipe(compile({coffee: {bare: true}}))
-    .pipe(modules({type: 'local-shim', file_name: 'backbone-http.js', umd: {symbol: 'BackboneHTTP', dependencies: ['backbone-orm', 'superagent'], bottom: true}}))
+    .pipe(modules({type: 'local-shim', file_name: 'backbone-http.js', root: './src', umd: {symbol: 'BackboneHTTP', dependencies: ['backbone-orm', 'superagent'], bottom: true}}))
     .pipe(gulp.dest('./'))
 
 gulp.task 'minify_client', ['build_client'], ->
