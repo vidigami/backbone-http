@@ -36,7 +36,6 @@
     "gulp-uglify": "*",
     "gulp-rename": "*",
     "gulp-zip": "*",
-    "gulp-compile-js": "*",
     "gulp-module-system": "*",
     "event-stream": "*"
   },
