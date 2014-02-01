@@ -10,8 +10,8 @@
   "dependencies": {
     "underscore": "1.5.x",
     "backbone": "1.1.x",
-    "moment": "2.4.x",
-    "inflection": "1.2.x",
+    "moment": "2.x.x",
+    "inflection": "1.x.x",
     "backbone-orm": "0.5.x",
     "superagent": "0.15.x",
     "backbone-http": "git+https://github.com/vidigami/backbone-http.git"
