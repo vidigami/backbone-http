@@ -15,8 +15,8 @@ for options in option_sets
     _.extend(options, test_parameters)
 
     queue = new Queue(1)
-    queue.defer (callback) -> require('backbone-orm/test/generators/all')(options, callback)
-    queue.defer (callback) -> require('backbone-rest/test/generators/all')(options, callback)
+    queue.defer (callback) -> require('./unit/backbone_orm')(options, callback)
+    queue.defer (callback) -> require('./unit/backbone_rest')(options, callback)
     queue.defer (callback) -> require('./unit/before_send')(options, callback)
     queue.await callback
 test_queue.await (err) -> console.log "Backbone REST: Completed tests"
