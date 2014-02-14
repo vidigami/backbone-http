@@ -124,7 +124,7 @@ var require = globals.require;
 require.register('cursor', function(exports, require, module) {
 
 /*
-  backbone-http.js 0.5.3
+  backbone-http.js 0.5.4
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -181,7 +181,7 @@ module.exports = HTTPCursor = (function(_super) {
 require.register('index', function(exports, require, module) {
 
 /*
-  backbone-http.js 0.5.3
+  backbone-http.js 0.5.4
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -239,7 +239,7 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 require.register('sync', function(exports, require, module) {
 
 /*
-  backbone-http.js 0.5.3
+  backbone-http.js 0.5.4
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -270,7 +270,7 @@ HTTPSync = (function() {
     }
     !options.beforeSend || (this._beforeSend = options.beforeSend);
     this.model_type.model_name = Utils.findOrGenerateModelName(this.model_type);
-    if (!(this.url = _.result(this.model_type.prototype, 'url'))) {
+    if (!(this.url = _.result(new this.model_type, 'url'))) {
       throw new Error("Missing url for model: " + this.model_type);
     }
     this.schema = new Schema(this.model_type);
