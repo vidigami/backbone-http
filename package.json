@@ -1,6 +1,6 @@
 {
   "name": "backbone-http",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "An HTTP interface for BackboneORM",
   "main": "./lib/index.js",
   "license": "MIT",

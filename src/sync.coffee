@@ -1,5 +1,5 @@
 ###
-  backbone-http.js 0.5.3
+  backbone-http.js 0.5.4
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -21,7 +21,7 @@ class HTTPSync
   constructor: (@model_type, options={}) ->
     not options.beforeSend or @_beforeSend = options.beforeSend
     @model_type.model_name = Utils.findOrGenerateModelName(@model_type)
-    throw new Error("Missing url for model: #{@model_type}") unless @url = _.result(@model_type.prototype, 'url')
+    throw new Error("Missing url for model: #{@model_type}") unless @url = _.result(new @model_type, 'url')
     @schema = new Schema(@model_type)
     @request = require 'superagent'
 

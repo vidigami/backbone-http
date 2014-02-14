@@ -25,7 +25,7 @@ createMockModel = (mock_model_types, model_type) ->
           if field.length is 2 then field.push(join_table_info) else _.extend(field[2], join_table_info)
         return field
 
-  url = _.result(model_type.prototype, 'url')
+  url = _.result(new model_type, 'url')
   class MockModel extends Backbone.Model
     _orm_never_cache: true # so the correct models are found in the cache
     @original_model_type: model_type
@@ -51,7 +51,7 @@ module.exports = (model_types, callback) ->
   # configure the mock requests
   for key, mock_model_type of mock_model_types
     app = express(); app.use(express.bodyParser())
-    controller = new RestController(app, {model_type: mock_model_type, route: _.result(mock_model_type.prototype, 'url')}) # implicit knowledge of backbone-rest tests
+    controller = new RestController(app, {model_type: mock_model_type, route: _.result(new mock_model_type, 'url')}) # implicit knowledge of backbone-rest tests
     sync = mock_model_type.original_model_type::sync('sync')
     sync = sync.wrapped_sync_fn('sync') if sync.wrapped_sync_fn # cache
     sync.request = require('supertest')(app)
