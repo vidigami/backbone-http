@@ -1,0 +1,22 @@
+{
+  "name": "backbone-http",
+  "version": "0.5.5",
+  "description": "An HTTP interface for BackboneORM",
+  "repo": "vidigami/backbone-http",
+  "author": "Kevin Malakoff (https://github.com/kmalakoff)",
+  "contributors": ["Gwilym Humphreys (https://github.com/gwilymhumphreys)"],
+  "keywords": ["backbone", "orm", "backbone-orm", "backbone-http"],
+  "dependencies": {
+    "jashkenas/underscore": "*",
+    "jashkenas/backbone": "*",
+    "moment/moment": "*",
+    "vidigami/backbone-orm": "*",
+    "superagent": "*"
+  },
+  "license": "MIT",
+  "main": "backbone-http.js",
+  "scripts": [
+    "backbone-http.js",
+    "backbone-http.min.js"
+  ]
+}

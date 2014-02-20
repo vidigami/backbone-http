@@ -1,5 +1,8 @@
 Please refer to the following release notes when upgrading your version of BackboneHTTP.
 
+### 0.5.5
+* publish on component. Removed client dependency on inflection by burning into library.
+
 ### 0.5.4
 * Compatability fix for Backbone 1.1.1
 
