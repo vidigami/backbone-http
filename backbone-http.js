@@ -205,9 +205,6 @@ if ((typeof window !== "undefined" && window !== null) && require.shim) {
       symbol: 'moment',
       path: 'moment'
     }, {
-      symbol: 'inflection',
-      path: 'inflection'
-    }, {
       symbol: 'stream',
       path: 'stream',
       optional: true

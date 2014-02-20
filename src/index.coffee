@@ -11,7 +11,7 @@ if window? and require.shim
     {symbol: '_', path: 'lodash', alias: 'underscore', optional: true}, {symbol: '_', path: 'underscore'}
     {symbol: 'Backbone', path: 'backbone'}
     {symbol: 'moment', path: 'moment'}
-    {symbol: 'inflection', path: 'inflection'}
+    # {symbol: 'inflection', path: 'inflection'} # burned in
     {symbol: 'stream', path: 'stream', optional: true} # stream is large so it is optional on the client
     {symbol: 'BackboneORM', path: 'backbone-orm'}
     {symbol: 'superagent', path: 'superagent'}
