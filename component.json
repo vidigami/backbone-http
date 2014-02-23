@@ -11,7 +11,7 @@
     "jashkenas/backbone": "*",
     "moment/moment": "*",
     "vidigami/backbone-orm": "*",
-    "superagent": "*"
+    "visionmedia/superagent": "*"
   },
   "license": "MIT",
   "main": "backbone-http.js",
