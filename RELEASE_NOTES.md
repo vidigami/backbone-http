@@ -1,5 +1,8 @@
 Please refer to the following release notes when upgrading your version of BackboneHTTP.
 
+### 0.5.6
+* Fix for Component: https://github.com/vidigami/backbone-orm/issues/18
+
 ### 0.5.5
 * publish on component. Removed client dependency on inflection by burning into library.
 
