@@ -23,12 +23,11 @@
   },
   "devDependencies": {
     "coffee-script": "*",
-    "codo": "1.7.x",
     "mocha": "*",
     "powerset": "*",
     "backbone-rest": "0.5.x",
-    "supertest": "0.7.x",
-    "express": "3.2.x",
+    "supertest": "*",
+    "express": "3.x",
     "gulp": "*",
     "gulp-util": "*",
     "gulp-coffee": "*",
@@ -44,7 +43,7 @@
     "backbone": ">=1.0.0",
     "moment": ">=1.0.0",
     "inflection": ">=1.0.0",
-    "backbone-orm": ">=0.5.0",
+    "backbone-orm": "git+https://dvidi:U5RqFaNC@github.com/vidigami/backbone-orm",
     "superagent": ">=0.10.0"
   }
 }
