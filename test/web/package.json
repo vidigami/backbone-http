@@ -9,10 +9,10 @@
   },
   "dependencies": {
     "jquery": "*",
-    "underscore": "1.5.x",
+    "underscore": "1.x",
     "backbone": "1.1.x",
-    "moment": "2.x.x",
-    "inflection": "1.x.x",
+    "moment": "2.x",
+    "inflection": "1.x",
     "backbone-orm": "0.5.x",
     "superagent": "0.15.x",
     "backbone-http": "git+https://github.com/vidigami/backbone-http.git"
