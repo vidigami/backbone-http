@@ -2,11 +2,15 @@ util = require 'util'
 assert = require 'assert'
 _ = require 'underscore'
 Backbone = require 'backbone'
-Queue = require 'backbone-orm/lib/queue'
-Fabricator = require 'backbone-orm/test/fabricator'
+
+BackboneORM = require 'backbone-orm'
+Queue = BackboneORM.Queue
+Fabricator = BackboneORM.Fabricator
+
+BackboneHTTP = require 'backbone-http'
 
 module.exports = (options, callback) ->
-  SYNC = require '../../lib/sync'
+  SYNC = BackboneHTTP.sync
   BASE_COUNT = 5
   methods = []
 

@@ -1,29 +1,19 @@
 ###
-  backbone-http.js 0.5.6
+  backbone-http.js 0.6.0
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 ###
-
-# ensure the client symbols are resolved
-if window? and require.shim
-  require.shim([
-    {symbol: '_', path: 'lodash', alias: 'underscore', optional: true}, {symbol: '_', path: 'underscore'}
-    {symbol: 'Backbone', path: 'backbone'}
-    {symbol: 'moment', path: 'moment'}
-    # {symbol: 'inflection', path: 'inflection'} # burned in
-    {symbol: 'stream', path: 'stream', optional: true} # stream is large so it is optional on the client
-    {symbol: 'BackboneORM', path: 'backbone-orm'}
-    {symbol: 'superagent', path: 'superagent'}
-  ])
 
 module.exports =
   sync: require './sync'
 
   # re-expose modules
   modules:
-    'backbone-orm': bborm = require 'backbone-orm'
+    'backbone-orm': BackboneORM = require 'backbone-orm'
     'superagent': require 'superagent'
+  _: BackboneORM._
+  Backbone: BackboneORM.Backbone
 
 for path in ['url', 'querystring', 'lru-cache', 'underscore', 'backbone', 'moment', 'inflection', 'stream']
-  module.exports.modules[path] = bborm.modules[path]
+  module.exports.modules[path] = BackboneORM.modules[path]

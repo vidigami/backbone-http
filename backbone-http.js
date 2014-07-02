@@ -1,423 +1,353 @@
-(function() {
-  
-var globals = {requires: []};
-if (window.require) globals.requires.push(window.require);
-if (typeof require !== "undefined" && require !== null) globals.requires.push(require);
-
-/* local-only brunch-like require (based on https://github.com/brunch/commonjs-require-definition) */
-(function() {
-  'use strict';
-
-  var modules = {};
-  var cache = {};
-
-  var has = function(object, name) {
-    return ({}).hasOwnProperty.call(object, name);
-  };
-
-  var expand = function(root, name) {
-    var results = [], parts, part;
-    if (/^\.\.?(\/|$)/.test(name)) {
-      parts = [root, name].join('/').split('/');
-    } else {
-      parts = name.split('/');
-    }
-    for (var i = 0, length = parts.length; i < length; i++) {
-      part = parts[i];
-      if (part === '..') {
-        results.pop();
-      } else if (part !== '.' && part !== '') {
-        results.push(part);
-      }
-    }
-    return results.join('/');
-  };
-
-  var dirname = function(path) {
-    return path.split('/').slice(0, -1).join('/');
-  };
-
-  var localRequire = function(path) {
-    var _require = function(name) {
-      var dir = dirname(path);
-      var absolute = expand(dir, name);
-      return globals.require(absolute, path);
-    };
-    _require.register = globals.require.register;
-    _require.shim = globals.require.shim;
-    return _require;
-  };
-
-  var initModule = function(name, definition) {
-    var module = {id: name, exports: {}};
-    cache[name] = module;
-    definition(module.exports, localRequire(name), module);
-    return module.exports;
-  };
-
-  var require = function(name, loaderPath) {
-    var path = expand(name, '.');
-    if (loaderPath == null) loaderPath = '/';
-
-    if (has(cache, path)) return cache[path].exports;
-    if (has(modules, path)) return initModule(path, modules[path]);
-
-    var dirIndex = expand(path, './index');
-    if (has(cache, dirIndex)) return cache[dirIndex].exports;
-    if (has(modules, dirIndex)) return initModule(dirIndex, modules[dirIndex]);
-
-    throw new Error('Cannot find module "' + name + '" from '+ '"' + loaderPath + '"');
-  };
-
-  var define = function(bundle, fn) {
-    if (typeof bundle === 'object') {
-      for (var key in bundle) {
-        if (has(bundle, key)) {
-          modules[key] = bundle[key];
-        }
-      }
-    } else {
-      modules[bundle] = fn;
-    }
-  };
-
-  var toString = Object.prototype.toString;
-  var isArray = function(obj) { return toString.call(obj) === '[object Array]'; }
-
-  // client shimming to add to local module system
-  var shim = function(info) {
-    if (typeof window === "undefined") return;
-    if (!isArray(info)) info = [info];
-
-    var iterator = function(item) {
-      var dep;
-
-      // already registered with local require
-      try { if (globals.require(item.path)) { return; } } catch (e) {}
-
-      // use external require
-      try { for (var ext_i = 0, ext_length = globals.requires.length; ext_i < ext_length; ext_i++) {if (dep = globals.requires[ext_i](item.path)) break;}} catch (e) {}
-
-      // use symbol path on window
-      if (!dep && item.symbol) {
-        var components = item.symbol.split('.');
-        dep = window;
-        for (var i = 0, length = components.length; i < length; i++) { if (!(dep = dep[components[i]])) break; }
-      }
-
-      // not found
-      if (!dep) {
-        if (item.optional) return;
-        throw new Error("Missing dependency: " + item.path);
-      }
-
-      // register with local require
-      globals.require.register(item.path, (function(exports, require, module) { return module.exports = dep; }));
-      if (item.alias) { globals.require.register(item.alias, (function(exports, require, module) { return module.exports = dep; })); }
-    };
-
-    for (var i = 0, length = info.length; i < length; i++) { iterator(info[i]); }
-  };
-
-  globals.require = require;
-  globals.require.register = define;
-  globals.require.shim = shim;
-}).call(this);
-var require = globals.require;
-require.register('cursor', function(exports, require, module) {
-
 /*
-  backbone-http.js 0.5.6
-  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
+  backbone-http.js 0.6.0
+  Copyright (c) 2013-2014 Vidigami
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
-  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
- */
-var Cursor, HTTPCursor, JSONUtils, Utils, _,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  Source: https://github.com/vidigami/backbone-http
+  Dependencies: Backbone.js, Underscore.js, and Moment.js.
+*/
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("backbone-orm"), require("superagent"), require("underscore"), require("backbone"));
+	else if(typeof define === 'function' && define.amd)
+		define(["backbone-orm", "superagent", "underscore", "backbone"], factory);
+	else if(typeof exports === 'object')
+		exports["kb"] = factory(require("backbone-orm"), require("superagent"), require("underscore"), require("backbone"));
+	else
+		root["kb"] = factory(root["BackboneORM"], root["superagent"], root["_"], root["Backbone"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_5__) {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
 
-_ = require('underscore');
+	
+	/*
+	  backbone-http.js 0.6.0
+	  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
+	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
+	  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
+	 */
+	var BackboneORM, path, _i, _len, _ref;
 
-Cursor = require('backbone-orm').Cursor;
+	module.exports = {
+	  sync: __webpack_require__(3),
+	  modules: {
+	    'backbone-orm': BackboneORM = __webpack_require__(1),
+	    'superagent': __webpack_require__(2)
+	  },
+	  _: BackboneORM._,
+	  Backbone: BackboneORM.Backbone
+	};
 
-JSONUtils = require('backbone-orm').JSONUtils;
+	_ref = ['url', 'querystring', 'lru-cache', 'underscore', 'backbone', 'moment', 'inflection', 'stream'];
+	for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+	  path = _ref[_i];
+	  module.exports.modules[path] = BackboneORM.modules[path];
+	}
 
-Utils = require('backbone-orm').Utils;
 
-module.exports = HTTPCursor = (function(_super) {
-  __extends(HTTPCursor, _super);
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
 
-  function HTTPCursor() {
-    return HTTPCursor.__super__.constructor.apply(this, arguments);
-  }
+	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
 
-  HTTPCursor.prototype.toJSON = function(callback) {
-    var query, req;
-    if (this.hasCursorQuery('$zero')) {
-      return callback(null, this.hasCursorQuery('$one') ? null : []);
-    }
-    req = this.request.get(this.url).query(query = JSONUtils.toQuery(_.extend(_.clone(this._find), this._cursor))).type('json');
-    this.sync.beforeSend(req, null);
-    return req.end((function(_this) {
-      return function(err, res) {
-        var result;
-        if (err) {
-          return callback(err);
-        }
-        if (query.$one && (res.status === 404)) {
-          return callback(null, null);
-        }
-        if (!res.ok) {
-          return callback(new Error("Ajax failed with status " + res.status + " with: " + (Utils.inspect(res.body))));
-        }
-        result = JSONUtils.parse(res.body);
-        return callback(null, _this.hasCursorQuery('$count') || _this.hasCursorQuery('$exists') ? result.result : result);
-      };
-    })(this));
-  };
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
 
-  return HTTPCursor;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
-})(Cursor);
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
 
-});
-require.register('index', function(exports, require, module) {
+	
+	/*
+	  backbone-http.js 0.6.0
+	  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
+	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
+	  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
+	 */
+	var Backbone, HTTPCursor, HTTPSync, JSONUtils, ModelCache, Schema, Utils, bborm, _;
 
-/*
-  backbone-http.js 0.5.6
-  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
-  License: MIT (http://www.opensource.org/licenses/mit-license.php)
-  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
- */
-var bborm, path, _i, _len, _ref;
+	_ = __webpack_require__(4);
 
-if ((typeof window !== "undefined" && window !== null) && require.shim) {
-  require.shim([
-    {
-      symbol: '_',
-      path: 'lodash',
-      alias: 'underscore',
-      optional: true
-    }, {
-      symbol: '_',
-      path: 'underscore'
-    }, {
-      symbol: 'Backbone',
-      path: 'backbone'
-    }, {
-      symbol: 'moment',
-      path: 'moment'
-    }, {
-      symbol: 'stream',
-      path: 'stream',
-      optional: true
-    }, {
-      symbol: 'BackboneORM',
-      path: 'backbone-orm'
-    }, {
-      symbol: 'superagent',
-      path: 'superagent'
-    }
-  ]);
-}
+	Backbone = __webpack_require__(5);
 
-module.exports = {
-  sync: require('./sync'),
-  modules: {
-    'backbone-orm': bborm = require('backbone-orm'),
-    'superagent': require('superagent')
-  }
-};
+	bborm = __webpack_require__(1);
 
-_ref = ['url', 'querystring', 'lru-cache', 'underscore', 'backbone', 'moment', 'inflection', 'stream'];
-for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-  path = _ref[_i];
-  module.exports.modules[path] = bborm.modules[path];
-}
+	Schema = bborm.Schema;
 
-});
-require.register('sync', function(exports, require, module) {
+	Utils = bborm.Utils;
 
-/*
-  backbone-http.js 0.5.6
-  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
-  License: MIT (http://www.opensource.org/licenses/mit-license.php)
-  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
- */
-var Backbone, HTTPCursor, HTTPSync, JSONUtils, ModelCache, Schema, Utils, bborm, _;
+	JSONUtils = bborm.JSONUtils;
 
-_ = require('underscore');
+	ModelCache = bborm.CacheSingletons.ModelCache;
 
-Backbone = require('backbone');
+	HTTPCursor = __webpack_require__(6);
 
-bborm = require('backbone-orm');
+	HTTPSync = (function() {
+	  function HTTPSync(model_type, options) {
+	    this.model_type = model_type;
+	    if (options == null) {
+	      options = {};
+	    }
+	    !options.beforeSend || (this._beforeSend = options.beforeSend);
+	    this.model_type.model_name = Utils.findOrGenerateModelName(this.model_type);
+	    if (!(this.url = _.result(new this.model_type, 'url'))) {
+	      throw new Error("Missing url for model: " + this.model_type);
+	    }
+	    this.schema = new Schema(this.model_type);
+	    this.request = __webpack_require__(2);
+	  }
 
-Schema = bborm.Schema;
+	  HTTPSync.prototype.initialize = function(model) {
+	    if (this.is_initialized) {
+	      return;
+	    }
+	    this.is_initialized = true;
+	    return this.schema.initialize();
+	  };
 
-Utils = bborm.Utils;
+	  HTTPSync.prototype.resetSchema = function(options, callback) {
+	    var req;
+	    req = this.request.del(this.url);
+	    this.beforeSend(req, null, options);
+	    return req.end(function(err, res) {
+	      if (err) {
+	        return callback(err);
+	      }
+	      if (!res.ok) {
+	        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (Utils.inspect(res.body))));
+	      }
+	      return callback();
+	    });
+	  };
 
-JSONUtils = bborm.JSONUtils;
+	  HTTPSync.prototype.cursor = function(query) {
+	    if (query == null) {
+	      query = {};
+	    }
+	    return new HTTPCursor(query, {
+	      model_type: this.model_type,
+	      url: this.url,
+	      request: this.request,
+	      sync: this
+	    });
+	  };
 
-ModelCache = bborm.CacheSingletons.ModelCache;
+	  HTTPSync.prototype.destroy = function(query, callback) {
+	    var req;
+	    req = this.request.del(this.url).query(query);
+	    this.beforeSend(req, null);
+	    return req.end(function(err, res) {
+	      if (err) {
+	        return callback(err);
+	      }
+	      if (!res.ok) {
+	        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (Utils.inspect(res.body))));
+	      }
+	      return callback();
+	    });
+	  };
 
-HTTPCursor = require('./cursor');
+	  HTTPSync.prototype.beforeSend = function(req, model, options) {
+	    if (options == null) {
+	      options = {};
+	    }
+	    !options.beforeSend || options.beforeSend(req, model, options, this);
+	    return !this._beforeSend || this._beforeSend(req, model, options, this);
+	  };
 
-HTTPSync = (function() {
-  function HTTPSync(model_type, options) {
-    this.model_type = model_type;
-    if (options == null) {
-      options = {};
-    }
-    !options.beforeSend || (this._beforeSend = options.beforeSend);
-    this.model_type.model_name = Utils.findOrGenerateModelName(this.model_type);
-    if (!(this.url = _.result(new this.model_type, 'url'))) {
-      throw new Error("Missing url for model: " + this.model_type);
-    }
-    this.schema = new Schema(this.model_type);
-    this.request = require('superagent');
-  }
+	  return HTTPSync;
 
-  HTTPSync.prototype.initialize = function(model) {
-    if (this.is_initialized) {
-      return;
-    }
-    this.is_initialized = true;
-    return this.schema.initialize();
-  };
+	})();
 
-  HTTPSync.prototype.resetSchema = function(options, callback) {
-    var req;
-    req = this.request.del(this.url);
-    this.beforeSend(req, null, options);
-    return req.end(function(err, res) {
-      if (err) {
-        return callback(err);
-      }
-      if (!res.ok) {
-        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (Utils.inspect(res.body))));
-      }
-      return callback();
-    });
-  };
+	module.exports = function(type, sync_options) {
+	  var model_type, sync, sync_fn;
+	  if (Utils.isCollection(new type())) {
+	    model_type = Utils.configureCollectionModelType(type, module.exports, sync_options);
+	    return type.prototype.sync = model_type.prototype.sync;
+	  }
+	  sync = new HTTPSync(type, sync_options);
+	  type.prototype.sync = sync_fn = function(method, model, options) {
+	    var req, request, url;
+	    if (options == null) {
+	      options = {};
+	    }
+	    sync.initialize();
+	    if (method === 'createSync') {
+	      return module.exports.apply(null, Array.prototype.slice.call(arguments, 1));
+	    }
+	    if (method === 'sync') {
+	      return sync;
+	    }
+	    if (method === 'schema') {
+	      return sync.schema;
+	    }
+	    if (method === 'isRemote') {
+	      return true;
+	    }
+	    if (_.contains(['create', 'update', 'patch', 'delete', 'read'], method)) {
+	      if (!(url = options.url || _.result(model, 'url'))) {
+	        throw new Error('Missing url for model');
+	      }
+	      request = sync.request;
+	      switch (method) {
+	        case 'read':
+	          req = request.get(url).query({
+	            $one: !model.models
+	          }).type('json');
+	          break;
+	        case 'create':
+	          req = request.post(url).send(options.attrs || model.toJSON(options)).type('json');
+	          break;
+	        case 'update':
+	          req = request.put(url).send(options.attrs || model.toJSON(options)).type('json');
+	          break;
+	        case 'patch':
+	          req = request.patch(url).send(options.attrs || model.toJSON(options)).type('json');
+	          break;
+	        case 'delete':
+	          req = request.del(url);
+	      }
+	      sync.beforeSend(req, model, options);
+	      req.end(function(err, res) {
+	        if (err) {
+	          return options.error(err);
+	        }
+	        if (!res.ok) {
+	          return options.error(new Error("Ajax failed with status " + res.status + " for " + method + " with: " + (Utils.inspect(res.body))));
+	        }
+	        return options.success(JSONUtils.parse(res.body));
+	      });
+	      return;
+	    }
+	    if (sync[method]) {
+	      return sync[method].apply(sync, Array.prototype.slice.call(arguments, 1));
+	    } else {
+	      return void 0;
+	    }
+	  };
+	  Utils.configureModelType(type);
+	  return ModelCache.configureSync(type, sync_fn);
+	};
 
-  HTTPSync.prototype.cursor = function(query) {
-    if (query == null) {
-      query = {};
-    }
-    return new HTTPCursor(query, {
-      model_type: this.model_type,
-      url: this.url,
-      request: this.request,
-      sync: this
-    });
-  };
 
-  HTTPSync.prototype.destroy = function(query, callback) {
-    var req;
-    req = this.request.del(this.url).query(query);
-    this.beforeSend(req, null);
-    return req.end(function(err, res) {
-      if (err) {
-        return callback(err);
-      }
-      if (!res.ok) {
-        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (Utils.inspect(res.body))));
-      }
-      return callback();
-    });
-  };
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
 
-  HTTPSync.prototype.beforeSend = function(req, model, options) {
-    if (options == null) {
-      options = {};
-    }
-    !options.beforeSend || options.beforeSend(req, model, options, this);
-    return !this._beforeSend || this._beforeSend(req, model, options, this);
-  };
+	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
 
-  return HTTPSync;
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
 
-})();
+	module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
 
-module.exports = function(type, sync_options) {
-  var model_type, sync, sync_fn;
-  if (Utils.isCollection(new type())) {
-    model_type = Utils.configureCollectionModelType(type, module.exports, sync_options);
-    return type.prototype.sync = model_type.prototype.sync;
-  }
-  sync = new HTTPSync(type, sync_options);
-  type.prototype.sync = sync_fn = function(method, model, options) {
-    var req, request, url;
-    if (options == null) {
-      options = {};
-    }
-    sync.initialize();
-    if (method === 'createSync') {
-      return module.exports.apply(null, Array.prototype.slice.call(arguments, 1));
-    }
-    if (method === 'sync') {
-      return sync;
-    }
-    if (method === 'schema') {
-      return sync.schema;
-    }
-    if (method === 'isRemote') {
-      return true;
-    }
-    if (_.contains(['create', 'update', 'patch', 'delete', 'read'], method)) {
-      if (!(url = options.url || _.result(model, 'url'))) {
-        throw new Error('Missing url for model');
-      }
-      request = sync.request;
-      switch (method) {
-        case 'read':
-          req = request.get(url).query({
-            $one: !model.models
-          }).type('json');
-          break;
-        case 'create':
-          req = request.post(url).send(options.attrs || model.toJSON(options)).type('json');
-          break;
-        case 'update':
-          req = request.put(url).send(options.attrs || model.toJSON(options)).type('json');
-          break;
-        case 'patch':
-          req = request.patch(url).send(options.attrs || model.toJSON(options)).type('json');
-          break;
-        case 'delete':
-          req = request.del(url);
-      }
-      sync.beforeSend(req, model, options);
-      req.end(function(err, res) {
-        if (err) {
-          return options.error(err);
-        }
-        if (!res.ok) {
-          return options.error(new Error("Ajax failed with status " + res.status + " for " + method + " with: " + (Utils.inspect(res.body))));
-        }
-        return options.success(JSONUtils.parse(res.body));
-      });
-      return;
-    }
-    if (sync[method]) {
-      return sync[method].apply(sync, Array.prototype.slice.call(arguments, 1));
-    } else {
-      return void 0;
-    }
-  };
-  Utils.configureModelType(type);
-  return ModelCache.configureSync(type, sync_fn);
-};
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
 
-});
+	
+	/*
+	  backbone-http.js 0.6.0
+	  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
+	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
+	  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
+	 */
+	var Cursor, HTTPCursor, JSONUtils, Utils, _,
+	  __hasProp = {}.hasOwnProperty,
+	  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  if (typeof define == 'function' && define.amd) {
-    define(["require","backbone-orm","superagent"], function(){ return require('index'); });
-  }
-  else if (typeof exports == 'object') {
-    module.exports = require('index');
-  } else {
-    this['BackboneHTTP'] = require('index');
-  }
+	_ = __webpack_require__(4);
 
-}).call(this);
+	Cursor = __webpack_require__(1).Cursor;
+
+	JSONUtils = __webpack_require__(1).JSONUtils;
+
+	Utils = __webpack_require__(1).Utils;
+
+	module.exports = HTTPCursor = (function(_super) {
+	  __extends(HTTPCursor, _super);
+
+	  function HTTPCursor() {
+	    return HTTPCursor.__super__.constructor.apply(this, arguments);
+	  }
+
+	  HTTPCursor.prototype.toJSON = function(callback) {
+	    var query, req;
+	    if (this.hasCursorQuery('$zero')) {
+	      return callback(null, this.hasCursorQuery('$one') ? null : []);
+	    }
+	    req = this.request.get(this.url).query(query = JSONUtils.toQuery(_.extend(_.clone(this._find), this._cursor))).type('json');
+	    this.sync.beforeSend(req, null);
+	    return req.end((function(_this) {
+	      return function(err, res) {
+	        var result;
+	        if (err) {
+	          return callback(err);
+	        }
+	        if (query.$one && (res.status === 404)) {
+	          return callback(null, null);
+	        }
+	        if (!res.ok) {
+	          return callback(new Error("Ajax failed with status " + res.status + " with: " + (Utils.inspect(res.body))));
+	        }
+	        result = JSONUtils.parse(res.body);
+	        return callback(null, _this.hasCursorQuery('$count') || _this.hasCursorQuery('$exists') ? result.result : result);
+	      };
+	    })(this));
+	  };
+
+	  return HTTPCursor;
+
+	})(Cursor);
+
+
+/***/ }
+/******/ ])
+})

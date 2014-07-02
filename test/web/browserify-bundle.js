@@ -1,7 +1,7 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 
 /*
-  backbone-http.js 0.5.6
+  backbone-http.js 0.6.0
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -59,7 +59,7 @@ module.exports=require('5WlRB3');
 },{}],"5WlRB3":[function(require,module,exports){
 
 /*
-  backbone-http.js 0.5.6
+  backbone-http.js 0.6.0
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
@@ -113,7 +113,7 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 },{"./sync":4,"backbone-orm":19,"superagent":66}],4:[function(require,module,exports){
 
 /*
-  backbone-http.js 0.5.6
+  backbone-http.js 0.6.0
   Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
