@@ -1,11 +1,13 @@
 _ = require 'underscore'
-Queue = require 'backbone-orm/lib/queue'
+Queue = require 'queue-async'
 
-option_sets = require('backbone-orm/test/option_sets')
+option_sets = require 'backbone-orm/test/option_sets'
 # option_sets = option_sets.slice(0, 1)
 
+BackboneHTTP = window?.BackboneHTTP or require 'backbone-http'
+
 test_parameters =
-  sync: require '../lib/sync'
+  sync: BackboneHTTP.sync
   before: require './lib/build_mocks'
 
 test_queue = new Queue(1)
