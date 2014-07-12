@@ -11,9 +11,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define(["backbone-orm", "superagent", "underscore", "backbone"], factory);
 	else if(typeof exports === 'object')
-		exports["kb"] = factory(require("backbone-orm"), require("superagent"), require("underscore"), require("backbone"));
+		exports["BackboneHTTP"] = factory(require("backbone-orm"), require("superagent"), require("underscore"), require("backbone"));
 	else
-		root["kb"] = factory(root["BackboneORM"], root["superagent"], root["_"], root["Backbone"]);
+		root["BackboneHTTP"] = factory(root["BackboneORM"], root["superagent"], root["_"], root["Backbone"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_5__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache

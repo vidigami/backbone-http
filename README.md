@@ -73,3 +73,9 @@ Please run tests before submitting a pull request.
 ```
 $ npm test
 ```
+
+Tests can be run with mocha directly with `mocha 'node_modules/backbone-orm/test/spec/**/*.coffee'`
+
+Tests may be run in the browser with `karma start ./config/karma/manual-config.coffee`
+
+Tests may be debugged in the browser with `karma start --no-single-run --browsers Chrome ./config/karma/manual-config.coffee`, and opening up the debug tab

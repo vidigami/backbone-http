@@ -4,11 +4,7 @@ Queue = require 'queue-async'
 option_sets = require 'backbone-orm/test/option_sets'
 # option_sets = option_sets.slice(0, 1)
 
-BackboneHTTP = window?.BackboneHTTP or require 'backbone-http'
-
-test_parameters =
-  sync: BackboneHTTP.sync
-  before: require './lib/build_mocks'
+test_parameters = require './parameters'
 
 test_queue = new Queue(1)
 for options in option_sets
