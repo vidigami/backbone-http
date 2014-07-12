@@ -7,7 +7,7 @@ module.exports = _.extend  _.clone(require '../../webpack/base-config.coffee'), 
   output:
     path: '.'
     filename: 'backbone-http.js'
-    library: 'kb'
+    library: 'BackboneHTTP'
     libraryTarget: 'umd'
 
   externals: [
