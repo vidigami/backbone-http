@@ -49,6 +49,7 @@
     "webpack": "*",
     "wrench": "*",
     "jquery": "*",
+    "lodash": "*",
     "karma": "*",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.1.4",

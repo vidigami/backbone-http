@@ -38,7 +38,7 @@ class HTTPSync
     @beforeSend(req, null, options)
     req.end (err, res) ->
       return callback(err) if err
-      return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{Utils.inspect(res.body)}") unless res.ok
+      return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{JSONUtils.stringify(res.body)}") unless res.ok
       callback()
 
   cursor: (query={}) -> return new HTTPCursor(query, {model_type: @model_type, url: @url, request: @request, sync: @})
@@ -48,7 +48,7 @@ class HTTPSync
     @beforeSend(req, null)
     req.end (err, res) ->
       return callback(err) if err
-      return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{Utils.inspect(res.body)}") unless res.ok
+      return callback(new Error "Ajax failed with status #{res.status} for #{'destroy'} with: #{JSONUtils.stringify(res.body)}") unless res.ok
       callback()
 
   beforeSend: (req, model, options={}) ->
@@ -91,7 +91,7 @@ module.exports = (type, sync_options) ->
       sync.beforeSend(req, model, options)
       req.end (err, res) ->
         return options.error(err) if err
-        return options.error(new Error "Ajax failed with status #{res.status} for #{method} with: #{Utils.inspect(res.body)}") unless res.ok
+        return options.error(new Error "Ajax failed with status #{res.status} for #{method} with: #{JSONUtils.stringify(res.body)}") unless res.ok
         options.success(JSONUtils.parse(res.body))
       return
 
