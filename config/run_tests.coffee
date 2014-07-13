@@ -22,9 +22,9 @@ module.exports = (callback) ->
         delete global.test_parameters
         callback(err)
 
-  # # run browser tests
-  # queue.defer (callback) ->
-  #   gutil.log 'Running Browser tests'
-  #   karma(callback)
+  # run browser tests
+  queue.defer (callback) ->
+    gutil.log 'Running Browser tests'
+    karma(callback)
 
   queue.await callback
