@@ -1,7 +1,7 @@
 module.exports =
   underscore:
     output: './_temp/browserify/backbone-orm-underscore.tests.js'
-    files: ['test/parameters.coffee', 'test/option_sets.coffee', './test/spec/lib/**/*.tests.coffee', './test/spec/sync/**/*.tests.coffee']
+    files: ['test/parameters.coffee', 'test/option_sets.coffee', './test/spec/sync/**/*.tests.coffee']
     options:
       ignore: ['../../../option_sets', '../../../backbone-orm', '../../../../backbone-orm']
       shim:
@@ -9,7 +9,7 @@ module.exports =
 
   lodash:
     output: './_temp/browserify/backbone-orm-lodash.tests.js'
-    files: ['test/parameters.coffee', 'test/option_sets.coffee', './test/spec/lib/**/*.tests.coffee', './test/spec/sync/**/*.tests.coffee']
+    files: ['test/parameters.coffee', 'test/option_sets.coffee', './test/spec/sync/**/*.tests.coffee']
     options:
       ignore: ['../../../option_sets', '../../../backbone-orm', '../../../../backbone-orm']
       shim:
