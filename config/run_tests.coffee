@@ -9,6 +9,8 @@ mocha = require 'gulp-mocha'
 module.exports = (callback) ->
   queue = new Queue(1)
 
+  require '../test/lib/start_server'
+
   # # run node tests
   # queue.defer (callback) ->
   #   gutil.log 'Running Node.js tests (new)'
