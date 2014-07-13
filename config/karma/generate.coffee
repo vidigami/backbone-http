@@ -3,6 +3,7 @@ path = require 'path'
 _ = require 'underscore'
 Queue = require 'queue-async'
 es = require 'event-stream'
+Wrench = require 'wrench'
 
 gulp = require 'gulp'
 gutil = require 'gulp-util'
@@ -18,6 +19,12 @@ TEST_GROUPS = require('../test_groups')
 
 module.exports = (callback) ->
   queue = new Queue(1)
+
+  # install backbone-http
+  queue.defer (callback) ->
+    gulp.src(['./backbone-http.js', './package.json'])
+      .pipe(gulp.dest('node_modules/backbone-http'))
+      .on('end', callback)
 
   # # build webpack
   # queue.defer (callback) ->
@@ -44,4 +51,7 @@ module.exports = (callback) ->
   #       .pipe(gulp.dest(test.build.destination))
   #       .on('end', callback)
 
-  queue.await callback
+  # uninstall backbone-http
+  queue.await (err) ->
+    Wrench.rmdirSyncRecursive('node_modules/backbone-http', true)
+    callback(err)
