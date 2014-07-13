@@ -160,7 +160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return callback(err);
 	      }
 	      if (!res.ok) {
-	        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (Utils.inspect(res.body))));
+	        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (JSONUtils.stringify(res.body))));
 	      }
 	      return callback();
 	    });
@@ -187,7 +187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return callback(err);
 	      }
 	      if (!res.ok) {
-	        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (Utils.inspect(res.body))));
+	        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (JSONUtils.stringify(res.body))));
 	      }
 	      return callback();
 	    });
@@ -259,7 +259,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return options.error(err);
 	        }
 	        if (!res.ok) {
-	          return options.error(new Error("Ajax failed with status " + res.status + " for " + method + " with: " + (Utils.inspect(res.body))));
+	          return options.error(new Error("Ajax failed with status " + res.status + " for " + method + " with: " + (JSONUtils.stringify(res.body))));
 	        }
 	        return options.success(JSONUtils.parse(res.body));
 	      });
@@ -335,7 +335,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return callback(null, null);
 	        }
 	        if (!res.ok) {
-	          return callback(new Error("Ajax failed with status " + res.status + " with: " + (Utils.inspect(res.body))));
+	          return callback(new Error("Ajax failed with status " + res.status + " with: " + (JSONUtils.stringify(res.body))));
 	        }
 	        result = JSONUtils.parse(res.body);
 	        return callback(null, _this.hasCursorQuery('$count') || _this.hasCursorQuery('$exists') ? result.result : result);

@@ -26,6 +26,13 @@ module.exports = (callback) ->
       .pipe(gulp.dest('node_modules/backbone-http'))
       .on('end', callback)
 
+  # compile coffeescript config
+  queue.defer (callback) ->
+    gulp.src(['./node_modules/backbone-orm/test/option_sets.coffee', './test/parameters.coffee'])
+      .pipe(compile({coffee: {bare: true}}))
+      .pipe(gulp.dest('_temp'))
+      .on('end', callback)
+
   # # build webpack
   # queue.defer (callback) ->
   #   gulp.src(['config/builds/test/**/*.webpack.config.coffee', '!config/builds/test/**/*.pre.webpack.config.coffee'], {read: false, buffer: false})
