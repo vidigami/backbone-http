@@ -160,7 +160,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return callback(err);
 	      }
 	      if (!res.ok) {
-	        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (JSONUtils.stringify(res.body))));
+	        return callback(_.extend(new Error("Ajax failed with status " + res.status + " for " + 'resetSchema'), {
+	          status: res.status
+	        }));
 	      }
 	      return callback();
 	    });
@@ -180,14 +182,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  HTTPSync.prototype.destroy = function(query, callback) {
 	    var req;
-	    req = this.request.del(this.url).query(query);
+	    req = this.request.del(this.url).query(JSONUtils.toQuery(query));
 	    this.beforeSend(req, null);
 	    return req.end(function(err, res) {
 	      if (err) {
 	        return callback(err);
 	      }
 	      if (!res.ok) {
-	        return callback(new Error("Ajax failed with status " + res.status + " for " + 'destroy' + " with: " + (JSONUtils.stringify(res.body))));
+	        return callback(_.extend(new Error("Ajax failed with status " + res.status + " for " + 'destroy'), {
+	          status: res.status
+	        }));
 	      }
 	      return callback();
 	    });
@@ -259,7 +263,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return options.error(err);
 	        }
 	        if (!res.ok) {
-	          return options.error(new Error("Ajax failed with status " + res.status + " for " + method + " with: " + (JSONUtils.stringify(res.body))));
+	          return options.error(_.extend(new Error("Ajax failed with status " + res.status + " for " + method), {
+	            status: res.status
+	          }));
 	        }
 	        return options.success(JSONUtils.parse(res.body));
 	      });
