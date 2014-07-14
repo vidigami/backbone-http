@@ -45,6 +45,8 @@ gulp.task 'test', ['minify'], (callback) ->
   runTests (err) -> process.exit(if err then 1 else 0)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
+gulp.task 'test-server', (callback) -> (require 'test/lib/start_server').onReady(callback)
+
 gulp.task 'zip', ['minify'], (callback) ->
   gulp.src(['*.js', 'node_modules/backbone-orm/*.js'])
     .pipe(es.map (file, callback) -> file.path = file.path.replace('node_modules/backbone-orm/', 'backbone-orm/'); callback(null, file))
