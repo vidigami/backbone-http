@@ -9,15 +9,15 @@ module.exports = TEST_GROUPS = {}
 ###############################
 # Browser Globals
 ###############################
-LIBRARIES =
-  backbone_underscore: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'underscore', 'backbone', 'moment', 'backbone-orm']).concat('./node_modules/superagent/superagent.js', './backbone-http.js')
-  backbone_underscore_min: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'underscore', 'backbone', 'moment', 'backbone-orm']).concat('./node_modules/superagent/superagent.js', './backbone-http.min.js')
-  backbone_lodash: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'lodash', 'backbone', 'moment', 'backbone-orm']).concat('./node_modules/superagent/superagent.js', './backbone-http.js')
-  backbone_lodash_min: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'lodash', 'backbone', 'moment', 'backbone-orm']).concat('./node_modules/superagent/superagent.js', './backbone-http.min.js')
+# LIBRARIES =
+#   backbone_underscore: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'underscore', 'backbone', 'moment', 'backbone-orm']).concat('./node_modules/superagent/superagent.js', './backbone-http.js')
+#   backbone_underscore_min: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'underscore', 'backbone', 'moment', 'backbone-orm']).concat('./node_modules/superagent/superagent.js', './backbone-http.min.js')
+#   backbone_lodash: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'lodash', 'backbone', 'moment', 'backbone-orm']).concat('./node_modules/superagent/superagent.js', './backbone-http.js')
+#   backbone_lodash_min: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'lodash', 'backbone', 'moment', 'backbone-orm']).concat('./node_modules/superagent/superagent.js', './backbone-http.min.js')
 
-TEST_GROUPS.browser_globals = []
-for library_name, library_files of LIBRARIES
-  TEST_GROUPS.browser_globals.push({name: "browser_globals_#{library_name}", files: library_files.concat(['./_temp/parameters.js', './_temp/option_sets.js', './node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee'])})
+# TEST_GROUPS.browser_globals = []
+# for library_name, library_files of LIBRARIES
+#   TEST_GROUPS.browser_globals.push({name: "browser_globals_#{library_name}", files: library_files.concat(['./_temp/parameters.js', './_temp/option_sets.js', './node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee'])})
 
 # ###############################
 # # AMD
@@ -25,7 +25,7 @@ for library_name, library_files of LIBRARIES
 # AMD_OPTIONS = require './amd/gulp-options'
 # TEST_GROUPS.amd = []
 # for test in TEST_GROUPS.browser_globals when (test.name.indexOf('_min') < 0 and test.name.indexOf('legacy_') < 0 and test.name.indexOf('parse_') < 0)
-#   test_files = ['./node_modules/chai/chai.js', './stream.js'].concat(test.files); files = []; test_patterns = []; path_files = []
+#   test_files = ['./node_modules/chai/chai.js'].concat(test.files); files = []; test_patterns = []; path_files = []
 #   files.push({pattern: './test/lib/requirejs-2.1.14.js'})
 #   for file in test_files
 #     (test_patterns.push(file); continue) if file.indexOf('.tests.') >= 0
@@ -44,9 +44,9 @@ for library_name, library_files of LIBRARIES
 #     test_file = webpack_config.output.filename
 #     TEST_GROUPS.webpack.push({name: "webpack_#{path.basename(test_file, '.js')}", files: [test_file]})
 
-# ###############################
-# # Browserify
-# ###############################
-# TEST_GROUPS.browserify = []
-# for test_name, test_info of require('./browserify/tests')
-#   TEST_GROUPS.browserify.push({name: "browserify_#{test_name}", files: [test_info.output], build: {destination: test_info.output, options: test_info.options, files: test_info.files}})
+###############################
+# Browserify
+###############################
+TEST_GROUPS.browserify = []
+for test_name, test_info of require('./browserify/tests')
+  TEST_GROUPS.browserify.push({name: "browserify_#{test_name}", files: [test_info.output], build: {destination: test_info.output, options: test_info.options, files: test_info.files}})

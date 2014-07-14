@@ -35,19 +35,19 @@ module.exports = (callback) ->
 
   # # build webpack
   # queue.defer (callback) ->
-  #   gulp.src(['config/builds/test/**/*.webpack.config.coffee', '!config/builds/test/**/*.pre.webpack.config.coffee'], {read: false, buffer: false})
+  #   gulp.src(['config/builds/test/**/*.webpack.config.coffee'], {read: false, buffer: false})
   #     .pipe(webpack())
   #     .pipe(es.writeArray (err, array) -> callback(err))
 
-  # # build test browserify
-  # for test in TEST_GROUPS.browserify or []
-  #   do (test) -> queue.defer (callback) ->
-  #     gulp.src(test.build.files)
-  #       .pipe(compile({coffee: {bare: true}}))
-  #       .pipe(concat(path.basename(test.build.destination)))
-  #       .pipe(browserify(test.build.options))
-  #       .pipe(gulp.dest(path.dirname(test.build.destination)))
-  #       .on('end', callback)
+  # build test browserify
+  for test in TEST_GROUPS.browserify or []
+    do (test) -> queue.defer (callback) ->
+      gulp.src(test.build.files)
+        .pipe(compile({coffee: {bare: true}}))
+        .pipe(concat(path.basename(test.build.destination)))
+        .pipe(browserify(test.build.options))
+        .pipe(gulp.dest(path.dirname(test.build.destination)))
+        .on('end', callback)
 
   # # wrap AMD tests
   # for test in TEST_GROUPS.amd or []
