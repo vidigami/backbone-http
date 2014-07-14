@@ -1,17 +1,19 @@
+path = require 'path'
+
 module.exports =
   underscore:
-    output: './_temp/browserify/backbone-orm-underscore.tests.js'
-    files: ['test/parameters.coffee', 'test/option_sets.coffee', './test/spec/sync/**/*.tests.coffee']
+    output: './_temp/browserify/backbone-http-underscore.tests.js'
+    files: ['test/parameters.coffee', 'test/option_sets.coffee', './node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee']
     options:
       ignore: ['../../../option_sets', '../../../backbone-orm', '../../../../backbone-orm']
       shim:
-        'backbone-orm': {path: './backbone-orm.js', exports: 'BackboneORM', depends: {jquery: 'jQuery', underscore: '_', backbone: 'Backbone', moment: 'moment', stream: 'stream'}}
+        'backbone-http': {path: './backbone-http.js', exports: 'BackboneHTTP', depends: {jquery: 'jQuery', underscore: '_', backbone: 'Backbone', moment: 'moment', 'backbone-orm': 'BackboneORM', stream: 'stream', superagent: 'superagent'}}
 
   lodash:
-    output: './_temp/browserify/backbone-orm-lodash.tests.js'
-    files: ['test/parameters.coffee', 'test/option_sets.coffee', './test/spec/sync/**/*.tests.coffee']
+    output: './_temp/browserify/backbone-http-lodash.tests.js'
+    files: ['test/parameters.coffee', 'test/option_sets.coffee', './node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee']
     options:
       ignore: ['../../../option_sets', '../../../backbone-orm', '../../../../backbone-orm']
       shim:
-        'underscore': {path: './node_modules/lodash/lodash.js', exports: '_'}
-        'backbone-orm': {path: './backbone-orm.js', exports: 'BackboneORM', depends: {jquery: 'jQuery', underscore: '_', backbone: 'Backbone', moment: 'moment', stream: 'stream'}}
+        'underscore': {path: path.resolve(path.join('.', path.relative('.', require.resolve('lodash')))), exports: '_'}
+        'backbone-http': {path: './backbone-http.js', exports: 'BackboneHTTP', depends: {jquery: 'jQuery', underscore: '_', backbone: 'Backbone', moment: 'moment', 'backbone-orm': 'BackboneORM', stream: 'stream', superagent: 'superagent'}}
