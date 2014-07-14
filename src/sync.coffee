@@ -44,7 +44,7 @@ class HTTPSync
   cursor: (query={}) -> return new HTTPCursor(query, {model_type: @model_type, url: @url, request: @request, sync: @})
 
   destroy: (query, callback) ->
-    req = @request.del(@url).query(query)
+    req = @request.del(@url).query(JSONUtils.toQuery(query))
     @beforeSend(req, null)
     req.end (err, res) ->
       return callback(err) if err
