@@ -3,7 +3,7 @@ path = require 'path'
 module.exports =
   underscore:
     output: './_temp/browserify/backbone-http-underscore.tests.js'
-    files: ['test/parameters.coffee', 'test/option_sets.coffee', './node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee']
+    files: ['test/parameters.coffee', './node_modules/backbone-orm/test/option_sets.coffee', './node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee']
     options:
       ignore: ['../../../option_sets', '../../../backbone-orm', '../../../../backbone-orm']
       shim:
@@ -11,7 +11,7 @@ module.exports =
 
   lodash:
     output: './_temp/browserify/backbone-http-lodash.tests.js'
-    files: ['test/parameters.coffee', 'test/option_sets.coffee', './node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee']
+    files: ['test/parameters.coffee', './node_modules/backbone-orm/test/option_sets.coffee', './node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee']
     options:
       ignore: ['../../../option_sets', '../../../backbone-orm', '../../../../backbone-orm']
       shim:
