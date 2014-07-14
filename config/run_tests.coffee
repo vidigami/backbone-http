@@ -12,15 +12,15 @@ module.exports = (callback) ->
   require '../test/lib/start_server'
 
   # run node tests
-  # queue.defer (callback) ->
-  #   gutil.log 'Running Node.js tests (new)'
-  #   # ensure that globals for the target backend are loaded
-  #   global.test_parameters = require '../test/parameters'
-  #   gulp.src('node_modules/backbone-orm/test/spec/**/*.coffee')
-  #     .pipe(mocha({}))
-  #     .pipe es.writeArray (err, array) ->
-  #       delete global.test_parameters
-  #       callback(err)
+  queue.defer (callback) ->
+    gutil.log 'Running Node.js tests (new)'
+    # ensure that globals for the target backend are loaded
+    global.test_parameters = require '../test/parameters'
+    gulp.src('node_modules/backbone-orm/test/spec/**/*.coffee')
+      .pipe(mocha({}))
+      .pipe es.writeArray (err, array) ->
+        delete global.test_parameters
+        callback(err)
 
   # run browser tests
   queue.defer (callback) ->
