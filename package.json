@@ -17,7 +17,6 @@
     "orm",
     "backbone-orm",
     "http",
-    "superagent",
     "ajax"
   ],
   "engines": {
@@ -66,6 +65,7 @@
     "karma-spec-reporter": "0.0.13",
     "lodash": "*",
     "mocha": "*",
+    "node-jquery-xhr": "^1.8.3",
     "powerset": "*",
     "queue-async": "*",
     "webpack": "*",
@@ -76,7 +76,6 @@
     "backbone": ">=1.0.0",
     "moment": ">=1.0.0",
     "inflection": ">=1.0.0",
-    "backbone-orm": "git+https://github.com/vidigami/backbone-orm#develop",
-    "superagent": ">=0.10.0"
+    "backbone-orm": "git+https://github.com/vidigami/backbone-orm#develop"
   }
 }

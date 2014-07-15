@@ -7,6 +7,7 @@
 
 _ = require 'underscore'
 Backbone = require 'backbone'
+backboneSync = Backbone.sync
 
 bborm = require 'backbone-orm'
 Schema = bborm.Schema
@@ -15,6 +16,7 @@ JSONUtils = bborm.JSONUtils
 ModelCache = bborm.CacheSingletons.ModelCache
 
 HTTPCursor = require './cursor'
+URL = require 'url'
 
 class HTTPSync
 
@@ -23,7 +25,7 @@ class HTTPSync
     @model_type.model_name = Utils.findOrGenerateModelName(@model_type)
     throw new Error("Missing url for model: #{@model_type}") unless @url = _.result(new @model_type, 'url')
     @schema = new Schema(@model_type)
-    @request = require 'superagent'
+    @event_emitter = _.extend({}, Backbone.Events)
 
   initialize: (model) ->
     return if @is_initialized; @is_initialized = true
@@ -33,27 +35,21 @@ class HTTPSync
   # Backbone ORM - Class Extensions
   ###################################
   # @private
-  resetSchema: (options, callback) ->
-    req = @request.del(@url)
-    @beforeSend(req, null, options)
-    req.end (err, res) ->
-      return callback(err) if err
-      return callback(_.extend(new Error("Ajax failed with status #{res.status} for #{'resetSchema'}"), {status: res.status})) unless res.ok
-      callback()
-
-  cursor: (query={}) -> return new HTTPCursor(query, {model_type: @model_type, url: @url, request: @request, sync: @})
-
+  resetSchema: (options, callback) -> @http('delete', null, {}, callback)
+  cursor: (query={}) -> return new HTTPCursor(query, {model_type: @model_type, sync: @})
   destroy: (query, callback) ->
-    req = @request.del(@url).query(JSONUtils.toQuery(query))
-    @beforeSend(req, null)
-    req.end (err, res) ->
-      return callback(err) if err
-      return callback(_.extend(new Error("Ajax failed with status #{res.status} for #{'destroy'}"), {status: res.status})) unless res.ok
-      callback()
+    [query, callback] = [{}, query] if arguments.length is 1
+    @http('delete', null, {query: query}, callback)
 
-  beforeSend: (req, model, options={}) ->
-    not options.beforeSend or options.beforeSend(req, model, options, @)
-    not @_beforeSend or @_beforeSend(req, model, options, @)
+  http: (method, model, options, callback) ->
+    url = if model then _.result(model, 'url') else @url
+    if options.query and _.size(options.query)
+      url_parts = URL.parse(url, true); _.extend(url_parts.query, JSONUtils.toQuery(options.query)); url = URL.format(url_parts)
+
+    backboneSync method, model or @event_emitter, _.extend({url: url, beforeSend: @beforeSend}, options, {
+      success: (res) -> callback(null, JSONUtils.parse(res))
+      error: (res) -> return callback(_.extend(new Error("Ajax failed with status #{res.status} for #{method}"), {status: res.status}))
+    })
 
 module.exports = (type, sync_options) ->
   if Utils.isCollection(new type()) # collection
@@ -75,24 +71,9 @@ module.exports = (type, sync_options) ->
     if _.contains(['create', 'update', 'patch', 'delete', 'read'], method)
       throw new Error 'Missing url for model' unless url = options.url or _.result(model, 'url')
 
-      request = sync.request # use request from the sync
-      switch method
-        when 'read'
-          req = request.get(url).query({$one: !model.models}).type('json')
-        when 'create'
-          req = request.post(url).send(options.attrs or model.toJSON(options)).type('json')
-        when 'update'
-          req = request.put(url).send(options.attrs or model.toJSON(options)).type('json')
-        when 'patch'
-          req = request.patch(url).send(options.attrs or model.toJSON(options)).type('json')
-        when 'delete'
-          req = request.del(url)
-
-      sync.beforeSend(req, model, options)
-      req.end (err, res) ->
-        return options.error(err) if err
-        return options.error(_.extend(new Error("Ajax failed with status #{res.status} for #{method}"), {status: res.status})) unless res.ok
-        options.success(JSONUtils.parse(res.body))
+      options = _.extend({$one: !model.models}, options) if method is 'read'
+      sync.http method, model, _.omit(options, 'error', 'success'), (err, res) =>
+        if err then options.error(err) else options.success(res)
       return
 
     ###################################

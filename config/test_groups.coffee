@@ -10,10 +10,10 @@ module.exports = TEST_GROUPS = {}
 # Browser Globals
 ###############################
 LIBRARIES =
-  backbone_underscore: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'underscore', 'backbone', 'moment', 'backbone-orm']).concat(['./node_modules/backbone-orm/stream.js', './node_modules/superagent/superagent.js', './backbone-http.js'])
-  backbone_underscore_min: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'underscore', 'backbone', 'moment', 'backbone-orm']).concat(['./node_modules/backbone-orm/stream.js', './node_modules/superagent/superagent.js', './backbone-http.min.js'])
-  backbone_lodash: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'lodash', 'backbone', 'moment', 'backbone-orm']).concat(['./node_modules/backbone-orm/stream.js', './node_modules/superagent/superagent.js', './backbone-http.js'])
-  backbone_lodash_min: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'lodash', 'backbone', 'moment', 'backbone-orm']).concat(['./node_modules/backbone-orm/stream.js', './node_modules/superagent/superagent.js', './backbone-http.min.js'])
+  backbone_underscore: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'underscore', 'backbone', 'moment', 'backbone-orm']).concat(['./node_modules/backbone-orm/stream.js', './backbone-http.js'])
+  backbone_underscore_min: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'underscore', 'backbone', 'moment', 'backbone-orm']).concat(['./node_modules/backbone-orm/stream.js', './backbone-http.min.js'])
+  backbone_lodash: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'lodash', 'backbone', 'moment', 'backbone-orm']).concat(['./node_modules/backbone-orm/stream.js', './backbone-http.js'])
+  backbone_lodash_min: (path.relative('.', require.resolve(module_name)) for module_name in ['jquery', 'lodash', 'backbone', 'moment', 'backbone-orm']).concat(['./node_modules/backbone-orm/stream.js', './backbone-http.min.js'])
 
 TEST_GROUPS.browser_globals = []
 for library_name, library_files of LIBRARIES
