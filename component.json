@@ -9,7 +9,6 @@
   "dependencies": {
     "jashkenas/underscore": "*",
     "jashkenas/backbone": "*",
-    "moment/moment": "*",
     "vidigami/backbone-orm": "*"
   },
   "license": "MIT",

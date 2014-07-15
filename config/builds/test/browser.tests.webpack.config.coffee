@@ -18,5 +18,4 @@ module.exports.resolve.alias =
   querystring: path.resolve('./config/node-dependencies/querystring.js')
   url: path.resolve('./config/node-dependencies/url.js')
   util: path.resolve('./config/node-dependencies/util.js')
-  moment: path.resolve(path.join('.', path.relative('.', require.resolve('moment'))))
   stream: path.resolve(path.join('.', path.relative('.', require.resolve('backbone-orm')), '..', './stream.js'))

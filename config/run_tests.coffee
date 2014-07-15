@@ -20,7 +20,7 @@ module.exports = (callback) ->
     gulp.src('node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee')
       .pipe(mocha({}))
       .pipe es.writeArray (err, array) ->
-        delete Backbone.$
+        delete require('backbone').$
         delete global.test_parameters
         callback(err)
 
