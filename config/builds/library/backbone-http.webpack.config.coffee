@@ -11,7 +11,7 @@ module.exports = _.extend  _.clone(require '../../webpack/base-config.coffee'), 
     libraryTarget: 'umd'
 
   externals: [
-    {jquery: {root: 'jQuery', amd: 'jquery', commonjs: 'jquery', commonjs2: 'jquery'}}
+    {jquery: {root: '$', amd: 'jquery', commonjs: 'jquery', commonjs2: 'jquery'}}
     {underscore: {root: '_', amd: 'underscore', commonjs: 'underscore', commonjs2: 'underscore'}}
     {backbone: {root: 'Backbone', amd: 'backbone', commonjs: 'backbone', commonjs2: 'backbone'}}
     {'backbone-orm': {root: 'BackboneORM', amd: 'backbone-orm', commonjs: 'backbone-orm', commonjs2: 'backbone-orm'}}
