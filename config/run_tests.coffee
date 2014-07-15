@@ -20,13 +20,13 @@ module.exports = (callback) ->
     gulp.src('node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee')
       .pipe(mocha({}))
       .pipe es.writeArray (err, array) ->
+        delete Backbone.$
         delete global.test_parameters
-        # delete Backbone.$
         callback(err)
 
-  # # run browser tests
-  # queue.defer (callback) ->
-  #   gutil.log 'Running Browser tests'
-  #   karma(callback)
+  # run browser tests
+  queue.defer (callback) ->
+    gutil.log 'Running Browser tests'
+    karma(callback)
 
   queue.await callback

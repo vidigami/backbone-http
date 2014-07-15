@@ -304,7 +304,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (this.hasCursorQuery('$zero')) {
 	      return callback(null, this.hasCursorQuery('$one') ? null : []);
 	    }
-	    return this.sync.http('read', null, query = _.extend(_.clone(this._find), this._cursor), (function(_this) {
+	    return this.sync.http('read', null, {
+	      query: query = _.extend(_.clone(this._find), this._cursor)
+	    }, (function(_this) {
 	      return function(err, res) {
 	        if (query.$one && err && (err.status === 404)) {
 	          return callback(null, null);

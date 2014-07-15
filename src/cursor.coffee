@@ -19,6 +19,6 @@ module.exports = class HTTPCursor extends Cursor
   toJSON: (callback) ->
     return callback(null, if @hasCursorQuery('$one') then null else []) if @hasCursorQuery('$zero')
 
-    @sync.http 'read', null, query = _.extend(_.clone(@_find), @_cursor), (err, res) =>
+    @sync.http 'read', null, {query: query = _.extend(_.clone(@_find), @_cursor)}, (err, res) =>
       return callback(null, null) if query.$one and err and (err.status is 404) # not found
       callback(null, if (@hasCursorQuery('$count') or @hasCursorQuery('$exists')) then res.result else res)
