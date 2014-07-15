@@ -81,7 +81,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	_ref = ['url', 'querystring', 'lru-cache', 'underscore', 'backbone', 'moment', 'inflection', 'stream'];
+	_ref = ['url', 'querystring', 'lru-cache', 'underscore', 'backbone', 'inflection', 'stream'];
 	for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 	  path = _ref[_i];
 	  module.exports.modules[path] = BackboneORM.modules[path];

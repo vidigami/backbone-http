@@ -16,5 +16,5 @@ module.exports =
   modules:
     'backbone-orm': BackboneORM
 
-for path in ['url', 'querystring', 'lru-cache', 'underscore', 'backbone', 'moment', 'inflection', 'stream']
+for path in ['url', 'querystring', 'lru-cache', 'underscore', 'backbone', 'inflection', 'stream']
   module.exports.modules[path] = BackboneORM.modules[path]
