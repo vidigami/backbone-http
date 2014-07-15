@@ -19,13 +19,6 @@ module.exports = class HTTPCursor extends Cursor
   toJSON: (callback) ->
     return callback(null, if @hasCursorQuery('$one') then null else []) if @hasCursorQuery('$zero')
 
-    req = @request.get(@url)
-      .query(query = JSONUtils.toQuery(_.extend(_.clone(@_find), @_cursor)))
-      .type('json')
-    @sync.beforeSend(req, null)
-    req.end (err, res) =>
-      return callback(err) if err
-      return callback(null, null) if query.$one and (res.status is 404) # not found
-      return callback(new Error "Ajax failed with status #{res.status} with: #{JSONUtils.stringify(res.body)}") unless res.ok
-      result = JSONUtils.parse(res.body)
-      callback(null, if (@hasCursorQuery('$count') or @hasCursorQuery('$exists')) then result.result else result)
+    @sync.http 'read', null, query = _.extend(_.clone(@_find), @_cursor), (err, res) =>
+      return callback(null, null) if query.$one and err and (err.status is 404) # not found
+      callback(null, if (@hasCursorQuery('$count') or @hasCursorQuery('$exists')) then res.result else res)

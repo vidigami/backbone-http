@@ -13,18 +13,20 @@ module.exports = (callback) ->
 
   # run node tests
   queue.defer (callback) ->
-    gutil.log 'Running Node.js tests (new)'
+    gutil.log 'Running Node.js tests'
     # ensure that globals for the target backend are loaded
+    require 'node-jquery-xhr'; delete global.window; require('backbone').$ = global.$
     global.test_parameters = require '../test/parameters'
-    gulp.src('node_modules/backbone-orm/test/spec/**/*.coffee')
+    gulp.src('node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee')
       .pipe(mocha({}))
       .pipe es.writeArray (err, array) ->
         delete global.test_parameters
+        # delete Backbone.$
         callback(err)
 
-  # run browser tests
-  queue.defer (callback) ->
-    gutil.log 'Running Browser tests'
-    karma(callback)
+  # # run browser tests
+  # queue.defer (callback) ->
+  #   gutil.log 'Running Browser tests'
+  #   karma(callback)
 
   queue.await callback

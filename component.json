@@ -10,8 +10,7 @@
     "jashkenas/underscore": "*",
     "jashkenas/backbone": "*",
     "moment/moment": "*",
-    "vidigami/backbone-orm": "*",
-    "visionmedia/superagent": "*"
+    "vidigami/backbone-orm": "*"
   },
   "license": "MIT",
   "main": "backbone-http.js",

@@ -17,6 +17,10 @@ module.exports = _.extend  _.clone(require '../../webpack/base-config.coffee'), 
     {'backbone-orm': {root: 'BackboneORM', amd: 'backbone-orm', commonjs: 'backbone-orm', commonjs2: 'backbone-orm'}}
     {moment: 'moment'}
     {stream: 'stream'}
-    {superagent: 'superagent'}
   ]
 }
+
+module.exports.resolve.alias =
+  querystring: path.resolve('./node_modules/backbone-orm/config/node-dependencies/querystring.js')
+  url: path.resolve('./node_modules/backbone-orm/config/node-dependencies/url.js')
+  util: path.resolve('./node_modules/backbone-orm/config/node-dependencies/util.js')

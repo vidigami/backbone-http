@@ -8,13 +8,12 @@
     "Gwilym Humphreys (https://github.com/gwilymhumphreys)"
   ],
   "description": "An HTTP interface for BackboneORM",
-  "keywords": ["backbone", "orm", "backbone-orm", "http", "superagent", "ajax"],
+  "keywords": ["backbone", "orm", "backbone-orm", "http", "ajax"],
   "dependencies": {
     "underscore": ">=1.2.0",
     "backbone": ">=1.0.0",
     "moment": ">=1.0.0",
-    "backbone-orm": ">=0.5.0",
-    "superagent": ">=0.10.0"
+    "backbone-orm": ">=0.5.0"
   },
   "license": "MIT",
   "ignore": [
