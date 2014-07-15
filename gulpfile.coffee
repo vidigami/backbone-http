@@ -8,7 +8,7 @@ rename = require 'gulp-rename'
 uglify = require 'gulp-uglify'
 header = require 'gulp-header'
 zip = require 'gulp-zip'
-runTests = require './config/run_tests'
+require './config/test_tasks'
 
 HEADER = """
 /*
@@ -41,11 +41,11 @@ gulp.task 'minify', ['build'], (callback) ->
     .on('end', callback)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test', ['minify'], (callback) ->
-  runTests (err) -> process.exit(if err then 1 else 0)
-  return # promises workaround: https://github.com/gulpjs/gulp/issues/455
+gulp.task 'test', ['start-test-server', 'test-node', 'test-browsers-after-node'], ->
+  (require 'test/lib/start_server').server?.close()
 
-gulp.task 'test-server', (callback) -> (require 'test/lib/start_server').onReady(callback)
+gulp.task 'start-test-server', (callback) ->
+  (require 'test/lib/start_server')(callback)
 
 gulp.task 'zip', ['minify'], (callback) ->
   gulp.src(['*.js', 'node_modules/backbone-orm/*.js'])
