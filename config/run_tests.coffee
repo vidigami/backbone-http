@@ -9,7 +9,7 @@ mocha = require 'gulp-mocha'
 module.exports = (callback) ->
   queue = new Queue(1)
 
-  require '../test/lib/start_server'
+  queue.defer (callback) -> (require '../test/lib/start_server')(callback)
 
   # run node tests
   queue.defer (callback) ->
