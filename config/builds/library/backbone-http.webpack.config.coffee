@@ -22,4 +22,3 @@ module.exports = _.extend  _.clone(require '../../webpack/base-config.coffee'), 
 module.exports.resolve.alias =
   querystring: path.resolve('./node_modules/backbone-orm/config/node-dependencies/querystring.js')
   url: path.resolve('./node_modules/backbone-orm/config/node-dependencies/url.js')
-  util: path.resolve('./node_modules/backbone-orm/config/node-dependencies/util.js')
