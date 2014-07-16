@@ -42,10 +42,10 @@ gulp.task 'minify', ['build'], (callback) ->
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
 gulp.task 'test', ['start-test-server', 'test-node', 'test-browsers-after-node'], ->
-  (require 'test/lib/start_server').server?.close()
+  (require './test/lib/start_server').server?.close()
 
 gulp.task 'start-test-server', (callback) ->
-  (require 'test/lib/start_server')(callback)
+  (require './test/lib/start_server')(callback)
 
 gulp.task 'zip', ['minify'], (callback) ->
   gulp.src(['*.js', 'node_modules/backbone-orm/*.js'])
