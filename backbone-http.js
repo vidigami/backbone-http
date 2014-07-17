@@ -1351,19 +1351,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  var type = typeof subject
 
-	  if (encoding === 'base64' && type === 'string') {
-	    subject = base64clean(subject)
-	  }
-
 	  // Find the length
 	  var length
 	  if (type === 'number')
-	    length = coerce(subject)
-	  else if (type === 'string')
+	    length = subject > 0 ? subject >>> 0 : 0
+	  else if (type === 'string') {
+	    if (encoding === 'base64')
+	      subject = base64clean(subject)
 	    length = Buffer.byteLength(subject, encoding)
-	  else if (type === 'object')
-	    length = coerce(subject.length) // assume that object is array-like
-	  else
+	  } else if (type === 'object' && subject !== null) { // assume object is array-like
+	    if (subject.type === 'Buffer' && Array.isArray(subject.data))
+	      subject = subject.data
+	    length = +subject.length > 0 ? Math.floor(+subject.length) : 0
+	  } else
 	    throw new Error('First argument needs to be a number, array or string.')
 
 	  var buf
@@ -1771,8 +1771,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	Buffer.prototype.slice = function (start, end) {
 	  var len = this.length
-	  start = clamp(start, len, 0)
-	  end = clamp(end, len, len)
+	  start = ~~start
+	  end = end === undefined ? len : ~~end
+
+	  if (start < 0) {
+	    start += len;
+	    if (start < 0)
+	      start = 0
+	  } else if (start > len) {
+	    start = len
+	  }
+
+	  if (end < 0) {
+	    end += len
+	    if (end < 0)
+	      end = 0
+	  } else if (end > len) {
+	    end = len
+	  }
+
+	  if (end < start)
+	    end = start
 
 	  if (Buffer._useTypedArrays) {
 	    return Buffer._augment(this.subarray(start, end))
@@ -2324,25 +2343,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	function stringtrim (str) {
 	  if (str.trim) return str.trim()
 	  return str.replace(/^\s+|\s+$/g, '')
-	}
-
-	// slice(start, end)
-	function clamp (index, len, defaultValue) {
-	  if (typeof index !== 'number') return defaultValue
-	  index = ~~index;  // Coerce to integer.
-	  if (index >= len) return len
-	  if (index >= 0) return index
-	  index += len
-	  if (index >= 0) return index
-	  return 0
-	}
-
-	function coerce (length) {
-	  // Coerce length to a number (possibly NaN), round up
-	  // in case it's fractional (e.g. 123.456) then do a
-	  // double negate to coerce a NaN to 0. Easy, right?
-	  length = ~~Math.ceil(+length)
-	  return length < 0 ? 0 : length
 	}
 
 	function isArray (subject) {
