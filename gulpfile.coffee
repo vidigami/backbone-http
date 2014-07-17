@@ -1,4 +1,5 @@
 path = require 'path'
+Queue = require 'queue-async'
 es = require 'event-stream'
 
 gulp = require 'gulp'
@@ -8,7 +9,7 @@ rename = require 'gulp-rename'
 uglify = require 'gulp-uglify'
 header = require 'gulp-header'
 zip = require 'gulp-zip'
-require './config/test_tasks'
+test_tasks = require './config/test_tasks'
 
 HEADER = """
 /*
@@ -41,8 +42,13 @@ gulp.task 'minify', ['build'], (callback) ->
     .on('end', callback)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test', ['start-test-server', 'test-node', 'test-browsers'], ->
-  (require './test/lib/start_server').server?.close()
+gulp.task 'test', ['minify', 'start-test-server'], (callback) ->
+  queue = new Queue(1)
+  queue.defer (callback) -> test_tasks.testNode callback
+  queue.defer (callback) -> test_tasks.testBrowsers callback
+  queue.await (err) ->
+    (require './test/lib/start_server').server?.close()
+    callback()
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
 gulp.task 'start-test-server', (callback) ->
