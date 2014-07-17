@@ -1,3 +1,4 @@
+_ = require 'underscore'
 Queue = require 'queue-async'
 es = require 'event-stream'
 
@@ -30,12 +31,4 @@ gulp.task 'test-browsers-after-node', ['minify', 'start-test-server', 'test-node
   testBrowsers(callback)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-module.exports = (callback) ->
-  queue = new Queue(1)
-  queue.defer testNode
-  server_ready = false
-  queue.defer (callback) -> (require '../test/lib/start_server').onReady (err) -> server_ready = true; callback(err)
-  queue.defer testBrowsers
-  queue.await (err) ->
-    (require '../test/lib/start_server').close() if server_ready
-    callback(err)
+module.exports = {testNode: testNode, testBrowsers: testBrowsers}
