@@ -41,7 +41,7 @@ gulp.task 'minify', ['build'], (callback) ->
     .on('end', callback)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test', ['start-test-server', 'test-node', 'test-browsers-after-node'], ->
+gulp.task 'test', ['start-test-server', 'test-node'], ->
   (require './test/lib/start_server').server?.close()
 
 gulp.task 'start-test-server', (callback) ->

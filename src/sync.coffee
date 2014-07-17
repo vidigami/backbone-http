@@ -24,7 +24,7 @@ class HTTPSync
     not options.beforeSend or @_beforeSend = options.beforeSend
     @model_type.model_name = Utils.findOrGenerateModelName(@model_type)
     throw new Error("Missing url for model: #{@model_type}") unless @url = _.result(new @model_type, 'url')
-    @schema = new Schema(@model_type)
+    @schema = new Schema(@model_type, {id: {type: '_raw'}})
     @event_emitter = _.extend({}, Backbone.Events)
 
   initialize: (model) ->
