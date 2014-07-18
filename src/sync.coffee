@@ -21,7 +21,7 @@ URL = require 'url'
 class HTTPSync
 
   constructor: (@model_type, options={}) ->
-    not options.beforeSend or @_beforeSend = options.beforeSend
+    not options.beforeSend or @beforeSend = options.beforeSend
     @model_type.model_name = Utils.findOrGenerateModelName(@model_type)
     throw new Error("Missing url for model: #{@model_type}") unless @url = _.result(new @model_type, 'url')
     @schema = new Schema(@model_type, {id: {type: '_raw'}})

@@ -133,7 +133,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (options == null) {
 	      options = {};
 	    }
-	    !options.beforeSend || (this._beforeSend = options.beforeSend);
+	    !options.beforeSend || (this.beforeSend = options.beforeSend);
 	    this.model_type.model_name = Utils.findOrGenerateModelName(this.model_type);
 	    if (!(this.url = _.result(new this.model_type, 'url'))) {
 	      throw new Error("Missing url for model: " + this.model_type);

@@ -68,7 +68,7 @@
     "node-jquery-xhr": "^1.8.3",
     "powerset": "*",
     "queue-async": "*",
-    "webpack": "*",
+    "webpack": "git+https://github.com/forivall/webpack#master",
     "wrench": "*"
   },
   "dependencies": {

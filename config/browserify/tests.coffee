@@ -8,7 +8,7 @@ module.exports =
       ignore: ['../../../option_sets', '../../../backbone-orm', '../../../../backbone-orm']
       shim:
         backbone: {path: path.resolve(path.join('.', path.relative('.', require.resolve('backbone')))), exports: 'Backbone', depends: {jquery: '$'}}
-        'backbone-http': {path: './backbone-http.js', exports: 'BackboneHTTP', depends: {jquery: '$', underscore: '_', backbone: 'Backbone', 'backbone-orm': 'BackboneORM', stream: 'stream'}}
+        'backbone-http': {path: './backbone-http.js', exports: 'BackboneHTTP', depends: {jquery: '$', underscore: '_', backbone: 'Backbone', 'backbone-orm': 'BackboneORM'}}
 
   lodash:
     output: './_temp/browserify/backbone-http-lodash.tests.js'
