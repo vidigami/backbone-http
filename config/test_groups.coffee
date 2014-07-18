@@ -38,8 +38,6 @@ for test in TEST_GROUPS.browser_globals when (test.name.indexOf('_min') < 0 and 
   files.push("_temp/amd/#{test.name}/**/*.js")
   TEST_GROUPS.amd.push({name: "amd_#{test.name}", files: files, build: {files: test_patterns, destination: "_temp/amd/#{test.name}", options: _.extend({path_files: path_files}, if './node_modules/backbone-orm/stream.js' in test_files then AMD_OPTIONS else AMD_OPTIONS_NO_STREAM)}})
 
-TEST_GROUPS.browser_globals = []
-
 ###############################
 # Webpack
 ###############################
