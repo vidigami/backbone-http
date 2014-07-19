@@ -5,10 +5,9 @@
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 ###
 
-_ = require 'underscore'
-BackboneORM = require 'backbone-orm'
+{_, Cursor} = require 'backbone-orm'
 
-module.exports = class HTTPCursor extends BackboneORM.Cursor
+module.exports = class HTTPCursor extends Cursor
 
   ##############################################
   # Execution of the Query

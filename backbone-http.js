@@ -134,8 +134,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	URL = __webpack_require__(7);
 
 	CAPABILITIES = {
-	  self_reference: true,
-	  embed: true
+	  embed: true,
+	  json: true,
+	  self_reference: true
 	};
 
 	HTTPSync = (function() {
@@ -163,10 +164,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    this.is_initialized = true;
 	    return this.schema.initialize();
-	  };
-
-	  HTTPSync.prototype.capabilities = function() {
-	    return CAPABILITIES;
 	  };
 
 	  HTTPSync.prototype.resetSchema = function(options, callback) {
@@ -275,7 +272,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return BackboneORM.model_cache.configureSync(type, sync_fn);
 	};
 
-	module.exports.capabilities = CAPABILITIES;
+	module.exports.capabilities = function(url) {
+	  return CAPABILITIES;
+	};
 
 
 /***/ },

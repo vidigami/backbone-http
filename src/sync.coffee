@@ -5,17 +5,12 @@
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 ###
 
-_ = require 'underscore'
-Backbone = require 'backbone'
-backboneSync = Backbone.sync
-
-BackboneORM = require 'backbone-orm'
-{Utils, JSONUtils, Schema} = BackboneORM
+{_, Backbone, Utils, JSONUtils, Schema} = require 'backbone-orm'
+URL = (require 'backbone-orm').modules.url
 
 HTTPCursor = require './cursor'
-URL = require 'url'
 
-CAPABILITIES = {self_reference: true, embed: true}
+CAPABILITIES = {embed: true, json: true, self_reference: true}
 
 class HTTPSync
 
@@ -35,9 +30,6 @@ class HTTPSync
   ###################################
   # Backbone ORM - Class Extensions
   ###################################
-  # @no_doc
-  capabilities: -> CAPABILITIES
-
   # @no_doc
   resetSchema: (options, callback) -> @http('delete', null, {}, callback)
 
@@ -93,4 +85,4 @@ module.exports = (type, sync_options) ->
   Utils.configureModelType(type) # mixin extensions
   return BackboneORM.model_cache.configureSync(type, sync_fn)
 
-module.exports.capabilities = CAPABILITIES
+module.exports.capabilities = (url) -> CAPABILITIES
