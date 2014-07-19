@@ -8,11 +8,9 @@ express = require 'express'
 cors = require 'cors'
 
 module.exports = (callback) ->
-    MODELS = (require 'backbone-orm/test/lib/generate_models')({sync: BackboneORM.sync})
-
     app = express(); app.set 'port', 5555; app.use(cors()); app.use(express.bodyParser())
 
-    for model_type in MODELS
+    for model_type in (require 'backbone-orm/test/lib/generate_models')({sync: BackboneORM.sync})
       new RestController(app, {model_type: model_type, route: _.result(new model_type, 'url').replace("localhost:#{app.get('port')}", '')})
 
     server = http.createServer(app)
