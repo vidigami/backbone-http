@@ -9,11 +9,8 @@ _ = require 'underscore'
 Backbone = require 'backbone'
 backboneSync = Backbone.sync
 
-bborm = require 'backbone-orm'
-Schema = bborm.Schema
-Utils = bborm.Utils
-JSONUtils = bborm.JSONUtils
-ModelCache = bborm.CacheSingletons.ModelCache
+BackboneORM = require 'backbone-orm'
+{Utils, JSONUtils, Schema} = BackboneORM
 
 HTTPCursor = require './cursor'
 URL = require 'url'
@@ -82,4 +79,4 @@ module.exports = (type, sync_options) ->
     return if sync[method] then sync[method].apply(sync, Array::slice.call(arguments, 1)) else undefined
 
   Utils.configureModelType(type) # mixin extensions
-  return ModelCache.configureSync(type, sync_fn)
+  return BackboneORM.model_cache.configureSync(type, sync_fn)

@@ -14,7 +14,7 @@
 		exports["BackboneHTTP"] = factory(require("backbone-orm"), require("underscore"), require("backbone"));
 	else
 		root["BackboneHTTP"] = factory(root["BackboneORM"], root["_"], root["Backbone"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_5__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -68,23 +68,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
 	  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 	 */
-	var BackboneORM, path, _i, _len, _ref;
+	var BackboneHTTP, BackboneORM, key, publish, value, _ref;
 
 	BackboneORM = __webpack_require__(1);
 
-	module.exports = {
-	  sync: __webpack_require__(2),
+	module.exports = BackboneHTTP = __webpack_require__(2);
+
+	publish = {
+	  sync: __webpack_require__(3),
 	  _: BackboneORM._,
-	  Backbone: BackboneORM.Backbone,
-	  modules: {
-	    'backbone-orm': BackboneORM
-	  }
+	  Backbone: BackboneORM.Backbone
 	};
 
-	_ref = ['url', 'querystring', 'lru-cache', 'underscore', 'backbone', 'inflection', 'stream'];
-	for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	  path = _ref[_i];
-	  module.exports.modules[path] = BackboneORM.modules[path];
+	publish._.extend(BackboneHTTP, publish);
+
+	BackboneHTTP.modules = {
+	  'backbone-orm': BackboneORM
+	};
+
+	_ref = BackboneORM.modules;
+	for (key in _ref) {
+	  value = _ref[key];
+	  BackboneHTTP.modules[key] = value;
 	}
 
 
@@ -98,6 +103,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = {};
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
 	
 	/*
 	  backbone-http.js 0.6.0
@@ -105,27 +117,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
 	  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 	 */
-	var Backbone, HTTPCursor, HTTPSync, JSONUtils, ModelCache, Schema, URL, Utils, backboneSync, bborm, _;
+	var Backbone, BackboneORM, HTTPCursor, HTTPSync, JSONUtils, Schema, URL, Utils, backboneSync, _;
 
-	_ = __webpack_require__(3);
+	_ = __webpack_require__(4);
 
-	Backbone = __webpack_require__(4);
+	Backbone = __webpack_require__(5);
 
 	backboneSync = Backbone.sync;
 
-	bborm = __webpack_require__(1);
+	BackboneORM = __webpack_require__(1);
 
-	Schema = bborm.Schema;
+	Utils = BackboneORM.Utils, JSONUtils = BackboneORM.JSONUtils, Schema = BackboneORM.Schema;
 
-	Utils = bborm.Utils;
+	HTTPCursor = __webpack_require__(6);
 
-	JSONUtils = bborm.JSONUtils;
-
-	ModelCache = bborm.CacheSingletons.ModelCache;
-
-	HTTPCursor = __webpack_require__(5);
-
-	URL = __webpack_require__(6);
+	URL = __webpack_require__(7);
 
 	HTTPSync = (function() {
 	  function HTTPSync(model_type, options) {
@@ -257,15 +263,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  };
 	  Utils.configureModelType(type);
-	  return ModelCache.configureSync(type, sync_fn);
+	  return BackboneORM.model_cache.configureSync(type, sync_fn);
 	};
 
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
 
 /***/ },
 /* 4 */
@@ -277,6 +277,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
 	
 	/*
 	  backbone-http.js 0.6.0
@@ -284,17 +290,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
 	  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 	 */
-	var Cursor, HTTPCursor, JSONUtils, Utils, _,
+	var BackboneORM, HTTPCursor, _,
 	  __hasProp = {}.hasOwnProperty,
 	  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-	_ = __webpack_require__(3);
+	_ = __webpack_require__(4);
 
-	Cursor = __webpack_require__(1).Cursor;
-
-	JSONUtils = __webpack_require__(1).JSONUtils;
-
-	Utils = __webpack_require__(1).Utils;
+	BackboneORM = __webpack_require__(1);
 
 	module.exports = HTTPCursor = (function(_super) {
 	  __extends(HTTPCursor, _super);
@@ -309,7 +311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return callback(null, this.hasCursorQuery('$one') ? null : []);
 	    }
 	    return this.sync.http('read', null, {
-	      query: query = _.extend(_.clone(this._find), this._cursor)
+	      query: query = _.extend({}, this._find, this._cursor)
 	    }, (function(_this) {
 	      return function(err, res) {
 	        if (query.$one && err && (err.status === 404)) {
@@ -322,11 +324,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return HTTPCursor;
 
-	})(Cursor);
+	})(BackboneORM.Cursor);
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -351,8 +353,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	// USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 	var punycode = { encode : function (s) { return s } };
-	var _ = __webpack_require__(3);
-	var shims = __webpack_require__(7);
+	var _ = __webpack_require__(4);
+	var shims = __webpack_require__(8);
 
 	exports.parse = urlParse;
 	exports.resolve = urlResolve;
@@ -424,7 +426,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      'gopher:': true,
 	      'file:': true
 	    },
-	    querystring = __webpack_require__(8);
+	    querystring = __webpack_require__(9);
 
 	function urlParse(url, parseQueryString, slashesDenoteHost) {
 	  if (url && _.isObject(url) && url instanceof Url) return url;
@@ -1032,7 +1034,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//
@@ -1072,7 +1074,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
@@ -1099,7 +1101,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// Query String Utilities
 
 	var QueryString = exports;
-	var _ = __webpack_require__(3);
+	var _ = __webpack_require__(4);
 
 
 	// If obj.hasOwnProperty has been overridden, then calling
@@ -1290,10 +1292,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return obj;
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10).Buffer))
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {/*!
@@ -1303,8 +1305,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @license  MIT
 	 */
 
-	var base64 = __webpack_require__(11)
-	var ieee754 = __webpack_require__(10)
+	var base64 = __webpack_require__(12)
+	var ieee754 = __webpack_require__(11)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = Buffer
@@ -2453,10 +2455,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!test) throw new Error(message || 'Failed assertion')
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10).Buffer))
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports.read = function(buffer, offset, isLE, mLen, nBytes) {
@@ -2546,7 +2548,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
