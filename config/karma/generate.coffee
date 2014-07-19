@@ -20,12 +20,6 @@ TEST_GROUPS = require('../test_groups')
 module.exports = (callback) ->
   queue = new Queue(1)
 
-  # install backbone-http
-  queue.defer (callback) ->
-    gulp.src(['./backbone-http.js', './package.json'])
-      .pipe(gulp.dest('node_modules/backbone-http'))
-      .on('end', callback)
-
   # compile coffeescript config
   queue.defer (callback) ->
     gulp.src(['./node_modules/backbone-orm/test/option_sets.coffee', './test/parameters.coffee'])
@@ -33,30 +27,37 @@ module.exports = (callback) ->
       .pipe(gulp.dest('_temp'))
       .on('end', callback)
 
-  # build webpack
-  queue.defer (callback) ->
-    gulp.src(['config/builds/test/**/*.webpack.config.coffee'], {read: false, buffer: false})
-      .pipe(webpack())
-      .pipe(es.writeArray (err, array) -> callback(err))
-
-  # build test browserify
-  for test in TEST_GROUPS.browserify or []
-    do (test) -> queue.defer (callback) ->
-      gulp.src(test.build.files)
-        .pipe(compile({coffee: {bare: true}}))
-        .pipe(concat(path.basename(test.build.destination)))
-        .pipe(browserify(test.build.options))
-        .pipe(gulp.dest(path.dirname(test.build.destination)))
+  unless process.argv[2].indexOf('quick') < 0 # not quick
+    # install backbone-http
+    queue.defer (callback) ->
+      gulp.src(['./backbone-http.js', './package.json'])
+        .pipe(gulp.dest('node_modules/backbone-http'))
         .on('end', callback)
 
-  # wrap AMD tests
-  for test in TEST_GROUPS.amd or []
-    do (test) -> queue.defer (callback) ->
-      gulp.src(test.build.files)
-        .pipe(compile({coffee: {bare: true, header: false}}))
-        .pipe(wrapAMD(test.build.options))
-        .pipe(gulp.dest(test.build.destination))
-        .on('end', callback)
+    # build webpack
+    queue.defer (callback) ->
+      gulp.src(['config/builds/test/**/*.webpack.config.coffee'], {read: false, buffer: false})
+        .pipe(webpack())
+        .pipe(es.writeArray (err, array) -> callback(err))
+
+    # build test browserify
+    for test in TEST_GROUPS.browserify or []
+      do (test) -> queue.defer (callback) ->
+        gulp.src(test.build.files)
+          .pipe(compile({coffee: {bare: true}}))
+          .pipe(concat(path.basename(test.build.destination)))
+          .pipe(browserify(test.build.options))
+          .pipe(gulp.dest(path.dirname(test.build.destination)))
+          .on('end', callback)
+
+    # wrap AMD tests
+    for test in TEST_GROUPS.amd or []
+      do (test) -> queue.defer (callback) ->
+        gulp.src(test.build.files)
+          .pipe(compile({coffee: {bare: true, header: false}}))
+          .pipe(wrapAMD(test.build.options))
+          .pipe(gulp.dest(test.build.destination))
+          .on('end', callback)
 
   # uninstall backbone-http
   queue.await (err) ->

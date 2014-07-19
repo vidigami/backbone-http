@@ -11,33 +11,28 @@ _.each option_sets, exports = (options) ->
   DATABASE_URL = options.database_url or ''
   SYNC = options.sync
   BASE_COUNT = 5
-  methods = []
 
-  class Flat extends Backbone.Model
-    urlRoot: "#{DATABASE_URL}/flats"
-    sync: SYNC(Flat, {beforeSend: (context, xhr) -> methods.push(xhr.type)})
+  describe "beforeSend (cache: #{options.cache}, query_cache: #{options.query_cache})", ->
+    Flat = methods = []
+    before ->
+      BackboneORM.configure {model_cache: {enabled: !!options.cache, max: 100}}
 
-  describe "Model.each (cache: #{options.cache}, query_cache: #{options.query_cache})", ->
+      class Flat extends Backbone.Model
+        urlRoot: "#{DATABASE_URL}/flats"
+        sync: SYNC(Flat, {beforeSend: (context, xhr) -> methods.push(xhr.type)})
 
-    after (callback) ->
-      queue = new Queue()
-      queue.defer (callback) -> BackboneORM.model_cache.reset(callback)
-      queue.defer (callback) -> Utils.resetSchemas [Flat], callback
-      queue.await callback
-
+    after (callback) -> Utils.resetSchemas [Flat], callback
     beforeEach (callback) ->
       MODELS = {}
 
-      queue = new Queue(1)
-      queue.defer (callback) -> BackboneORM.configure({model_cache: {enabled: !!options.cache, max: 100}}, callback)
-      queue.defer (callback) -> Utils.resetSchemas [Flat], callback
-      queue.defer (callback) -> Fabricator.create(Flat, BASE_COUNT, {
-        name: Fabricator.uniqueId('flat_')
-        created_at: Fabricator.date
-        updated_at: Fabricator.date
-      }, callback)
+      Utils.resetSchemas [Flat], (err) ->
+        return callback(err) if err
 
-      queue.await (err) -> methods = []; callback(err)
+        Fabricator.create Flat, BASE_COUNT, {
+          name: Fabricator.uniqueId('flat_')
+          created_at: Fabricator.date
+          updated_at: Fabricator.date
+        }, (err) -> methods = []; callback(err)
 
     it 'callback for all models Flat', (done) ->
       processed_count = 0

@@ -24,6 +24,7 @@
   },
   "scripts": {
     "test": "gulp test --require coffee-script/register",
+    "test-quick": "gulp test-node-quick --require coffee-script/register",
     "build": "gulp build --require coffee-script/register",
     "watch": "gulp watch --require coffee-script/register",
     "release": "gulp release --require coffee-script/register"
@@ -68,6 +69,7 @@
     "node-jquery-xhr": "^1.8.3",
     "powerset": "*",
     "queue-async": "*",
+    "async": "*",
     "webpack": "git+https://github.com/forivall/webpack#master",
     "wrench": "*"
   },
