@@ -1,11 +1,7 @@
 assert = assert or require?('chai').assert
 
 BackboneORM = require 'backbone-orm'
-_ = BackboneORM._; Backbone = BackboneORM.Backbone
-Queue = BackboneORM.Queue
-Utils = BackboneORM.Utils
-ModelCache = BackboneORM.CacheSingletons.ModelCache
-Fabricator = BackboneORM.Fabricator
+{_, Backbone, Queue, Utils, Fabricator} = BackboneORM
 
 option_sets = window?.__test__option_sets or require?('../../node_modules/backbone-orm/test/option_sets')
 parameters = __test__parameters if __test__parameters?
@@ -25,7 +21,7 @@ _.each option_sets, exports = (options) ->
 
     after (callback) ->
       queue = new Queue()
-      queue.defer (callback) -> ModelCache.reset(callback)
+      queue.defer (callback) -> BackboneORM.model_cache.reset(callback)
       queue.defer (callback) -> Utils.resetSchemas [Flat], callback
       queue.await callback
 
@@ -33,7 +29,7 @@ _.each option_sets, exports = (options) ->
       MODELS = {}
 
       queue = new Queue(1)
-      queue.defer (callback) -> ModelCache.configure({enabled: !!options.cache, max: 100}, callback)
+      queue.defer (callback) -> BackboneORM.configure({model_cache: {enabled: !!options.cache, max: 100}}, callback)
       queue.defer (callback) -> Utils.resetSchemas [Flat], callback
       queue.defer (callback) -> Fabricator.create(Flat, BASE_COUNT, {
         name: Fabricator.uniqueId('flat_')

@@ -7,14 +7,13 @@
 
 BackboneORM = require 'backbone-orm'
 
-module.exports =
+module.exports = BackboneHTTP = require './core' # avoid circular dependencies
+publish =
   sync: require './sync'
   _: BackboneORM._
   Backbone: BackboneORM.Backbone
+publish._.extend(BackboneHTTP, publish)
 
-  # re-expose modules
-  modules:
-    'backbone-orm': BackboneORM
-
-for path in ['url', 'querystring', 'lru-cache', 'underscore', 'backbone', 'inflection', 'stream']
-  module.exports.modules[path] = BackboneORM.modules[path]
+# re-expose modules
+BackboneHTTP.modules = {'backbone-orm': BackboneORM}
+BackboneHTTP.modules[key] = value for key, value of BackboneORM.modules
