@@ -15,15 +15,19 @@ BackboneORM = require 'backbone-orm'
 HTTPCursor = require './cursor'
 URL = require 'url'
 
+CAPABILITIES = {self_reference: true, embed: true}
+
 class HTTPSync
 
   constructor: (@model_type, options={}) ->
-    not options.beforeSend or @beforeSend = options.beforeSend
     @model_type.model_name = Utils.findOrGenerateModelName(@model_type)
     throw new Error("Missing url for model: #{@model_type}") unless @url = _.result(new @model_type, 'url')
     @schema = new Schema(@model_type, {id: {type: '_raw'}})
+
+    @beforeSend = options.beforeSend
     @event_emitter = _.extend({}, Backbone.Events)
 
+  # @no_doc
   initialize: (model) ->
     return if @is_initialized; @is_initialized = true
     @schema.initialize()
@@ -31,13 +35,21 @@ class HTTPSync
   ###################################
   # Backbone ORM - Class Extensions
   ###################################
-  # @private
+  # @no_doc
+  capabilities: -> CAPABILITIES
+
+  # @no_doc
   resetSchema: (options, callback) -> @http('delete', null, {}, callback)
+
+  # @no_doc
   cursor: (query={}) -> return new HTTPCursor(query, {model_type: @model_type, sync: @})
+
+  # @no_doc
   destroy: (query, callback) ->
     [query, callback] = [{}, query] if arguments.length is 1
     @http('delete', null, {query: query}, callback)
 
+  # @no_doc
   http: (method, model, options, callback) ->
     url = if model then _.result(model, 'url') else @url
     if options.query and _.size(options.query)
@@ -80,3 +92,5 @@ module.exports = (type, sync_options) ->
 
   Utils.configureModelType(type) # mixin extensions
   return BackboneORM.model_cache.configureSync(type, sync_fn)
+
+module.exports.capabilities = CAPABILITIES
