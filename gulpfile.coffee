@@ -43,45 +43,40 @@ gulp.task 'minify', ['build'], (callback) ->
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
 gulp.task 'start-test-server', (callback) ->
-  (require './test/lib/test_server')(callback)
+  console.log 'Starting server'
+  (require './test/lib/test_server').start (callback)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test-node', ['build'], testNode = (callback) ->
+gulp.task 'test-node', ['build', 'start-test-server'], testNode = (callback) ->
+  (require './test/lib/test_server').retain()
+
   gutil.log 'Running Node.js tests'
-
-  (require './test/lib/test_server') (err, server) ->
-    return callback(err) if err
-
-    # ensure that globals for the target backend are loaded
-    require './test/lib/node_jquery_xhr'
-    global.test_parameters = require './test/parameters'
-    gulp.src(['test/spec/**/*.tests.coffee', 'node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee'])
-      .pipe(mocha({}))
-      .pipe es.writeArray (err, array) ->
-        delete global.test_parameters
-        server.close()
-        callback(err)
+  require './test/lib/node_jquery_xhr' # ensure that globals for the target backend are loaded
+  global.test_parameters = require './test/parameters'
+  gulp.src(['test/spec/**/*.tests.coffee', 'node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee'])
+    .pipe(mocha({}))
+    .pipe es.writeArray (err, array) ->
+      delete global.test_parameters
+      (require './test/lib/test_server').release(err); callback(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test-browsers', ['build'], testBrowsers = (callback) ->
-  (require './test/lib/test_server') (err, server) ->
-    return callback(err) if err
+gulp.task 'test-browsers', ['build', 'start-test-server'], testBrowsers = (callback) ->
+  (require './test/lib/test_server').retain()
 
-    gutil.log 'Running Browser tests'
-    (require './config/karma/run') (err) ->
-      server.close()
-      callback(err)
-
+  gutil.log 'Running Browser tests'
+  (require './config/karma/run') (err) ->
+    (require './test/lib/test_server').release(err); callback(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test', ['minify'], (callback) ->
-  Async.series [testNode, testBrowsers], (err) ->
-    process.exit(if err then 1 else 0)
+gulp.task 'test', ['minify', 'start-test-server'], (callback) ->
+  (require './test/lib/test_server').retain()
+
+  Async.series [testNode, testBrowsers], (err) -> (require './test/lib/test_server').release(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test-quick', ['build'], testNode
-gulp.task 'test-node-quick', ['build'], testNode
-gulp.task 'test-browsers-quick', ['build'], testBrowsers
+gulp.task 'test-quick', ['build', 'start-test-server'], testNode
+gulp.task 'test-node-quick', ['build', 'start-test-server'], testNode
+gulp.task 'test-browsers-quick', ['build', 'start-test-server'], testBrowsers
 
 gulp.task 'zip', ['minify'], (callback) ->
   gulp.src(['*.js', 'node_modules/backbone-orm/*.js'])
