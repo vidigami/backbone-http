@@ -75,12 +75,8 @@ gulp.task 'test-browsers', ['build'], testBrowsers = (callback) ->
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
 gulp.task 'test', ['minify'], (callback) ->
-  (require './test/lib/test_server') (err, server) ->
-    return callback(err) if err
-
-    Async.series [testNode, testBrowsers], (err) ->
-      server.close()
-      process.exit(if err then 1 else 0)
+  Async.series [testNode, testBrowsers], (err) ->
+    process.exit(if err then 1 else 0)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
 gulp.task 'test-quick', ['build'], testNode
