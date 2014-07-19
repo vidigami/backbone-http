@@ -117,7 +117,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
 	  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 	 */
-	var Backbone, BackboneORM, HTTPCursor, HTTPSync, JSONUtils, Schema, URL, Utils, backboneSync, _;
+	var Backbone, BackboneORM, CAPABILITIES, HTTPCursor, HTTPSync, JSONUtils, Schema, URL, Utils, backboneSync, _;
 
 	_ = __webpack_require__(4);
 
@@ -133,13 +133,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	URL = __webpack_require__(7);
 
+	CAPABILITIES = {
+	  self_reference: true,
+	  embed: true
+	};
+
 	HTTPSync = (function() {
 	  function HTTPSync(model_type, options) {
 	    this.model_type = model_type;
 	    if (options == null) {
 	      options = {};
 	    }
-	    !options.beforeSend || (this.beforeSend = options.beforeSend);
 	    this.model_type.model_name = Utils.findOrGenerateModelName(this.model_type);
 	    if (!(this.url = _.result(new this.model_type, 'url'))) {
 	      throw new Error("Missing url for model: " + this.model_type);
@@ -149,6 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        type: '_raw'
 	      }
 	    });
+	    this.beforeSend = options.beforeSend;
 	    this.event_emitter = _.extend({}, Backbone.Events);
 	  }
 
@@ -158,6 +163,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    this.is_initialized = true;
 	    return this.schema.initialize();
+	  };
+
+	  HTTPSync.prototype.capabilities = function() {
+	    return CAPABILITIES;
 	  };
 
 	  HTTPSync.prototype.resetSchema = function(options, callback) {
@@ -265,6 +274,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  Utils.configureModelType(type);
 	  return BackboneORM.model_cache.configureSync(type, sync_fn);
 	};
+
+	module.exports.capabilities = CAPABILITIES;
 
 
 /***/ },
