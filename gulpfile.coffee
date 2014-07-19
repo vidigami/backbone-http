@@ -1,5 +1,5 @@
 path = require 'path'
-Queue = require 'queue-async'
+Async = require 'async'
 es = require 'event-stream'
 
 gulp = require 'gulp'
@@ -9,7 +9,7 @@ rename = require 'gulp-rename'
 uglify = require 'gulp-uglify'
 header = require 'gulp-header'
 zip = require 'gulp-zip'
-test_tasks = require './config/test_tasks'
+mocha = require 'gulp-mocha'
 
 HEADER = """
 /*
@@ -42,18 +42,50 @@ gulp.task 'minify', ['build'], (callback) ->
     .on('end', callback)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test', ['minify', 'start-test-server'], (callback) ->
-  queue = new Queue(1)
-  queue.defer (callback) -> test_tasks.testNode callback
-  queue.defer (callback) -> test_tasks.testBrowsers callback
-  queue.await (err) ->
-    (require './test/lib/start_server').server?.close()
-    callback()
+gulp.task 'start-test-server', (callback) ->
+  (require './test/lib/test_server')(callback)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'start-test-server', (callback) ->
-  (require './test/lib/start_server')(callback)
+gulp.task 'test-node', ['build'], testNode = (callback) ->
+  gutil.log 'Running Node.js tests'
+
+  (require './test/lib/test_server') (err, server) ->
+    return callback(err) if err
+
+    # ensure that globals for the target backend are loaded
+    require './test/lib/node_jquery_xhr'
+    global.test_parameters = require './test/parameters'
+    gulp.src(['test/spec/**/*.tests.coffee', 'node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee'])
+      .pipe(mocha({}))
+      .pipe es.writeArray (err, array) ->
+        delete global.test_parameters
+        server.close()
+        callback(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
+
+gulp.task 'test-browsers', ['build'], testBrowsers = (callback) ->
+  (require './test/lib/test_server') (err, server) ->
+    return callback(err) if err
+
+    gutil.log 'Running Browser tests'
+    (require './config/karma/run') (err) ->
+      server.close()
+      callback(err)
+
+  return # promises workaround: https://github.com/gulpjs/gulp/issues/455
+
+gulp.task 'test', ['minify'], (callback) ->
+  (require './test/lib/test_server') (err, server) ->
+    return callback(err) if err
+
+    Async.series [testNode, testBrowsers], (err) ->
+      server.close()
+      process.exit(if err then 1 else 0)
+  return # promises workaround: https://github.com/gulpjs/gulp/issues/455
+
+gulp.task 'test-quick', ['build'], testNode
+gulp.task 'test-node-quick', ['build'], testNode
+gulp.task 'test-browsers-quick', ['build'], testBrowsers
 
 gulp.task 'zip', ['minify'], (callback) ->
   gulp.src(['*.js', 'node_modules/backbone-orm/*.js'])
