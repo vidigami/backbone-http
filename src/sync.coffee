@@ -5,8 +5,9 @@
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 ###
 
-{_, Backbone, Utils, JSONUtils, Schema} = require 'backbone-orm'
-URL = (require 'backbone-orm').modules.url
+{_, Backbone, Utils, JSONUtils, Schema} = BackboneORM = require 'backbone-orm'
+URL = BackboneORM.modules.url
+backboneSync = Backbone.sync
 
 HTTPCursor = require './cursor'
 
