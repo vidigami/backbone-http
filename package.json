@@ -23,11 +23,11 @@
     "node": "*"
   },
   "scripts": {
-    "test": "gulp test --require coffee-script/register",
-    "test-quick": "gulp test-node-quick --require coffee-script/register",
-    "build": "gulp build --require coffee-script/register",
-    "watch": "gulp watch --require coffee-script/register",
-    "release": "gulp release --require coffee-script/register"
+    "test": "gulp test",
+    "test-quick": "gulp test-node-quick",
+    "build": "gulp build",
+    "watch": "gulp watch",
+    "release": "gulp release"
   },
   "devDependencies": {
     "backbone-rest": "0.6.x",
