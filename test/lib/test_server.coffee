@@ -13,7 +13,7 @@ module.exports =
   start: (callback) ->
     return callback(new Error 'Cannot start server. It is already running') if server
 
-    app = express(); app.set 'port', 5555; app.use(cors()); app.use(express.bodyParser())
+    app = express(); app.set 'port', 4887; app.use(cors()); app.use(express.bodyParser())
 
     for model_type in (require 'backbone-orm/test/lib/generate_models')({sync: BackboneORM.sync})
       new RestController(app, {model_type: model_type, route: _.result(new model_type, 'url').replace("localhost:#{app.get('port')}", '')})
