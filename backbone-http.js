@@ -3,7 +3,7 @@
   Copyright (c) 2013-2014 Vidigami
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Source: https://github.com/vidigami/backbone-http
-  Dependencies: Backbone.js, Underscore.js, and Moment.js.
+  Dependencies: Backbone.js, Underscore.js, and BackboneORM.
 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -64,9 +64,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	/*
 	  backbone-http.js 0.6.0
-	  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
+	  Copyright (c) 2013-2014 Vidigami
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
-	  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
+	  Source: https://github.com/vidigami/backbone-http
+	  Dependencies: Backbone.js and Underscore.js.
 	 */
 	var Backbone, BackboneHTTP, BackboneORM, key, publish, value, _, _ref, _ref1;
 
@@ -114,9 +115,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	/*
 	  backbone-http.js 0.6.0
-	  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
+	  Copyright (c) 2013-2014 Vidigami
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
-	  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
+	  Source: https://github.com/vidigami/backbone-http
+	  Dependencies: Backbone.js and Underscore.js.
 	 */
 	var Backbone, BackboneORM, CAPABILITIES, HTTPCursor, HTTPSync, JSONUtils, Schema, URL, Utils, backboneSync, _, _ref;
 
@@ -288,9 +290,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	/*
 	  backbone-http.js 0.6.0
-	  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
+	  Copyright (c) 2013-2014 Vidigami
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
-	  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
+	  Source: https://github.com/vidigami/backbone-http
+	  Dependencies: Backbone.js and Underscore.js.
 	 */
 	var Cursor, HTTPCursor, _, _ref,
 	  __hasProp = {}.hasOwnProperty,
