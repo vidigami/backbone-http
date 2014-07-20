@@ -74,7 +74,7 @@ gulp.task 'test', ['minify', 'start-test-server'], (callback) ->
   Async.series [testNode, testBrowsers], (err) -> (require './test/lib/test_server').release(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test-quick', ['build', 'start-test-server'], testNode
+gulp.task 'test-quick', ['test'], testNode
 gulp.task 'test-node-quick', ['build', 'start-test-server'], testNode
 gulp.task 'test-browsers-quick', ['build', 'start-test-server'], testBrowsers
 
