@@ -5,13 +5,15 @@
   Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 ###
 
-BackboneORM = require 'backbone-orm'
+{_, Backbone} = BackboneORM = require 'backbone-orm'
 
 module.exports = BackboneHTTP = require './core' # avoid circular dependencies
 publish =
+  configure: require './lib/configure'
   sync: require './sync'
-  _: BackboneORM._
-  Backbone: BackboneORM.Backbone
+
+  _: _
+  Backbone: Backbone
 publish._.extend(BackboneHTTP, publish)
 
 # re-expose modules
