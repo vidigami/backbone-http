@@ -30,7 +30,7 @@
     "release": "gulp release --require coffee-script/register"
   },
   "devDependencies": {
-    "backbone-rest": "git+https://github.com/vidigami/backbone-rest",
+    "backbone-rest": "0.6.x",
     "chai": "^1.9.1",
     "codo": "2.x",
     "coffee-loader": "^0.7.2",
@@ -76,6 +76,6 @@
   "dependencies": {
     "underscore": "1.6.x",
     "backbone": "1.1.x",
-    "backbone-orm": "git+https://github.com/vidigami/backbone-orm"
+    "backbone-orm": "0.6.x"
   }
 }

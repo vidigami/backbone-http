@@ -1,8 +1,9 @@
 ###
   backbone-http.js 0.6.0
-  Copyright (c) 2013 Vidigami - https://github.com/vidigami/backbone-http
+  Copyright (c) 2013-2014 Vidigami
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
-  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
+  Source: https://github.com/vidigami/backbone-http
+  Dependencies: Backbone.js and Underscore.js.
 ###
 
 {_, Backbone} = BackboneORM = require 'backbone-orm'
