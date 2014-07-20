@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/vidigami/backbone-http.png)](http://travis-ci.org/vidigami/backbone-http)
+[![Build Status](https://secure.travis-ci.org/vidigami/backbone-http.png)](http://travis-ci.org/vidigami/backbone-http#master)
 
 ![logo](https://github.com/vidigami/backbone-http/raw/master/media/logo.png)
 
