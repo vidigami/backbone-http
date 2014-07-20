@@ -23,8 +23,9 @@
     "node": "*"
   },
   "scripts": {
-    "test": "gulp test",
+    "test": "gulp test-quick",
     "test-quick": "gulp test-node-quick",
+    "test-full": "gulp test",
     "build": "gulp build",
     "watch": "gulp watch",
     "release": "gulp release"
