@@ -68,16 +68,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
 	  Dependencies: Backbone.js, Underscore.js, Moment.js, Inflection.js, BackboneORM, and Superagent.
 	 */
-	var BackboneHTTP, BackboneORM, key, publish, value, _ref;
+	var Backbone, BackboneHTTP, BackboneORM, key, publish, value, _, _ref, _ref1;
 
-	BackboneORM = __webpack_require__(1);
+	_ref = BackboneORM = __webpack_require__(1), _ = _ref._, Backbone = _ref.Backbone;
 
 	module.exports = BackboneHTTP = __webpack_require__(2);
 
 	publish = {
+	  configure: __webpack_require__(4),
 	  sync: __webpack_require__(3),
-	  _: BackboneORM._,
-	  Backbone: BackboneORM.Backbone
+	  _: _,
+	  Backbone: Backbone
 	};
 
 	publish._.extend(BackboneHTTP, publish);
@@ -86,9 +87,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'backbone-orm': BackboneORM
 	};
 
-	_ref = BackboneORM.modules;
-	for (key in _ref) {
-	  value = _ref[key];
+	_ref1 = BackboneORM.modules;
+	for (key in _ref1) {
+	  value = _ref1[key];
 	  BackboneHTTP.modules[key] = value;
 	}
 
@@ -125,7 +126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	backboneSync = Backbone.sync;
 
-	HTTPCursor = __webpack_require__(4);
+	HTTPCursor = __webpack_require__(5);
 
 	CAPABILITIES = {
 	  embed: true,
@@ -273,6 +274,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var configure;
+
+	module.exports = configure = __webpack_require__(1).configure;
+
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	

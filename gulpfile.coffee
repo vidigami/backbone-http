@@ -17,7 +17,7 @@ HEADER = """
   Copyright (c) 2013-#{(new Date()).getFullYear()} Vidigami
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Source: https://github.com/vidigami/backbone-http
-  Dependencies: Backbone.js, Underscore.js, and Moment.js.
+  Dependencies: Backbone.js, Underscore.js, and BackboneORM.
 */\n
 """
 
