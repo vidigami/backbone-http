@@ -3,7 +3,7 @@ _ = require 'underscore'
 
 resolveModule = (module_name) -> path.relative('.', require.resolve(module_name))
 
-module.exports = _.extend  _.clone(require '../../webpack/base-config.coffee'), {
+module.exports = _.extend {}, (require '../../webpack/base-config.coffee'), {
   entry: ['./test/parameters.coffee'].concat((require '../../files').tests_browser)
   output:
     path: '.'
