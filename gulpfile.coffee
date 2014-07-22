@@ -25,7 +25,7 @@ gulp.task 'build', buildLibraries = (callback) ->
   gulp.src('config/builds/library/**/*.webpack.config.coffee', {read: false, buffer: false})
     .pipe(webpack())
     .pipe(header(HEADER, {pkg: require './package.json'}))
-    .pipe(gulp.dest((file) -> file.base))
+    .pipe(gulp.dest('.'))
     .on('end', callback)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
@@ -68,13 +68,13 @@ gulp.task 'test-browsers', ['build', 'start-test-server'], testBrowsers = (callb
     (require './test/lib/test_server').release(err); callback(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test', ['minify', 'start-test-server'], (callback) ->
+gulp.task 'test', ['minify', 'start-test-server'], testAll = (callback) ->
   (require './test/lib/test_server').retain()
 
   Async.series [testNode, testBrowsers], (err) -> (require './test/lib/test_server').release(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test-quick', ['test'], testNode
+gulp.task 'test-quick', ['test'], testAll
 gulp.task 'test-node-quick', ['build', 'start-test-server'], testNode
 gulp.task 'test-browsers-quick', ['build', 'start-test-server'], testBrowsers
 
