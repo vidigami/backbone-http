@@ -54,7 +54,7 @@ gulp.task 'test-node', ['build', 'start-test-server'], testNode = (callback) ->
   require './test/lib/node_jquery_xhr' # ensure that globals for the target backend are loaded
   global.test_parameters = require './test/parameters'
   gulp.src(['test/spec/**/*.tests.coffee', 'node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee'])
-    .pipe(mocha({}))
+    .pipe(mocha())
     .pipe es.writeArray (err, array) ->
       delete global.test_parameters
       (require './test/lib/test_server').release(err); callback(err)
