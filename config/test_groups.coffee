@@ -44,7 +44,7 @@ for test in TEST_GROUPS.browser_globals when (test.name.indexOf('_min') < 0 and 
 TEST_GROUPS.webpack = []
 for file in FILES.tests_webpack
   test_file = path.basename(file, '.js').replace('.webpack.config', '')
-  TEST_GROUPS.webpack.push({name: "webpack_#{test_file.replace('tests.coffee', '')}", files: [test_file.replace('.coffee', '.js')]})
+  TEST_GROUPS.webpack.push({name: "webpack_#{test_file.replace('tests.coffee', '')}", files: [path.join('_temp/webpack', test_file).replace('.coffee', '.js')]})
 
 ###############################
 # Browserify
