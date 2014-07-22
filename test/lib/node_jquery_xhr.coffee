@@ -1,3 +1,3 @@
 require 'node-jquery-xhr'
-delete global.window
+global.document = global.window.document; delete global.window
 module.exports = require('backbone').$ = global.$
