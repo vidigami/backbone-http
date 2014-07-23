@@ -19,7 +19,7 @@ LIBRARIES =
 
 TEST_GROUPS.browser_globals = []
 for library_name, library_files of LIBRARIES
-  TEST_GROUPS.browser_globals.push({name: "browser_globals_#{library_name}", files: library_files.concat(['./_temp/parameters.js', './_temp/option_sets.js', './node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee'])})
+  TEST_GROUPS.browser_globals.push({name: "browser_globals_#{library_name}", files: library_files.concat(['./_temp/parameters.js', './node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee'])})
 
 ###############################
 # AMD

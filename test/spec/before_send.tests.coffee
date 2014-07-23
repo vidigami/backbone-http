@@ -3,7 +3,7 @@ assert = assert or require?('chai').assert
 BackboneORM = require 'backbone-orm'
 {_, Backbone, Queue, Utils, Fabricator} = BackboneORM
 
-option_sets = window?.__test__option_sets or require?('../../node_modules/backbone-orm/test/option_sets')
+option_sets = BackboneORM.Utils._getTestOptionSets()
 parameters = __test__parameters if __test__parameters?
 _.each option_sets, exports = (options) ->
   options = _.extend({}, options, parameters) if parameters

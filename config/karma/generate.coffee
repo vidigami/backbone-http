@@ -22,7 +22,7 @@ module.exports = (callback) ->
 
   # compile coffeescript config
   queue.defer (callback) ->
-    gulp.src(['./node_modules/backbone-orm/test/option_sets.coffee', './test/parameters.coffee'])
+    gulp.src(['./test/parameters.coffee'])
       .pipe(compile({coffee: {bare: true}}))
       .pipe(gulp.dest('_temp'))
       .on('end', callback)
