@@ -47,36 +47,45 @@ gulp.task 'start-test-server', (callback) ->
   (require './test/lib/test_server').start (callback)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test-node', ['build', 'start-test-server'], testNode = (callback) ->
+testNode = (options={}) -> (callback) ->
   (require './test/lib/test_server').retain()
 
   gutil.log 'Running Node.js tests'
   require './test/lib/node_jquery_xhr' # ensure that globals for the target backend are loaded
   global.test_parameters = require './test/parameters'
+  mocha_options = if options.quick then {grep: '@no_options'} else {}
   gulp.src(['test/spec/**/*.tests.coffee', 'node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee'])
-    .pipe(mocha())
+    .pipe(mocha(mocha_options))
     .pipe es.writeArray (err, array) ->
       delete global.test_parameters
       (require './test/lib/test_server').release(err); callback(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test-browsers', ['build', 'start-test-server'], testBrowsers = (callback) ->
+testBrowsers = (options={}) -> (callback) ->
   (require './test/lib/test_server').retain()
 
   gutil.log 'Running Browser tests'
-  (require './config/karma/run') (err) ->
+  karma_options = if options.quick then {client: {args: ['--grep', '@no_options']}} else {}
+  (require './config/karma/run') karma_options, (err) ->
     (require './test/lib/test_server').release(err); callback(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test', ['minify', 'start-test-server'], testAll = (callback) ->
+gulp.task 'test-node', ['build', 'start-test-server'], testNode()
+gulp.task 'test-browsers', ['build', 'start-test-server'], testBrowsers()
+
+gulp.task 'test', ['minify', 'start-test-server'], (callback) ->
   (require './test/lib/test_server').retain()
 
-  Async.series [testNode, testBrowsers], (err) -> (require './test/lib/test_server').release(err)
+  Async.series [testNode(), testBrowsers()], (err) -> (require './test/lib/test_server').release(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test-quick', ['test'], testAll
-gulp.task 'test-node-quick', ['build', 'start-test-server'], testNode
-gulp.task 'test-browsers-quick', ['build', 'start-test-server'], testBrowsers
+gulp.task 'test-quick', ['test'], (callback) ->
+  (require './test/lib/test_server').retain()
+  Async.series [testNode({quick: true}), testBrowsers({quick: true})], (err) -> (require './test/lib/test_server').release(err)
+  return # promises workaround: https://github.com/gulpjs/gulp/issues/455
+
+gulp.task 'test-node-quick', ['build', 'start-test-server'], testNode({quick: true})
+gulp.task 'test-browsers-quick', ['build', 'start-test-server'], testBrowsers({quick: true})
 
 gulp.task 'zip', ['minify'], (callback) ->
   gulp.src(['*.js', 'node_modules/backbone-orm/*.js'])

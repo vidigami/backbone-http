@@ -12,7 +12,7 @@ _.each option_sets, exports = (options) ->
   SYNC = options.sync
   BASE_COUNT = 5
 
-  describe "beforeSend (cache: #{options.cache}, query_cache: #{options.query_cache})", ->
+  describe "beforeSend #{options.$parameter_tags or ''}#{options.$tags}", ->
     Flat = methods = []
     before ->
       BackboneORM.configure {model_cache: {enabled: !!options.cache, max: 100}}

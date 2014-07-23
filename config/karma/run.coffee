@@ -8,7 +8,7 @@ generate = require './generate'
 
 BASE_CONFIG = require './base-config'
 
-module.exports = (callback) ->
+module.exports = (options, callback) ->
   Wrench.rmdirSyncRecursive('./_temp', true)
   queue = new Queue(1)
 
@@ -20,7 +20,7 @@ module.exports = (callback) ->
     for test in tests
       do (test) -> queue.defer (callback) ->
         gutil.log "RUNNING TESTS: #{test.name}"
-        karma.start _.defaults({files: test.files}, BASE_CONFIG), (return_value) -> callback(new Error "Tests failed: #{return_value}" if return_value)
+        karma.start _.defaults({files: test.files}, options, BASE_CONFIG), (return_value) -> callback(new Error "Tests failed: #{return_value}" if return_value)
 
   queue.await (err) ->
     Wrench.rmdirSyncRecursive('./_temp', true) unless err
