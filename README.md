@@ -56,26 +56,20 @@ Please [checkout the website](http://vidigami.github.io/backbone-orm/backbone-ht
 
 ### For Contributors
 
-To build the library for Node.js:
+To build the library for Node.js and browsers:
 
 ```
-$ npm run build
+$ gulp build
 ```
 
-To build the library for the browser:
+Please run tests before submitting a pull request:
 
 ```
-$ npm run release
+$ gulp test-quick
 ```
 
-Please run tests before submitting a pull request.
+and eventually all tests:
 
 ```
 $ npm test
 ```
-
-Tests can be run with mocha directly with `mocha 'node_modules/backbone-orm/test/spec/**/*.coffee'`
-
-Tests may be run in the browser with `karma start ./config/karma/manual-config.coffee`
-
-Tests may be debugged in the browser with `karma start --no-single-run --browsers Chrome ./config/karma/manual-config.coffee`, and opening up the debug tab
