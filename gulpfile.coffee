@@ -45,7 +45,7 @@ gulp.task 'start-test-server', (callback) ->
 testNodeFn = (options={}) -> (callback) ->
   (require './test/lib/test_server').retain()
 
-  gutil.log 'Running Node.js tests'
+  gutil.log "Running Node.js tests #{if options.quick then '(quick)' else ''}"
   require './test/lib/node_jquery_xhr' # ensure that globals for the target backend are loaded
   global.test_parameters = require './test/parameters'
   mocha_options = if options.quick then {grep: '@no_options'} else {}
@@ -59,7 +59,7 @@ testNodeFn = (options={}) -> (callback) ->
 testBrowsersFn = (options={}) -> (callback) ->
   (require './test/lib/test_server').retain()
 
-  gutil.log 'Running Browser tests'
+  gutil.log "Running Browser tests #{if options.quick then '(quick)' else ''}"
   karma_options = if options.quick then {client: {args: ['--grep', '@no_options']}} else {}
   (require './config/karma/run') karma_options, (err) ->
     (require './test/lib/test_server').release(err); callback(err)
@@ -71,12 +71,12 @@ gulp.task 'test-browsers', ['build', 'start-test-server'], testBrowsersFn()
 gulp.task 'test', ['minify', 'start-test-server'], (callback) ->
   (require './test/lib/test_server').retain()
 
-  Async.series [testNodeFn(), testBrowsersFn()], (err) -> (require './test/lib/test_server').release(err)
+  Async.series [testNodeFn(), testBrowsersFn()], (err) -> (require './test/lib/test_server').release(err); callback(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test-quick', ['test'], (callback) ->
+gulp.task 'test-quick', ['start-test-server'], (callback) ->
   (require './test/lib/test_server').retain()
-  Async.series [testNodeFn({quick: true}), testBrowsersFn({quick: true})], (err) -> (require './test/lib/test_server').release(err)
+  Async.series [testNodeFn({quick: true}), testBrowsersFn({quick: true})], (err) -> (require './test/lib/test_server').release(err); callback(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
 gulp.task 'test-node-quick', ['build', 'start-test-server'], testNodeFn({quick: true})
