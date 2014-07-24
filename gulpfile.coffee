@@ -21,25 +21,22 @@ HEADER = """
 """
 
 gulp.task 'build', buildLibraries = (callback) ->
-  gulp.src('config/builds/library/**/*.webpack.config.coffee', {read: false, buffer: false})
+  return gulp.src('config/builds/library/**/*.webpack.config.coffee', {read: false, buffer: false})
     .pipe(webpack())
     .pipe(header(HEADER, {pkg: require './package.json'}))
     .pipe(gulp.dest('.'))
     .on('end', callback)
-  return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
 gulp.task 'watch', ['build'], (callback) ->
-  gulp.watch './src/**/*.coffee', (callback) -> buildLibraries(callback)
-  return # promises workaround: https://github.com/gulpjs/gulp/issues/455
+  return gulp.watch './src/**/*.coffee', (callback) -> buildLibraries(callback)
 
 gulp.task 'minify', ['build'], (callback) ->
-  gulp.src(['*.js', '!*.min.js', '!_temp/**/*.js', '!node_modules/'])
+  return gulp.src(['*.js', '!*.min.js', '!_temp/**/*.js', '!node_modules/'])
     .pipe(uglify())
     .pipe(rename({suffix: '.min'}))
     .pipe(header(HEADER, {pkg: require './package.json'}))
     .pipe(gulp.dest((file) -> file.base))
     .on('end', callback)
-  return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
 gulp.task 'start-test-server', (callback) ->
   console.log 'Starting server'
@@ -53,12 +50,11 @@ testNodeFn = (options={}) -> (callback) ->
   require './test/lib/node_jquery_xhr' # ensure that globals for the target backend are loaded
   global.test_parameters = require './test/parameters'
   mocha_options = if options.quick then {grep: '@no_options'} else {}
-  gulp.src(['test/spec/**/*.tests.coffee', 'node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee'])
+  return gulp.src(['test/spec/**/*.tests.coffee', 'node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee'])
     .pipe(mocha(mocha_options))
     .pipe es.writeArray (err, array) ->
       delete global.test_parameters
       (require './test/lib/test_server').release(err); callback(err)
-  return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
 testBrowsersFn = (options={}) -> (callback) ->
   (require './test/lib/test_server').retain()
