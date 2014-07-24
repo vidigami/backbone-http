@@ -1,4 +1,5 @@
 path = require 'path'
+_ = require 'underscore'
 Async = require 'async'
 es = require 'event-stream'
 
@@ -20,23 +21,21 @@ HEADER = """
 */\n
 """
 
-gulp.task 'build', buildLibraries = (callback) ->
+gulp.task 'build', buildLibraries = ->
   return gulp.src('config/builds/library/**/*.webpack.config.coffee', {read: false, buffer: false})
     .pipe(webpack())
     .pipe(header(HEADER, {pkg: require './package.json'}))
     .pipe(gulp.dest('.'))
-    .on('end', callback)
 
-gulp.task 'watch', ['build'], (callback) ->
-  return gulp.watch './src/**/*.coffee', (callback) -> buildLibraries(callback)
+gulp.task 'watch', ['build'], ->
+  return gulp.watch './src/**/*.coffee', -> buildLibraries()
 
-gulp.task 'minify', ['build'], (callback) ->
+gulp.task 'minify', ['build'], ->
   return gulp.src(['*.js', '!*.min.js', '!_temp/**/*.js', '!node_modules/'])
     .pipe(uglify())
     .pipe(rename({suffix: '.min'}))
     .pipe(header(HEADER, {pkg: require './package.json'}))
     .pipe(gulp.dest((file) -> file.base))
-    .on('end', callback)
 
 gulp.task 'start-test-server', (callback) ->
   console.log 'Starting server'
@@ -50,11 +49,12 @@ testNodeFn = (options={}) -> (callback) ->
   require './test/lib/node_jquery_xhr' # ensure that globals for the target backend are loaded
   global.test_parameters = require './test/parameters'
   mocha_options = if options.quick then {grep: '@no_options'} else {}
-  return gulp.src(['test/spec/**/*.tests.coffee', 'node_modules/backbone-orm/test/spec/sync/**/*.tests.coffee'])
-    .pipe(mocha(mocha_options))
+  gulp.src("{node_modules/backbone-#{if options.quick then 'orm' else '{orm,rest}'}/,}test/{issues,spec/sync}/**/*.tests.coffee")
+    .pipe(mocha(_.extend({reporter: 'dot'}, mocha_options)))
     .pipe es.writeArray (err, array) ->
       delete global.test_parameters
       (require './test/lib/test_server').release(err); callback(err)
+  return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
 testBrowsersFn = (options={}) -> (callback) ->
   (require './test/lib/test_server').retain()
