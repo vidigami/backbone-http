@@ -3,10 +3,8 @@ assert = assert or require?('chai').assert
 BackboneORM = require 'backbone-orm'
 {_, Backbone, Queue, Utils, Fabricator} = BackboneORM
 
-option_sets = BackboneORM.Utils._getTestOptionSets()
-parameters = __test__parameters if __test__parameters?
-_.each option_sets, exports = (options) ->
-  options = _.extend({}, options, parameters) if parameters
+_.each BackboneORM.TestUtils.optionSets(), exports = (options) ->
+  options = _.extend({}, options, __test__parameters) if __test__parameters?
 
   DATABASE_URL = options.database_url or ''
   SYNC = options.sync

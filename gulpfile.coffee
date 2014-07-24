@@ -47,7 +47,7 @@ gulp.task 'start-test-server', (callback) ->
   (require './test/lib/test_server').start (callback)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-testNode = (options={}) -> (callback) ->
+testNodeFn = (options={}) -> (callback) ->
   (require './test/lib/test_server').retain()
 
   gutil.log 'Running Node.js tests'
@@ -61,7 +61,7 @@ testNode = (options={}) -> (callback) ->
       (require './test/lib/test_server').release(err); callback(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-testBrowsers = (options={}) -> (callback) ->
+testBrowsersFn = (options={}) -> (callback) ->
   (require './test/lib/test_server').retain()
 
   gutil.log 'Running Browser tests'
@@ -70,22 +70,22 @@ testBrowsers = (options={}) -> (callback) ->
     (require './test/lib/test_server').release(err); callback(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test-node', ['build', 'start-test-server'], testNode()
-gulp.task 'test-browsers', ['build', 'start-test-server'], testBrowsers()
+gulp.task 'test-node', ['build', 'start-test-server'], testNodeFn()
+gulp.task 'test-browsers', ['build', 'start-test-server'], testBrowsersFn()
 
 gulp.task 'test', ['minify', 'start-test-server'], (callback) ->
   (require './test/lib/test_server').retain()
 
-  Async.series [testNode(), testBrowsers()], (err) -> (require './test/lib/test_server').release(err)
+  Async.series [testNodeFn(), testBrowsersFn()], (err) -> (require './test/lib/test_server').release(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
 gulp.task 'test-quick', ['test'], (callback) ->
   (require './test/lib/test_server').retain()
-  Async.series [testNode({quick: true}), testBrowsers({quick: true})], (err) -> (require './test/lib/test_server').release(err)
+  Async.series [testNodeFn({quick: true}), testBrowsersFn({quick: true})], (err) -> (require './test/lib/test_server').release(err)
   return # promises workaround: https://github.com/gulpjs/gulp/issues/455
 
-gulp.task 'test-node-quick', ['build', 'start-test-server'], testNode({quick: true})
-gulp.task 'test-browsers-quick', ['build', 'start-test-server'], testBrowsers({quick: true})
+gulp.task 'test-node-quick', ['build', 'start-test-server'], testNodeFn({quick: true})
+gulp.task 'test-browsers-quick', ['build', 'start-test-server'], testBrowsersFn({quick: true})
 
 gulp.task 'zip', ['minify'], (callback) ->
   gulp.src(['*.js', 'node_modules/backbone-orm/*.js'])
