@@ -8,7 +8,6 @@ webpack = require 'gulp-webpack-config'
 rename = require 'gulp-rename'
 uglify = require 'gulp-uglify'
 header = require 'gulp-header'
-zip = require 'gulp-zip'
 mocha = require 'gulp-mocha'
 
 HEADER = """
@@ -86,14 +85,3 @@ gulp.task 'test-quick', ['test'], (callback) ->
 
 gulp.task 'test-node-quick', ['build', 'start-test-server'], testNodeFn({quick: true})
 gulp.task 'test-browsers-quick', ['build', 'start-test-server'], testBrowsersFn({quick: true})
-
-gulp.task 'zip', ['minify'], (callback) ->
-  gulp.src(['*.js', 'node_modules/backbone-orm/*.js'])
-    .pipe(es.map (file, callback) -> file.path = file.path.replace('node_modules/backbone-orm/', 'backbone-orm/'); callback(null, file))
-    .pipe(es.map (file, callback) -> file.path = file.path.replace('stream', 'optional/stream'); callback(null, file))
-    .pipe(zip('backbone-http.zip'))
-    .pipe(gulp.dest('./'))
-    .on('end', callback)
-  return # promises workaround: https://github.com/gulpjs/gulp/issues/455
-
-gulp.task 'release', ['build', 'zip'], ->
