@@ -27,7 +27,7 @@ module.exports = (options={}, callback) ->
       .pipe(gulp.dest('_temp'))
       .on('end', callback)
 
-  unless options.quick
+  unless (options.tags or '').indexOf('@quick') >= 0
     # install backbone-http
     queue.defer (callback) ->
       gulp.src(['./backbone-http.js', './package.json'])
