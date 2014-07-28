@@ -278,9 +278,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var configure;
-
-	module.exports = configure = __webpack_require__(1).configure;
+	module.exports = __webpack_require__(1).configure;
 
 
 /***/ },
