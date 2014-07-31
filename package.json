@@ -1,0 +1,76 @@
+{
+  "name": "backbone-http",
+  "version": "0.6.0",
+  "description": "An HTTP interface for BackboneORM",
+  "main": "backbone-http.js",
+  "license": "MIT",
+  "author": "Kevin Malakoff (https://github.com/kmalakoff)",
+  "contributors": [
+    "Gwilym Humphreys (https://github.com/gwilymhumphreys)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vidigami/backbone-http.git"
+  },
+  "keywords": [
+    "backbone",
+    "orm",
+    "backbone-orm",
+    "http",
+    "ajax"
+  ],
+  "engines": {
+    "node": "*"
+  },
+  "scripts": {
+    "test": "gulp test --quick"
+  },
+  "devDependencies": {
+    "backbone-rest": "0.6.x",
+    "chai": "^1.9.1",
+    "codo": "*",
+    "coffee-loader": "*",
+    "coffee-script": "*",
+    "cors": "*",
+    "event-stream": "*",
+    "express": "3.x",
+    "gulp": "*",
+    "gulp-browserify": "*",
+    "gulp-compile-js": "*",
+    "gulp-concat": "*",
+    "gulp-header": "*",
+    "gulp-mocha": "*",
+    "gulp-mocha-phantomjs": "*",
+    "gulp-rename": "*",
+    "gulp-require-src": "*",
+    "gulp-shell": "*",
+    "gulp-uglify": "*",
+    "gulp-util": "*",
+    "gulp-webpack-config": "*",
+    "gulp-wrap-amd-infer": "*",
+    "jquery": "*",
+    "karma": "*",
+    "karma-chai": "*",
+    "karma-chrome-launcher": "*",
+    "karma-cli": "*",
+    "karma-coffee-preprocessor": "*",
+    "karma-firefox-launcher": "*",
+    "karma-mocha": "*",
+    "karma-phantomjs-launcher": "*",
+    "karma-safari-launcher": "*",
+    "karma-spec-reporter": "*",
+    "lodash": "*",
+    "mocha": "*",
+    "node-jquery-xhr": "*",
+    "powerset": "*",
+    "queue-async": "*",
+    "async": "*",
+    "webpack": "git+https://github.com/forivall/webpack#master",
+    "wrench": "*"
+  },
+  "dependencies": {
+    "underscore": "1.6.x",
+    "backbone": "1.1.x",
+    "backbone-orm": "git+https://github.com/vidigami/backbone-orm"
+  }
+}
