@@ -82,7 +82,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  Backbone: Backbone
 	};
 
-	publish._.extend(BackboneHTTP, publish);
+	_.extend(BackboneHTTP, publish);
 
 	BackboneHTTP.modules = {
 	  'backbone-orm': BackboneORM
