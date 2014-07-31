@@ -15,7 +15,7 @@ publish =
 
   _: _
   Backbone: Backbone
-publish._.extend(BackboneHTTP, publish)
+_.extend(BackboneHTTP, publish)
 
 # re-expose modules
 BackboneHTTP.modules = {'backbone-orm': BackboneORM}
