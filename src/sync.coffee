@@ -1,5 +1,5 @@
 ###
-  backbone-http.js 0.6.0
+  backbone-http.js 0.6.1
   Copyright (c) 2013-2014 Vidigami
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Source: https://github.com/vidigami/backbone-http
@@ -12,7 +12,7 @@ backboneSync = Backbone.sync
 
 HTTPCursor = require './cursor'
 
-CAPABILITIES = {embed: true, json: true, self_reference: true}
+CAPABILITIES = {embed: 'maybe', json: 'maybe', unique: 'maybe', self_reference: 'maybe'}
 
 class HTTPSync
 

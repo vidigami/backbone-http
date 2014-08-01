@@ -1,5 +1,8 @@
 Please refer to the following release notes when upgrading your version of BackboneHTTP.
 
+### 0.6.1
+* Added unique capability
+
 ### 0.6.0
 * Moved to webpack for industrial packaging across Node.js and browser
 * Removed dependency on superagent and moment
