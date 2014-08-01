@@ -134,6 +134,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  embed: 'maybe',
 	  json: 'maybe',
 	  unique: 'maybe',
+	  manual_ids: 'maybe',
 	  self_reference: 'maybe'
 	};
 

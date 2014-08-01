@@ -12,7 +12,7 @@ backboneSync = Backbone.sync
 
 HTTPCursor = require './cursor'
 
-CAPABILITIES = {embed: 'maybe', json: 'maybe', unique: 'maybe', self_reference: 'maybe'}
+CAPABILITIES = {embed: 'maybe', json: 'maybe', unique: 'maybe', manual_ids: false, self_reference: 'maybe'} # TODO: support manual_ids when all syncs do
 
 class HTTPSync
 
