@@ -135,6 +135,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  json: 'maybe',
 	  unique: 'maybe',
 	  manual_ids: false,
+	  dynamic: false,
 	  self_reference: 'maybe'
 	};
 
