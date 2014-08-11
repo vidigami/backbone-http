@@ -41,7 +41,7 @@ class HTTPSync
   # @no_doc
   destroy: (query, callback) ->
     [query, callback] = [{}, query] if arguments.length is 1
-    @http('delete', null, {query: query}, callback)
+    @http('delete', null, {query}, callback)
 
   # @no_doc
   http: (method, model, options, callback) ->
