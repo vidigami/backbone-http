@@ -1,5 +1,8 @@
 Please refer to the following release notes when upgrading your version of BackboneHTTP.
 
+### 0.7.0
+* Upgrade to BackboneORM 0.7.x
+
 ### 0.6.2
 * Added dynamic and manual_ids capabilities
 
