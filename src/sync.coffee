@@ -47,7 +47,7 @@ class HTTPSync
   http: (method, model, options, callback) ->
     url = if model then _.result(model, 'url') else @url
     if options.query and _.size(options.query)
-      url_parts = URL.parse(url, true); _.extend(url_parts.query, JSONUtils.toQuery(options.query)); url = URL.format(url_parts)
+      url_parts = URL.parse(url, true); _.extend(url_parts.query, JSONUtils.querify(options.query)); url = URL.format(url_parts)
 
     backboneSync method, model or @event_emitter, _.extend({url: url, beforeSend: @beforeSend}, options, {
       success: (res) -> callback(null, JSONUtils.parse(res))

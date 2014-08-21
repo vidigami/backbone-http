@@ -195,7 +195,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    url = model ? _.result(model, 'url') : this.url;
 	    if (options.query && _.size(options.query)) {
 	      url_parts = URL.parse(url, true);
-	      _.extend(url_parts.query, JSONUtils.toQuery(options.query));
+	      _.extend(url_parts.query, JSONUtils.querify(options.query));
 	      url = URL.format(url_parts);
 	    }
 	    return backboneSync(method, model || this.event_emitter, _.extend({
@@ -333,4 +333,4 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }
 /******/ ])
-})
+});
