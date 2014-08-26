@@ -9,11 +9,11 @@
   ],
   "description": "An HTTP interface for BackboneORM",
   "keywords": ["backbone", "orm", "backbone-orm", "http", "ajax"],
-  "dependencies": {
-    "underscore": ">=1.2.0",
-    "backbone": ">=1.0.0",
-    "backbone-orm": ">=0.5.0"
-  },
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
   "license": "MIT",
   "ignore": [
     "**/.*",
@@ -22,5 +22,10 @@
     "test",
     "src",
     "client"
-  ]
+  ],
+  "dependencies": {
+    "underscore": ">=1.2.0",
+    "backbone": ">=1.0.0",
+    "backbone-orm": ">=0.5.0"
+  }
 }
