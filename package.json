@@ -65,7 +65,7 @@
     "powerset": "*",
     "queue-async": "*",
     "async": "*",
-    "webpack": "git+https://github.com/forivall/webpack#master",
+    "webpack": "*",
     "wrench": "*"
   },
   "dependencies": {
