@@ -1,7 +1,7 @@
 {
   "name": "backbone-http",
   "main": "backbone-http.js",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "homepage": "http://vidigami.github.io/backbone-orm/backbone-http.html",
   "authors": [
     "Kevin Malakoff (https://github.com/kmalakoff)",
