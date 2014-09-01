@@ -321,6 +321,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (query.$one && err && (err.status === 404)) {
 	          return callback(null, null);
 	        }
+	        if (err) {
+	          return callback(err);
+	        }
 	        return callback(null, _this.hasCursorQuery('$count') || _this.hasCursorQuery('$exists') ? res.result : res);
 	      };
 	    })(this));

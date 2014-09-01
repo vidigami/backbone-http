@@ -18,4 +18,5 @@ module.exports = class HTTPCursor extends Cursor
 
     @sync.http 'read', null, {query: query = _.extend({}, @_find, @_cursor)}, (err, res) =>
       return callback(null, null) if query.$one and err and (err.status is 404) # not found
+      return callback(err) if err
       callback(null, if (@hasCursorQuery('$count') or @hasCursorQuery('$exists')) then res.result else res)
