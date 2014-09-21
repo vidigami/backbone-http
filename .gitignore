@@ -1,7 +1,9 @@
+.DS_Store
+npm-debug.log
+*.map
+
 node_modules/
 bower_components/
 .idea/
 _build/
 _temp/
-.DS_Store
-*.map
