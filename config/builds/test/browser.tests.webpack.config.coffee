@@ -5,6 +5,8 @@ resolveModule = (module_name) -> path.relative('.', require.resolve(module_name)
 
 module.exports = _.extend {}, (require '../../webpack/base-config.coffee'), {
   entry: ['./test/parameters.coffee'].concat((require '../../files').tests_browser)
+  output:
+    filename: 'browser.tests.js'
   externals: [
     {chai: 'chai'}
   ]

@@ -7,6 +7,7 @@ module.exports = _.extend {}, (require '../../webpack/base-config.coffee'), {
   output:
     library: 'BackboneHTTP'
     libraryTarget: 'umd2'
+    filename: 'backbone-http.js'
 
   externals: [
     {jquery: {root: '$', amd: 'jquery', commonjs: 'jquery', commonjs2: 'jquery'}}
