@@ -51,7 +51,7 @@ class HTTPSync
 
     backboneSync method, model or @event_emitter, _.extend({url: url, beforeSend: @beforeSend}, options, {
       success: (res) -> callback(null, JSONUtils.parse(res))
-      error: (res) -> return callback(_.extend(new Error("Ajax failed with status #{res.status} for #{method}"), {status: res.status}))
+      error: (res) -> return callback(_.extend(new Error("Ajax failed with status #{res.status} for #{method}"), {status: res.status, json: res.responseJSON, text: res.responseText}))
     })
 
 module.exports = (type, sync_options) ->
