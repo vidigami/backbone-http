@@ -207,7 +207,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      },
 	      error: function(res) {
 	        return callback(_.extend(new Error("Ajax failed with status " + res.status + " for " + method), {
-	          status: res.status
+	          status: res.status,
+	          json: res.responseJSON,
+	          text: res.responseText
 	        }));
 	      }
 	    }));
