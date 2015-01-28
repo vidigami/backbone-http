@@ -21,7 +21,11 @@
     "bower_components",
     "test",
     "src",
-    "client"
+    "client",
+    "*.md",
+    "config",
+    "media",
+    "gulpfile.coffee"
   ],
   "dependencies": {
     "underscore": ">=1.2.0",
