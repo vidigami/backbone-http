@@ -1,6 +1,6 @@
 /*
   backbone-http.js 0.7.1
-  Copyright (c) 2013-2014 Vidigami
+  Copyright (c) 2013-2015 Vidigami
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Source: https://github.com/vidigami/backbone-http
   Dependencies: Backbone.js, Underscore.js, and BackboneORM.
@@ -18,41 +18,41 @@
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
+
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
@@ -63,21 +63,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	
 	/*
-	  backbone-http.js 0.7.0
+	  backbone-http.js 0.7.1
 	  Copyright (c) 2013-2014 Vidigami
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
 	  Source: https://github.com/vidigami/backbone-http
 	  Dependencies: Backbone.js and Underscore.js.
 	 */
-	var Backbone, BackboneHTTP, BackboneORM, key, publish, value, _, _ref, _ref1;
+	var Backbone, BackboneHTTP, BackboneORM, _, key, publish, ref, ref1, value;
 
-	_ref = BackboneORM = __webpack_require__(1), _ = _ref._, Backbone = _ref.Backbone;
+	ref = BackboneORM = __webpack_require__(1), _ = ref._, Backbone = ref.Backbone;
 
 	module.exports = BackboneHTTP = __webpack_require__(2);
 
 	publish = {
-	  configure: __webpack_require__(4),
-	  sync: __webpack_require__(3),
+	  configure: __webpack_require__(3),
+	  sync: __webpack_require__(4),
 	  _: _,
 	  Backbone: Backbone
 	};
@@ -88,9 +88,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'backbone-orm': BackboneORM
 	};
 
-	_ref1 = BackboneORM.modules;
-	for (key in _ref1) {
-	  value = _ref1[key];
+	ref1 = BackboneORM.modules;
+	for (key in ref1) {
+	  value = ref1[key];
 	  BackboneHTTP.modules[key] = value;
 	}
 
@@ -112,17 +112,24 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__(1).configure;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
 	
 	/*
-	  backbone-http.js 0.7.0
+	  backbone-http.js 0.7.1
 	  Copyright (c) 2013-2014 Vidigami
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
 	  Source: https://github.com/vidigami/backbone-http
 	  Dependencies: Backbone.js and Underscore.js.
 	 */
-	var Backbone, BackboneORM, CAPABILITIES, HTTPCursor, HTTPSync, JSONUtils, Schema, URL, Utils, backboneSync, _, _ref;
+	var Backbone, BackboneORM, CAPABILITIES, HTTPCursor, HTTPSync, JSONUtils, Schema, URL, Utils, _, backboneSync, ref;
 
-	_ref = BackboneORM = __webpack_require__(1), _ = _ref._, Backbone = _ref.Backbone, Utils = _ref.Utils, JSONUtils = _ref.JSONUtils, Schema = _ref.Schema;
+	ref = BackboneORM = __webpack_require__(1), _ = ref._, Backbone = ref.Backbone, Utils = ref.Utils, JSONUtils = ref.JSONUtils, Schema = ref.Schema;
 
 	URL = BackboneORM.modules.url;
 
@@ -140,8 +147,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	HTTPSync = (function() {
-	  function HTTPSync(model_type, options) {
-	    this.model_type = model_type;
+	  function HTTPSync(model_type1, options) {
+	    this.model_type = model_type1;
 	    if (options == null) {
 	      options = {};
 	    }
@@ -181,9 +188,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  HTTPSync.prototype.destroy = function(query, callback) {
-	    var _ref1;
+	    var ref1;
 	    if (arguments.length === 1) {
-	      _ref1 = [{}, query], query = _ref1[0], callback = _ref1[1];
+	      ref1 = [{}, query], query = ref1[0], callback = ref1[1];
 	    }
 	    return this.http('delete', null, {
 	      query: query
@@ -280,32 +287,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(1).configure;
-
-
-/***/ },
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
 	/*
-	  backbone-http.js 0.7.0
+	  backbone-http.js 0.7.1
 	  Copyright (c) 2013-2014 Vidigami
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
 	  Source: https://github.com/vidigami/backbone-http
 	  Dependencies: Backbone.js and Underscore.js.
 	 */
-	var Cursor, HTTPCursor, _, _ref,
-	  __hasProp = {}.hasOwnProperty,
-	  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+	var Cursor, HTTPCursor, _, ref,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
 
-	_ref = __webpack_require__(1), _ = _ref._, Cursor = _ref.Cursor;
+	ref = __webpack_require__(1), _ = ref._, Cursor = ref.Cursor;
 
-	module.exports = HTTPCursor = (function(_super) {
-	  __extends(HTTPCursor, _super);
+	module.exports = HTTPCursor = (function(superClass) {
+	  extend(HTTPCursor, superClass);
 
 	  function HTTPCursor() {
 	    return HTTPCursor.__super__.constructor.apply(this, arguments);
@@ -339,3 +339,4 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ }
 /******/ ])
 });
+;
