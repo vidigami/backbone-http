@@ -1,5 +1,8 @@
 Please refer to the following release notes when upgrading your version of BackboneHTTP.
 
+### 0.7.2
+* Add response data to error
+
 ### 0.7.1
 * Robustness in toJSON for errors
 

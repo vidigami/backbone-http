@@ -1,5 +1,5 @@
 /*
-  backbone-http.js 0.7.1
+  backbone-http.js 0.7.2
   Copyright (c) 2013-2015 Vidigami
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
   Source: https://github.com/vidigami/backbone-http
@@ -63,7 +63,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	
 	/*
-	  backbone-http.js 0.7.1
+	  backbone-http.js 0.7.2
 	  Copyright (c) 2013-2014 Vidigami
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
 	  Source: https://github.com/vidigami/backbone-http
@@ -121,7 +121,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	
 	/*
-	  backbone-http.js 0.7.1
+	  backbone-http.js 0.7.2
 	  Copyright (c) 2013-2014 Vidigami
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
 	  Source: https://github.com/vidigami/backbone-http
@@ -292,7 +292,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	
 	/*
-	  backbone-http.js 0.7.1
+	  backbone-http.js 0.7.2
 	  Copyright (c) 2013-2014 Vidigami
 	  License: MIT (http://www.opensource.org/licenses/mit-license.php)
 	  Source: https://github.com/vidigami/backbone-http
