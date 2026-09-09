@@ -7,3 +7,6 @@ bower_components/
 .idea/
 _build/
 _temp/
+.agents/
+.archive/
+.tmp/
